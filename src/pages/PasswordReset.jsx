@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+
+    import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { Lock, LogIn } from 'lucide-react';
@@ -11,31 +12,23 @@ const PasswordReset = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isReady, setIsReady] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'PASSWORD_RECOVERY') {
-        // This event fires when the user clicks the password recovery link.
-        // The session is now active, and we can allow the user to update their password.
-        setIsReady(true);
+        toast({
+          title: "Session de récupération prête",
+          description: "Vous pouvez maintenant définir un nouveau mot de passe.",
+        });
       }
     });
 
-    // Also check if the URL already contains the recovery token fragment,
-    // which happens on initial load after clicking the email link.
-    const hash = window.location.hash;
-    if (hash.includes('type=recovery')) {
-        setIsReady(true);
-    }
-
-
     return () => {
-      subscription.unsubscribe();
+      subscription?.unsubscribe();
     };
-  }, []);
+  }, [toast]);
 
   const handlePasswordReset = async (e) => {
     e.preventDefault();
@@ -57,8 +50,6 @@ const PasswordReset = () => {
     }
 
     setIsSubmitting(true);
-    // When this component is rendered after clicking the link,
-    // Supabase automatically handles the session. We just need to update the user.
     const { error } = await supabase.auth.updateUser({ password });
     setIsSubmitting(false);
 
@@ -66,35 +57,23 @@ const PasswordReset = () => {
       toast({
         variant: "destructive",
         title: "Erreur",
-        description: "Impossible de mettre à jour le mot de passe. Le lien est peut-être expiré.",
+        description: "Impossible de mettre à jour le mot de passe. Le lien est peut-être expiré ou invalide.",
       });
     } else {
       toast({
         title: "Succès",
         description: "Votre mot de passe a été mis à jour. Vous pouvez maintenant vous connecter.",
       });
+      await supabase.auth.signOut();
       navigate('/login');
     }
   };
-
-  if (!isReady) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[#030303] text-white">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-          className="w-16 h-16 border-4 border-t-primary border-secondary rounded-full mb-4"
-        />
-        <p>Vérification du lien de réinitialisation...</p>
-        <p className="text-sm text-muted-foreground mt-2">Si rien ne se passe, le lien est peut-être invalide ou a expiré.</p>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-[#030303]">
       <Helmet>
         <title>Réinitialiser le mot de passe - YourBizFlow</title>
+        <meta name="description" content="Réinitialisez votre mot de passe pour votre compte YourBizFlow." />
       </Helmet>
       <motion.div
         initial={{ opacity: 0, y: -50, scale: 0.9 }}
@@ -104,7 +83,7 @@ const PasswordReset = () => {
       >
         <div className="text-center mb-8">
           <Link to="/welcome" className="inline-flex items-center gap-3 mb-4">
-            <img src="https://horizons-cdn.hostinger.com/58cbc4ed-cb6f-4ebd-abaf-62892e9ae2c6/6b69cc214c03819301dd8cb8579b78dc.png" alt="YourBizFlow Logo" className="w-12 h-12" />
+            <img alt="YourBizFlow Logo" className="w-12 h-12" src="https://images.unsplash.com/photo-1653499676737-becf2c9562c8" />
             <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">YourBizFlow</h1>
           </Link>
           <p className="text-white/60">Choisissez un nouveau mot de passe</p>
@@ -146,7 +125,7 @@ const PasswordReset = () => {
               {isSubmitting ? 'Enregistrement...' : (
                 <>
                   <LogIn className="w-5 h-5 mr-2" />
-                  Réinitialiser le mot de passe
+                  Enregistrer le nouveau mot de passe
                 </>
               )}
             </Button>
@@ -158,3 +137,4 @@ const PasswordReset = () => {
 };
 
 export default PasswordReset;
+  
