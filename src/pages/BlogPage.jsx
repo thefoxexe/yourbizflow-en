@@ -1,61 +1,74 @@
-
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import React from "react";
+import { motion } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
 import { MinimalFooter } from "@/components/ui/minimal-footer";
-import { Helmet } from 'react-helmet';
-import { PublicHeader } from '@/pages/LandingPage';
-import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { Helmet } from "react-helmet";
+import { PublicHeader } from "@/pages/LandingPage";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 const blogPosts = [
   {
-    slug: '5-astuces-pour-optimiser-votre-facturation',
-    title: '5 Astuces pour Optimiser Votre Facturation et Être Payé Plus Vite',
-    description: 'La facturation est le nerf de la guerre pour tout entrepreneur. Découvrez 5 astuces simples pour rendre votre processus de facturation plus efficace, réduire les retards de paiement et améliorer votre trésorerie.',
-    image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=800',
-    date: '3 Octobre 2025',
-    readTime: '4 min de lecture',
+    slug: "5-tips-to-optimize-your-billing",
+    title: "5 Tips to Optimize Your Billing and Get Paid Faster",
+    description:
+      "Invoicing is the crux of the matter for any entrepreneur. Discover 5 simple tips to make your invoicing process more efficient, reduce late payments and improve your cash flow.",
+    image:
+      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=800",
+    date: "October 3, 2025",
+    readTime: "4 min read",
   },
   {
-    slug: 'pourquoi-un-crm-est-essentiel-pour-votre-pme',
-    title: 'Pourquoi un CRM est Essentiel pour Votre PME (Même si Vous Débutez)',
-    description: 'Vous pensez que les CRM sont réservés aux grandes entreprises ? Détrompez-vous. Un bon outil de gestion de la relation client peut transformer votre business, même à petite échelle. Voici pourquoi.',
-    image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=800',
-    date: '28 Septembre 2025',
-    readTime: '5 min de lecture',
+    slug: "why-a-crm-is-essential-for-your-SME",
+    title: "Why a CRM is Essential for Your SME (Even If You're Just Starting)",
+    description:
+      "You think CRMs are reserved for large companies? Think again. A good customer relationship management tool can transform your business, even on a small scale. Here's why.",
+    image:
+      "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=800",
+    date: "September 28, 2025",
+    readTime: "5 min reading",
   },
   {
-    slug: 'comment-calculer-la-rentabilite-de-vos-produits',
-    title: 'Comment Calculer la Rentabilité de Vos Produits (et Arrêter de Perdre de l\'Argent)',
-    description: 'Vendre beaucoup, c\'est bien. Vendre en étant rentable, c\'est mieux. Apprenez à calculer la rentabilité réelle de chaque produit pour prendre des décisions éclairées et maximiser vos profits.',
-    image: 'https://images.unsplash.com/photo-1578574577315-3fbeb0cecdc2?q=80&w=800',
-    date: '25 Septembre 2025',
-    readTime: '6 min de lecture',
+    slug: "how-to-calculate-the-profitability-of-your-products",
+    title:
+      "How to Calculate the Profitability of Your Products (and Stop Losing Money)",
+    description:
+      "Selling a lot is good. Selling while being profitable is better. Learn how to calculate the true profitability of each product to make informed decisions and maximize your profits.",
+    image:
+      "https://images.unsplash.com/photo-1578574577315-3fbeb0cecdc2?q=80&w=800",
+    date: "September 25, 2025",
+    readTime: "6 min reading",
   },
   {
-    slug: 'automatiser-les-taches-repetitives-pour-gagner-du-temps',
-    title: 'Automatiser les Tâches Répétitives pour Gagner du Temps et de la Sérénité',
-    description: 'Les tâches administratives vous submergent ? Découvrez comment l\'automatisation peut libérer des heures précieuses chaque semaine pour vous concentrer sur ce qui compte vraiment.',
-    image: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?q=80&w=800',
-    date: '22 Septembre 2025',
-    readTime: '5 min de lecture',
+    slug: "automate-repetitive-tasks-to-save-time",
+    title: "Automate Repetitive Tasks to Save Time and Peace",
+    description:
+      "Administrative tasks are overwhelming you? Learn how automation can free up valuable hours each week to focus on what really matters.",
+    image:
+      "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?q=80&w=800",
+    date: "September 22, 2025",
+    readTime: "5 min reading",
   },
   {
-    slug: 'creer-des-devis-qui-convertissent-a-coup-sur',
-    title: 'Créer des Devis qui Convertissent à Coup Sûr : Le Guide Complet',
-    description: 'Un devis n\'est pas qu\'un simple document de prix. C\'est un outil de vente puissant. Apprenez à créer des devis clairs, professionnels et persuasifs qui transforment les prospects en clients.',
-    image: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=800',
-    date: '18 Septembre 2025',
-    readTime: '6 min de lecture',
+    slug: "create-quotes-that-convert-for-sure",
+    title: "Creating Quotes That Sure Convert: The Complete Guide",
+    description:
+      "A quote is not just a simple price document. It's a powerful sales tool. Learn how to create clear, professional and persuasive quotes that turn prospects into customers.",
+    image:
+      "https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=800",
+    date: "September 18, 2025",
+    readTime: "6 min reading",
   },
   {
-    slug: 'l-importance-du-suivi-de-temps-pour-les-freelances',
-    title: 'L\'Importance du Suivi de Temps pour les Freelances (et Comment Bien le Faire)',
-    description: 'Vous facturez à l\'heure ou au projet ? Le suivi de temps est votre meilleur allié pour évaluer votre rentabilité, justifier vos tarifs et optimiser votre productivité. On vous explique tout.',
-    image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=800',
-    date: '15 Septembre 2025',
-    readTime: '5 min de lecture',
+    slug: "the-importance-of-time-tracking-for-freelancers",
+    title:
+      "The Importance of Time Tracking for Freelancers (and How to Do It Right)",
+    description:
+      "Do you charge by the hour or by the project? Time tracking is your best ally for assessing your profitability, justifying your prices and optimizing your productivity. We'll explain everything to you.",
+    image:
+      "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=800",
+    date: "September 15, 2025",
+    readTime: "5 min reading",
   },
 ];
 
@@ -66,24 +79,48 @@ const BlogPage = () => {
     e.preventDefault();
     navigate(href);
   };
-  
+
   const pageUrl = "https://yourbizflow.com/blog";
 
   return (
     <div className="w-full min-h-screen text-white bg-[#030303] flex flex-col">
       <Helmet>
-        <title>Blog YourBizFlow | Conseils pour Entrepreneurs et PME</title>
-        <meta name="description" content="Conseils, astuces et stratégies pour les entrepreneurs et les PME. Découvrez comment optimiser votre gestion d'entreprise avec YourBizFlow." />
-        <meta name="keywords" content="blog, YourBizFlow, conseils entrepreneurs, gestion PME, facturation, CRM, rentabilité" />
-        <meta property="og:title" content="Blog YourBizFlow | Conseils pour Entrepreneurs et PME" />
-        <meta property="og:description" content="Conseils, astuces et stratégies pour les entrepreneurs et les PME. Découvrez comment optimiser votre gestion d'entreprise avec YourBizFlow." />
+        <title>YourBizFlow Blog | Advice for Entrepreneurs and SMEs</title>
+        <meta
+          name="description"
+          content="Advice, tricks and strategies for entrepreneurs and SMEs. Learn how to optimize your business management with YourBizFlow."
+        />
+        <meta
+          name="keywords"
+          content="blog, YourBizFlow, entrepreneurial advice, SME management, invoicing, CRM, profitability"
+        />
+        <meta
+          property="og:title"
+          content="YourBizFlow Blog | Advice for Entrepreneurs and SMEs"
+        />
+        <meta
+          property="og:description"
+          content="Advice, tricks and strategies for entrepreneurs and SMEs. Learn how to optimize your business management with YourBizFlow."
+        />
         <meta property="og:url" content={pageUrl} />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://horizons-cdn.hostinger.com/58cbc4ed-cb6f-4ebd-abaf-62892e9ae2c6/yourbizflow_blog_og.png" />
+        <meta
+          property="og:image"
+          content="https://horizons-cdn.hostinger.com/58cbc4ed-cb6f-4ebd-abaf-62892e9ae2c6/yourbizflow_blog_og.png"
+        />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Blog YourBizFlow | Conseils pour Entrepreneurs et PME" />
-        <meta name="twitter:description" content="Conseils, astuces et stratégies pour les entrepreneurs et les PME. Découvrez comment optimiser votre gestion d'entreprise avec YourBizFlow." />
-        <meta name="twitter:image" content="https://horizons-cdn.hostinger.com/58cbc4ed-cb6f-4ebd-abaf-62892e9ae2c6/yourbizflow_blog_twitter.png" />
+        <meta
+          name="twitter:title"
+          content="YourBizFlow Blog | Advice for Entrepreneurs and SMEs"
+        />
+        <meta
+          name="twitter:description"
+          content="Advice, tricks and strategies for entrepreneurs and SMEs. Learn how to optimize your business management with YourBizFlow."
+        />
+        <meta
+          name="twitter:image"
+          content="https://horizons-cdn.hostinger.com/58cbc4ed-cb6f-4ebd-abaf-62892e9ae2c6/yourbizflow_blog_twitter.png"
+        />
       </Helmet>
 
       <PublicHeader onNavClick={handleNavClick} />
@@ -97,10 +134,11 @@ const BlogPage = () => {
             className="text-center mb-16"
           >
             <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
-              Le Blog YourBizFlow
+              The YourBizFlow Blog
             </h1>
             <p className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto">
-              Conseils, astuces et stratégies pour les entrepreneurs et les PME qui veulent simplifier leur gestion et accélérer leur croissance.
+              Advice, tricks and strategies for entrepreneurs and SMEs who want
+              to simplify their management and accelerate their growth.
             </p>
           </motion.div>
 
@@ -118,7 +156,8 @@ const BlogPage = () => {
                     <img
                       alt={post.title}
                       className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                     src={post.image} />
+                      src={post.image}
+                    />
                   </div>
                 </Link>
                 <div className="p-6 flex flex-col flex-grow">
@@ -126,11 +165,16 @@ const BlogPage = () => {
                     <span>{post.date}</span> &bull; <span>{post.readTime}</span>
                   </div>
                   <h2 className="text-xl font-bold text-foreground mb-3 flex-grow">
-                    <Link to={`/blog/${post.slug}`} className="hover:text-primary transition-colors">
+                    <Link
+                      to={`/blog/${post.slug}`}
+                      className="hover:text-primary transition-colors"
+                    >
                       {post.title}
                     </Link>
                   </h2>
-                  <p className="text-muted-foreground mb-4 text-sm">{post.description}</p>
+                  <p className="text-muted-foreground mb-4 text-sm">
+                    {post.description}
+                  </p>
                   <Link to={`/blog/${post.slug}`} className="mt-auto">
                     <Button variant="outline" className="w-full">
                       Lire l'article <ArrowRight className="w-4 h-4 ml-2" />

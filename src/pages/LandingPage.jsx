@@ -70,7 +70,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 const LanguageSelector = () => {
-  const [lang, setLang] = useState("Français");
+  const [lang, setLang] = useState("English");
 
   return (
     <DropdownMenu>
@@ -146,9 +146,7 @@ const SocialProofSection = () => {
               <p className="text-4xl md:text-5xl font-bold text-white tracking-tighter">
                 <AnimatedCounter value={100} />+
               </p>
-              <p className="text-white/60 mt-2 font-medium">
-                Utilisateurs Actifs
-              </p>
+              <p className="text-white/60 mt-2 font-medium">Active Users</p>
             </div>
           </div>
           <div className="relative bg-gradient-to-br from-white/[0.05] to-white/[0.02] border border-white/[0.1] rounded-2xl p-8 backdrop-blur-sm w-full sm:w-auto text-center">
@@ -159,7 +157,7 @@ const SocialProofSection = () => {
                 <AnimatedCounter value={4.9} isFloat={true} />
                 <span className="text-white/60 text-2xl md:text-3xl">/5</span>
               </div>
-              <p className="text-white/60 mt-2 font-medium">Note Moyenne</p>
+              <p className="text-white/60 mt-2 font-medium">Medium Rating</p>
             </div>
           </div>
         </motion.div>
@@ -185,126 +183,112 @@ const LegalDialog = ({ isOpen, onOpenChange, title, children }) => {
 
 const PrivacyPolicyContent = () => (
   <>
-    <p className="text-white/60">Dernière mise à jour : 11/10/2025</p>
+    <p className="text-white/60">Last updated: 11/10/2025</p>
     <p>
-      YourBizFlow ("nous", "notre" ou "nos") exploite le site web et
-      l'application YourBizFlow (le "Service"). Cette page vous informe de nos
-      politiques concernant la collecte, l'utilisation et la divulgation des
-      données personnelles lorsque vous utilisez notre Service et les choix que
-      vous avez associés à ces données.
+      YourBizFlow ("we", "us" or "our") operates the Website and the YourBizFlow
+      application (the “Service”). This page informs you of our policies
+      regarding the collection, use and disclosure of personal data when you use
+      our Service and the choices you you have associated with this data.
     </p>
 
     <h3 className="text-xl font-semibold mt-6 mb-3 text-white">
-      1. Collecte et Utilisation des Informations
+      1. Collection and Use of Information
     </h3>
     <p>
-      Nous collectons plusieurs types d'informations à diverses fins pour
-      fournir et améliorer notre Service. Les types de données collectées
-      incluent :
+      We collect several types of information for various purposes to provide
+      and improve our Service. Types of data collected include:
     </p>
     <ul className="list-disc pl-6 space-y-2 mt-2">
       <li>
-        <strong>Données Personnelles :</strong> Lors de l'utilisation de notre
-        Service, nous pouvons vous demander de nous fournir certaines
-        informations personnellement identifiables qui peuvent être utilisées
-        pour vous contacter ou vous identifier ("Données Personnelles").
-        Celles-ci peuvent inclure, mais sans s'y limiter : adresse e-mail, nom,
-        prénom, et données d'utilisation.
+        <strong>Personal Data:</strong> When using our Service, we may ask you
+        to provide us with certain personally identifiable information that may
+        be used to contact or identify you (“Personal Data”). These may include,
+        but are not limited to: email address, name, first name, and usage data.
       </li>
       <li>
-        <strong>Données d'Utilisation :</strong> Nous pouvons également
-        collecter des informations sur la manière dont le Service est accédé et
-        utilisé. Ces données d'utilisation peuvent inclure des informations
-        telles que l'adresse de protocole Internet de votre ordinateur (par
-        exemple, l'adresse IP), le type de navigateur, la version du navigateur,
-        les pages de notre Service que vous visitez, l'heure et la date de votre
-        visite, le temps passé sur ces pages, le temps passé sur ces pages, et
-        d'autres données de diagnostic.
+        <strong>Usage Data:</strong> We can also collect information about how
+        the Service is accessed and used. This usage data may include
+        information such as your computer's Internet Protocol address (e.g.
+        example, IP address), browser type, browser version, the pages of our
+        Service that you visit, the time and date of your visit, time spent on
+        these pages, time spent on these pages, and other diagnostic data.
       </li>
     </ul>
 
     <h3 className="text-xl font-semibold mt-6 mb-3 text-white">
-      2. Utilisation des Données
+      2. Use of Data
     </h3>
-    <p>YourBizFlow utilise les données collectées pour diverses finalités :</p>
+    <p>YourBizFlow uses the data collected for various purposes:</p>
     <ul className="list-disc pl-6 space-y-2 mt-2">
-      <li>Fournir, maintenir et améliorer notre Service.</li>
-      <li>Vous notifier des changements apportés à notre Service.</li>
+      <li>Provide, maintain and improve our Service.</li>
+      <li>Notify you of changes to our Service.</li>
       <li>
-        Vous permettre de participer aux fonctionnalités interactives de notre
-        Service lorsque vous le souhaitez.
+        Allow you to participate in the interactive features of our Service when
+        you want it.
       </li>
-      <li>Fournir un support client et répondre à vos demandes.</li>
-      <li>
-        Recueillir des analyses ou des informations précieuses afin d'améliorer
-        notre Service.
-      </li>
-      <li>Surveiller l'utilisation de notre Service.</li>
-      <li>Détecter, prévenir et résoudre les problèmes techniques.</li>
+      <li>Provide customer support and respond to your requests.</li>
+      <li>Gather valuable analytics or information to improve our Service.</li>
+      <li>Monitor use of our Service.</li>
+      <li>Detect, prevent and resolve technical problems.</li>
     </ul>
 
     <h3 className="text-xl font-semibold mt-6 mb-3 text-white">
-      3. Sécurité des Données
+      3. Data Security
     </h3>
     <p>
-      La sécurité de vos données est importante pour nous, mais n'oubliez pas
-      qu'aucune méthode de transmission sur Internet ou méthode de stockage
-      électronique n'est sûre à 100 %. Bien que nous nous efforçons d'utiliser
-      des moyens commercialement acceptables pour protéger vos Données
-      Personnelles, nous ne pouvons garantir leur sécurité absolue.
+      The security of your data is important to us, but remember that no method
+      of transmission over the Internet or method of storage Electronics are not
+      100% safe. Although we strive to use commercially acceptable means to
+      protect your Data Personal, we cannot guarantee their absolute security.
     </p>
   </>
 );
 
 const TermsContent = () => (
   <>
-    <p className="text-white/60">Dernière mise à jour : 11/10/2025</p>
+    <p className="text-white/60">Last updated: 11/10/2025</p>
     <p>
-      Veuillez lire attentivement ces termes et conditions ("Termes", "Termes et
-      Conditions") avant d'utiliser le site web et l'application YourBizFlow (le
-      "Service") exploités par YourBizFlow.
+      Please read these terms and conditions carefully (“Terms”, “Terms and
+      Terms") before using the YourBizFlow website and application (the
+      “Service”) operated by YourBizFlow.
     </p>
     <p>
-      Votre accès et votre utilisation du Service sont conditionnés par votre
-      acceptation et votre respect de ces Termes. Ces Termes s'appliquent à tous
-      les visiteurs, utilisateurs et autres personnes qui accèdent ou utilisent
-      le Service.
+      Your access to and use of the Service is conditioned by your acceptance of
+      and compliance with these Terms. These Terms apply to everyone visitors,
+      users and others who access or use the Service.
     </p>
 
-    <h3 className="text-xl font-semibold mt-6 mb-3 text-white">1. Comptes</h3>
+    <h3 className="text-xl font-semibold mt-6 mb-3 text-white">1. Accounts</h3>
     <p>
-      Lorsque vous créez un compte chez nous, vous devez nous fournir des
-      informations exactes, complètes et à jour à tout moment. Le non-respect de
-      cette obligation constitue une violation des Termes, ce qui peut entraîner
-      la résiliation immédiate de votre compte sur notre Service. Vous êtes
-      responsable de la protection du mot de passe que vous utilisez pour
-      accéder au Service et de toute activité ou action effectuée sous votre mot
-      de passe.
+      When you create an account with us, you must provide us with accurate,
+      complete and up-to-date information at all times. Failure to respect this
+      obligation constitutes a breach of the Terms, which may result in
+      immediate termination of your account on our Service. You are responsible
+      for protecting the password you use to access the Service and any activity
+      or action carried out under your control exceeds.
     </p>
 
     <h3 className="text-xl font-semibold mt-6 mb-3 text-white">
-      2. Propriété Intellectuelle
+      2. Intellectual Property
     </h3>
     <p>
-      Le Service et son contenu original, ses caractéristiques et ses
-      fonctionnalités sont et resteront la propriété exclusive de YourBizFlow et
-      de ses concédants de licence. Le Service est protégé par le droit
-      d'auteur, le droit des marques et d'autres lois de France et des pays
-      étrangers. Nos marques et notre habillage commercial ne peuvent être
-      utilisés en relation avec un produit ou un service sans le consentement
-      écrit préalable de YourBizFlow.
+      The Service and its original content, features and functionalities are and
+      will remain the exclusive property of YourBizFlow and of its licensors.
+      The Service is protected by law copyright, trademark and other laws of
+      France and other countries foreigners. Our trademarks and trade dress may
+      not be used in Login with a product or service without consent prior
+      writing of YourBizFlow.
     </p>
 
     <h3 className="text-xl font-semibold mt-6 mb-3 text-white">
-      3. Résiliation
+      3. Termination
     </h3>
     <p>
-      Nous pouvons résilier ou suspendre votre compte immédiatement, sans
-      préavis ni responsabilité, pour quelque raison que ce soit, y compris,
-      sans s'y limiter, si vous ne respectez pas les Termes. En cas de
-      résiliation, votre droit d'utiliser le Service cessera immédiatement. Si
-      vous souhaitez résilier votre compte, vous pouvez simplement cesser
-      d'utiliser le Service.
+      We may terminate or suspend your account immediately, without notice or
+      liability, for any reason whatsoever, including, without limitation, if
+      you fail to comply with the Terms. In case of termination, your right to
+      use the Service will cease immediately. If you wish to terminate your
+      account, you can simply stop to use the Service.
     </p>
   </>
 );
@@ -315,9 +299,9 @@ const PlanDetailsDialog = ({ isOpen, onOpenChange, plan }) => {
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="bg-[#030303] border-white/10 text-white">
         <DialogHeader>
-          <DialogTitle>Détails du plan {plan.name}</DialogTitle>
+          <DialogTitle>Plan details {plan.name}</DialogTitle>
           <DialogDescription className="text-white/60">
-            Toutes les fonctionnalités incluses dans le plan {plan.name}.
+            All features included in plan {plan.name}.
           </DialogDescription>
         </DialogHeader>
         <ul className="space-y-3 py-4 max-h-96 overflow-y-auto">
@@ -337,39 +321,39 @@ const PlanDetailsDialog = ({ isOpen, onOpenChange, plan }) => {
 const FaqSection = () => {
   const faqs = [
     {
-      question: "Qu'est-ce que YourBizFlow exactement ?",
+      question: "What exactly is YourBizFlow?",
       answer:
-        "YourBizFlow est une plateforme tout-en-un conçue pour simplifier la gestion de votre entreprise. Elle combine la facturation, la gestion client (CRM), le suivi de projets, et bien plus, en un seul endroit, vous permettant de vous concentrer sur ce qui compte vraiment : votre croissance.",
+        "YourBizFlow is an all-in-one platform designed to simplify running your business. It combines invoicing, customer management (CRM), project tracking, and more in one place, allowing you to focus on what really matters: your growth.",
     },
     {
-      question: "Puis-je changer de plan à tout moment ?",
+      question: "Can I change my plan at any time?",
       answer:
-        "Absolument ! Vous pouvez faire évoluer votre abonnement vers un plan supérieur ou inférieur à tout moment depuis vos paramètres de facturation. Les changements sont appliqués immédiatement pour que vous puissiez accéder aux nouvelles fonctionnalités sans attendre.",
+        "Absolutely! You can upgrade your subscription to a higher or lower plan at any time from your billing settings. Changes are applied immediately so you can access new features without delay.",
     },
     {
-      question: "Mes données sont-elles en sécurité ?",
+      question: "Is my data safe?",
       answer:
-        "La sécurité de vos données est notre priorité absolue. Nous utilisons un cryptage de pointe et des serveurs sécurisés pour protéger toutes vos informations. Vous gardez le contrôle total de vos données, et nous vous engageons à ne jamais les partager sans votre consentement.",
+        "The security of your data is our top priority. We use state-of-the-art encryption and secure servers to protect all of your information. You remain in full control of your data, and we promise to never share it without your consent.",
     },
     {
-      question: "Le plan Gratuit est-il vraiment gratuit pour toujours ?",
+      question: "Is the Free plan really free forever?",
       answer:
-        "Oui, le plan Gratuit est conçu pour vous aider à démarrer sans aucun coût. Il inclut les fonctionnalités essentielles pour gérer votre activité et restera gratuit. Lorsque votre entreprise grandira, vous pourrez choisir de passer à un plan supérieur pour débloquer plus de modules et de puissance.",
+        "Yes, the Free plan is designed to help you get started at no cost. It includes the essential features to run your business and will remain free. As your business grows, you can choose to upgrade to a higher plan to unlock more modules and power.",
     },
     {
-      question: "Puis-je importer mes données existantes (clients, factures) ?",
+      question: "Can I import my existing data (customers, invoices)?",
       answer:
-        "Oui, nous travaillons activement sur des outils d'importation pour vous permettre de transférer facilement vos clients, produits et autres données depuis des fichiers CSV. Cette fonctionnalité sera bientôt disponible pour les plans Pro et Business.",
+        "Yes, we are actively working on import tools to allow you to easily transfer your customers, products and other data from CSV files. This feature will be available soon for the Pro and Business plans.",
     },
     {
-      question: "Proposez-vous une application mobile ?",
+      question: "Do you offer a mobile application?",
       answer:
-        "Oui ! L'application YourBizFlow est actuellement disponible en version bêta sur le Google Play Store. Une version pour iOS est également en cours de développement. Vous pouvez gérer votre business où que vous soyez.",
+        "Yes! The YourBizFlow app is currently available in beta on the Google Play Store. A version for iOS is also in development. You can manage your business wherever you are.",
     },
     {
-      question: "Le support client est-il inclus dans tous les plans ?",
+      question: "Is customer support included in all plans?",
       answer:
-        "Oui, tous nos utilisateurs bénéficient d'un support client. Le plan Gratuit inclut un support par e-mail. Les plans Pro et Business bénéficient d'un support prioritaire, avec des temps de réponse plus rapides et des options de contact étendues comme le chat en direct ou la visio.",
+        "Yes, all of our users receive customer support. The Free plan includes email support. The Pro and Business plans receive priority support, with faster response times and expanded contact options like live chat or video.",
     },
   ];
 
@@ -378,10 +362,10 @@ const FaqSection = () => {
       <div className="container mx-auto px-6 max-w-3xl">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-            Questions Fréquentes
+            Frequently Asked Questions
           </h2>
           <p className="text-white/60 max-w-2xl mx-auto">
-            Trouvez les réponses à vos questions les plus courantes.
+            Find answers to your most common questions.
           </p>
         </div>
         <Accordion type="single" collapsible className="w-full">
@@ -406,45 +390,45 @@ const TestimonialsCarousel = () => {
   const testimonials = [
     {
       name: "Marc D.",
-      company: "Coach sportif",
-      text: "Je passais un temps fou sur mes factures. Avec YourBizFlow, je crée une facture en 30 secondes depuis mon téléphone, entre deux sessions. C’est le game-changer que j'attendais.",
-      avatar: "coach sportif regardant son téléphone",
+      company: "Sports coach",
+      text: "I was spending a lot of time on my invoices. With YourBizFlow, I create an invoice in 30 seconds from my phone, between two sessions. It's the game-changer I've been waiting for.",
+      avatar: "sports coach looking at his phone",
     },
     {
       name: "Alice T.",
-      company: "E-commerçante",
-      text: "La gestion des stocks était un vrai casse-tête. Maintenant, je vois mes niveaux de stock en direct et le module calcule ma marge brute automatiquement. J'ai une visibilité que je n'avais jamais eue.",
-      avatar: "jeune femme travaillant dans un entrepôt",
+      company: "E-commerce",
+      text: "Inventory management was a real headache. Now I see my stock levels live and the module calculates my gross margin automatically. I have visibility I never had before.",
+      avatar: "young woman working in a warehouse",
     },
     {
       name: "Samuel L.",
-      company: "Développeur Freelance",
-      text: "Le suivi du temps par projet est juste parfait. Je sais exactement combien de temps je passe sur chaque mission, et mes clients adorent la transparence quand je leur envoie la facture détaillée.",
-      avatar: "développeur concentré devant son écran",
+      company: "Freelance Developer",
+      text: "The time tracking per project is just perfect. I know exactly how much time I spend on each mission, and my clients love the transparency when I send them the detailed invoice.",
+      avatar: "developer focused in front of his screen",
     },
     {
-      name: "Chloé V.",
-      company: "Consultante RH",
-      text: "Gérer mes prospects dans un tableur Excel devenait impossible. Le CRM de YourBizFlow est simple, visuel, et je n'oublie plus jamais de relancer un contact. J'ai l'air tellement plus pro !",
-      avatar: "consultante souriante en appel vidéo",
+      name: "Chloe V.",
+      company: "HR Consultant",
+      text: "Managing my prospects in an Excel spreadsheet was becoming impossible. YourBizFlow's CRM is simple, visual, and I never forget to follow up with a contact again. I look so much more professional!",
+      avatar: "smiling consultant on video call",
     },
   ];
 
   const images = [
     <img
-      alt="coach sportif regardant son téléphone"
+      alt="sports coach looking at his phone"
       src="https://images.unsplash.com/photo-1699905631258-f9657e33cc7d?q=80&w=300"
     />,
     <img
-      alt="jeune femme travaillant dans un entrepôt"
+      alt="young woman working in a warehouse"
       src="https://images.unsplash.com/photo-1602135058093-0eddb40d0e1e?q=80&w=300"
     />,
     <img
-      alt="développeur concentré devant son écran"
+      alt="developer focused in front of his screen"
       src="https://images.unsplash.com/photo-1580894912989-0bc892f4efd0?q=80&w=300"
     />,
     <img
-      alt="consultante souriante en appel vidéo"
+      alt="smiling consultant on video call"
       src="https://images.unsplash.com/photo-1585092284034-48c72302862c?q=80&w=300"
     />,
   ];
@@ -555,19 +539,19 @@ const CtaSection = () => {
           <div className="absolute inset-0 bg-grid-white/[0.05] [mask-image:linear-gradient(to_bottom,white_10%,transparent_90%)]"></div>
           <div className="relative z-10">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Prêt à transformer votre business ?
+              Ready to transform your business?
             </h2>
             <p className="text-white/80 max-w-2xl mx-auto mb-8">
-              Rejoignez des milliers d'entrepreneurs qui ont simplifié leur
-              gestion et accéléré leur croissance. Commencez gratuitement, sans
-              carte de crédit requise.
+              Join thousands of entrepreneurs who have simplified their
+              management and accelerated their growth. Start for free, without
+              credit card required.
             </p>
             <Link to="/signup">
               <Button
                 size="lg"
                 className="bg-white text-black hover:bg-white/90 text-lg px-8 py-6 shadow-lg"
               >
-                Commencer l'aventure <ArrowRight className="ml-2 w-5 h-5" />
+                Start the adventure <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </div>
@@ -583,10 +567,10 @@ const ContactSection = () => {
       <div className="container mx-auto px-6 max-w-2xl">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-            Contactez-nous
+            Contact us
           </h2>
           <p className="text-white/60 max-w-2xl mx-auto mb-8">
-            Une question ? Une suggestion ? Nous sommes à votre écoute.
+            A question? Any suggestions? We are here to listen to you.
           </p>
         </div>
         <form
@@ -599,26 +583,26 @@ const ContactSection = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <Label htmlFor="name" className="sr-only">
-                Nom
+                Name
               </Label>
               <Input
                 type="text"
                 name="name"
                 id="name"
-                placeholder="Votre nom"
+                placeholder="Your name"
                 required
                 className="bg-white/5 border-white/10 placeholder:text-white/40"
               />
             </div>
             <div>
               <Label htmlFor="email" className="sr-only">
-                Email
+                E-mail
               </Label>
               <Input
                 type="email"
                 name="email"
                 id="email"
-                placeholder="Votre email"
+                placeholder="Your email"
                 required
                 className="bg-white/5 border-white/10 placeholder:text-white/40"
               />
@@ -632,7 +616,7 @@ const ContactSection = () => {
               name="message"
               id="message"
               rows="4"
-              placeholder="Votre message"
+              placeholder="Your message"
               required
               className="bg-white/5 border-white/10 placeholder:text-white/40"
             ></Textarea>
@@ -643,7 +627,7 @@ const ContactSection = () => {
               size="lg"
               className="bg-[#C5B3FF] hover:bg-[#b2a1e6] text-black rounded-lg px-8"
             >
-              Envoyer le message
+              Send message
             </Button>
           </div>
         </form>
@@ -653,10 +637,10 @@ const ContactSection = () => {
 };
 
 const navLinks = [
-  { href: "/about", label: "À propos" },
+  { href: "/about", label: "About" },
   { href: "#features", label: "Mini-apps" },
-  { href: "#download", label: "Télécharger" },
-  { href: "#testimonials", label: "Avis" },
+  { href: "#download", label: "Download" },
+  { href: "#testimonials", label: "Reviews" },
   { href: "#pricing", label: "Tarifs" },
   { href: "#faq", label: "FAQ" },
 ];
@@ -696,12 +680,12 @@ const PublicHeader = ({ onNavClick }) => {
               variant="ghost"
               className="text-white/80 hover:text-white hover:bg-white/10"
             >
-              Connexion
+              Login
             </Button>
           </Link>
           <Link to="/signup">
             <Button className="bg-white/90 text-black hover:bg-white">
-              S'inscrire
+              Register
             </Button>
           </Link>
         </div>
@@ -747,12 +731,12 @@ const PublicHeader = ({ onNavClick }) => {
                   variant="outline"
                   className="w-full text-white/80 hover:text-white hover:bg-white/10"
                 >
-                  Connexion
+                  Login
                 </Button>
               </Link>
               <Link to="/signup" className="w-full">
                 <Button className="w-full bg-white/90 text-black hover:bg-white">
-                  S'inscrire
+                  Register
                 </Button>
               </Link>
             </nav>
@@ -767,14 +751,14 @@ const allFeatures = [
   {
     id: "billing",
     icon: FileText,
-    title: "Facturation",
+    title: "Billing",
     href: "/apps/facturation",
     color: "text-blue-400",
   },
   {
     id: "quotes",
     icon: FileSignature,
-    title: "Devis",
+    title: "Quotes",
     href: "/apps/quotes",
     color: "text-cyan-400",
   },
@@ -788,35 +772,35 @@ const allFeatures = [
   {
     id: "inventory",
     icon: Package,
-    title: "Achat/Revente",
+    title: "Purchase/Resale",
     href: "/apps/inventory",
     color: "text-yellow-400",
   },
   {
     id: "projects",
     icon: KanbanSquare,
-    title: "Projets",
+    title: "Projects",
     href: "/apps/projects",
     color: "text-purple-400",
   },
   {
     id: "time-tracking",
     icon: Clock,
-    title: "Suivi Temps",
+    title: "Time Tracking",
     href: "/apps/time-tracking",
     color: "text-orange-400",
   },
   {
     id: "analytics",
     icon: BarChart3,
-    title: "Analytique",
+    title: "Analytical",
     href: "/apps/analytics",
     color: "text-red-400",
   },
   {
     id: "hr",
     icon: Briefcase,
-    title: "RH",
+    title: "HR",
     href: "/apps/hr",
     color: "text-indigo-400",
   },
@@ -830,56 +814,56 @@ const allFeatures = [
   {
     id: "task-manager",
     icon: ClipboardList,
-    title: "Tâches",
+    title: "Tasks",
     href: "/apps/task-manager",
     color: "text-pink-400",
   },
   {
     id: "expenses",
     icon: Receipt,
-    title: "Dépenses",
+    title: "Expenses",
     href: "/apps/expenses",
     color: "text-teal-400",
   },
   {
     id: "financial-report",
     icon: AreaChart,
-    title: "Rapport Financier",
+    title: "Financial Report",
     href: "/apps/financial-report",
     color: "text-rose-400",
   },
   {
     id: "recurring-payments",
     icon: Repeat,
-    title: "Paiements Récurrents",
+    title: "Recurring Payments",
     href: "/apps/recurring-payments",
     color: "text-amber-400",
   },
   {
     id: "automated-reminders",
     icon: MailWarning,
-    title: "Relances Automatiques",
+    title: "Automatic reminders",
     href: "/apps/automated-reminders",
     color: "text-fuchsia-400",
   },
   {
     id: "stock-management",
     icon: Warehouse,
-    title: "Gestion de Stock",
+    title: "Stock Management",
     href: "/apps/stock-management",
     color: "text-sky-400",
   },
   {
     id: "order-management",
     icon: ShoppingCart,
-    title: "Commandes",
+    title: "Orders",
     href: "/apps/order-management",
     color: "text-blue-300",
   },
   {
     id: "rental-management",
     icon: KeyRound,
-    title: "Location",
+    title: "Rental",
     href: "/apps/rental-management",
     color: "text-orange-300",
   },
@@ -1035,17 +1019,17 @@ const LandingPage = () => {
       name: "Gratuit",
       prices: { monthly: { eur: "0", usd: "0", chf: "0" } },
       features: [
-        "Facturation & CRM de base",
-        "Gestion de 5 clients",
-        "Module Notes & Calendrier",
-        "Et bien plus encore...",
+        "Basic Billing & CRM",
+        "Management of 5 clients",
+        "Notes & Calendar Module",
+        "And much more...",
       ],
       fullFeatures: [
-        "Facturation & Devis (limité, avec filigrane)",
-        "CRM (jusqu'à 5 clients)",
-        "Module Notes & Documents (2 max)",
-        "Module Calendrier",
-        "Support par email",
+        "Invoicing & Quote (limited, with watermark)",
+        "CRM (up to 5 clients)",
+        "Notes & Documents Module (2 max)",
+        "Calendar Module",
+        "Email support",
       ],
     },
     {
@@ -1055,19 +1039,19 @@ const LandingPage = () => {
         yearly: { eur: "86.30", usd: "95.90", chf: "86.30" },
       },
       features: [
-        "Toutes les fonctionnalités du plan Free",
-        "Clients illimités",
-        "Module Achat/Revente",
-        "Et bien plus encore...",
+        "All the features of the Free plan",
+        "Unlimited customers",
+        "Purchase/Resale Module",
+        "And much more...",
       ],
       fullFeatures: [
-        "Toutes les fonctionnalités du plan Free",
-        "Clients illimités",
-        "Facturation & Devis illimités",
-        "Module Achat/Revente (Inventaire)",
-        "Module Suivi des Dépenses",
-        "Module Notes & Documents (20 max)",
-        "Support prioritaire par email",
+        "All the features of the Free plan",
+        "Unlimited customers",
+        "Unlimited invoicing & quotes",
+        "Purchase/Resale Module (Inventory)",
+        "Expense Tracking Module",
+        "Notes & Documents Module (20 max)",
+        "Priority support by email",
       ],
     },
     {
@@ -1077,22 +1061,21 @@ const LandingPage = () => {
         yearly: { eur: "239.90", usd: "287.30", chf: "239.90" },
       },
       features: [
-        "Toutes les fonctionnalités du plan Pro",
-        "Modules avancés",
-        "Support prioritaire",
-        "Et bien plus encore...",
+        "All the features of the Pro plan",
+        "Advanced modules",
+        "Priority support",
+        "And much more...",
       ],
       fullFeatures: [
-        "Toutes les fonctionnalités du plan Pro",
-        "Module Suivi de Projets (Kanban)",
-        "Module Gestion du Temps",
-        "Module Rapport Financier",
-        "Module Paiements Récurrents",
-        "Module Relances Automatisées",
-        "Module RH & Paie",
-        "Module Notes & Documents (illimité)",
-        "Accès API",
-        "Support dédié (téléphone & visio)",
+        "All the features of the Pro plan",
+        "Project Monitoring Module (Kanban)",
+        "Time Management Module",
+        "Financial Report Module",
+        "Recurring Payments Module",
+        "Automated Reminders Module",
+        "HR & Payroll Module",
+        "Notes & Documents module (unlimited)",
+        "Dedicated support (telephone & video)",
       ],
     },
   ];
@@ -1109,7 +1092,7 @@ const LandingPage = () => {
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description:
-      "La plateforme tout-en-un pour gérer votre facturation, CRM, projets et plus encore. Simplifiez votre gestion d'entreprise et concentrez-vous sur votre croissance.",
+      "The all-in-one platform to manage your invoicing, CRM, projects and more. Simplify your business management and focus on your growth.",
     url: "https://yourbizflow.com/welcome",
     offers: {
       "@type": "AggregateOffer",
@@ -1117,34 +1100,34 @@ const LandingPage = () => {
       lowPrice: "0",
       highPrice: "239.90",
       offers: [
-        { "@type": "Offer", name: "Gratuit", price: "0", priceCurrency: "EUR" },
+        { "@type": "Offer", name: "Free", price: "0", priceCurrency: "EUR" },
         {
           "@type": "Offer",
           name: "Pro Mensuel",
           price: "8.99",
           priceCurrency: "EUR",
-          description: "Abonnement mensuel au plan Pro.",
+          description: "Monthly subscription to the Pro plan.",
         },
         {
           "@type": "Offer",
           name: "Business Mensuel",
           price: "24.99",
           priceCurrency: "EUR",
-          description: "Abonnement mensuel au plan Business.",
+          description: "Monthly subscription to the Business plan.",
         },
         {
           "@type": "Offer",
           name: "Pro Annuel",
           price: "86.30",
           priceCurrency: "EUR",
-          description: "Abonnement annuel au plan Pro.",
+          description: "Annual subscription to the Pro plan.",
         },
         {
           "@type": "Offer",
           name: "Business Annuel",
           price: "239.90",
           priceCurrency: "EUR",
-          description: "Abonnement annuel au plan Business.",
+          description: "Annual subscription to the Business plan.",
         },
       ],
     },
@@ -1162,24 +1145,22 @@ const LandingPage = () => {
   return (
     <div className="w-full text-white bg-[#030303] overflow-x-hidden">
       <Helmet>
-        <title>
-          YourBizFlow | Logiciel de Gestion d'Entreprise Tout-en-Un (SaaS)
-        </title>
+        <title>YourBizFlow | All-in-One Business Management Software</title>
         <meta
           name="description"
-          content="Découvrez YourBizFlow, la plateforme SaaS tout-en-un pour entrepreneurs. Gérez facturation, CRM, projets et plus, simplement. Essayez gratuitement !"
+          content="Discover YourBizFlow, the all-in-one platform for entrepreneurs. Manage invoicing, CRM, projects and more, simply. Try it for free!"
         />
         <meta
           name="keywords"
-          content="SaaS, gestion d'entreprise, facturation, CRM, devis, freelance, PME, auto-entrepreneur, logiciel de gestion, YourBizFlow"
+          content=", business management, invoicing, CRM, quote, freelance, SME, self-employed, management software, YourBizFlow"
         />
         <meta
           property="og:title"
-          content="YourBizFlow | Logiciel de Gestion d'Entreprise Tout-en-Un (SaaS)"
+          content="YourBizFlow | All-in-One Business Management Software"
         />
         <meta
           property="og:description"
-          content="Découvrez YourBizFlow, la solution SaaS tout-en-un pour les entrepreneurs et PME. Gérez factures, clients et projets avec une facilité déconcertante."
+          content="Discover YourBizFlow, the all-in-one solution for entrepreneurs and SMEs. Manage invoices, clients and projects with ease."
         />
         <meta property="og:url" content="https://yourbizflow.com/welcome" />
         <meta property="og:type" content="website" />
@@ -1190,11 +1171,11 @@ const LandingPage = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
-          content="YourBizFlow | Logiciel de Gestion d'Entreprise Tout-en-Un (SaaS)"
+          content="YourBizFlow | All-in-One Business Management Software"
         />
         <meta
           name="twitter:description"
-          content="Découvrez YourBizFlow, la solution SaaS tout-en-un pour les entrepreneurs et PME. Gérez factures, clients et projets avec une facilité déconcertante."
+          content="Discover YourBizFlow, the all-in-one solution for entrepreneurs and SMEs. Manage invoices, clients and projects with ease."
         />
         <meta
           name="twitter:image"
@@ -1212,14 +1193,14 @@ const LandingPage = () => {
       <LegalDialog
         isOpen={isPrivacyOpen}
         onOpenChange={setIsPrivacyOpen}
-        title="Politique de Confidentialité"
+        title="Privacy Policy"
       >
         <PrivacyPolicyContent />
       </LegalDialog>
       <LegalDialog
         isOpen={isTermsOpen}
         onOpenChange={setIsTermsOpen}
-        title="Termes et Conditions"
+        title="Terms and Conditions"
       >
         <TermsContent />
       </LegalDialog>
@@ -1230,9 +1211,9 @@ const LandingPage = () => {
         <HeroGeometric
           badge="YourBizFlow"
           titleAs="h1"
-          title1="Votre Business,"
-          title2="Simplifié."
-          subtitle="De la facturation à la gestion de projet, en passant par le CRM et l'analyse IA, YourBizFlow est la plateforme tout-en-un conçue pour tous les entrepreneurs."
+          title1="Your Business,"
+          title2="Simplified."
+          subtitle="From invoicing to project management, CRM and AI analytics, YourBizFlow is the all-in-one platform designed for every entrepreneur."
         />
 
         <div className="relative z-10 flex flex-col items-center gap-4 -mt-32 md:-mt-24">
@@ -1241,7 +1222,7 @@ const LandingPage = () => {
               size="lg"
               className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90 shadow-lg shadow-indigo-500/30"
             >
-              Commencer gratuitement <ArrowRight className="ml-2 w-5 h-5" />
+              Get started for free <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
           </Link>
         </div>
@@ -1250,16 +1231,16 @@ const LandingPage = () => {
           <div className="container mx-auto px-6">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-                Une plateforme, toutes vos mini-apps.
+                One platform, all your mini-apps.
               </h2>
               <p className="text-white/60 max-w-2xl mx-auto">
-                Chaque module est une app pensée pour performer.
+                Each module is an app designed to perform.
               </p>
             </div>
           </div>
           <FeaturesCarousel />
           <div className="text-center mt-16 flex flex-col items-center gap-6">
-            <p className="text-white/60 text-lg">Et bien plus à venir...</p>
+            <p className="text-white/60 text-lg">And much more to come...</p>
             <a
               href="https://calendly.com/yourbizflow/30min"
               target="_blank"
@@ -1270,8 +1251,7 @@ const LandingPage = () => {
                 variant="outline"
                 className="text-lg px-8 py-6 border-white/20 text-white hover:bg-white/10 shadow-lg shadow-white/10"
               >
-                <PhoneCall className="w-5 h-5 mr-2" /> Réserver une démo
-                gratuite
+                <PhoneCall className="w-5 h-5 mr-2" /> Book a demo free
               </Button>
             </a>
           </div>
@@ -1281,25 +1261,25 @@ const LandingPage = () => {
           <div className="container mx-auto px-6">
             <div className="text-center mb-12">
               <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-                Téléchargez l'application YourBizFlow
+                Download the YourBizFlow app
               </h2>
               <p className="text-white/60 max-w-2xl mx-auto">
-                Accédez à votre business partout, tout le temps. Disponible
-                uniquement en beta sur Google Play pour l'instant. Contactez
-                @yourbizflow sur Instagram pour l'accès
+                Access your business anywhere, anytime. Available only in beta
+                on Google Play for now. Contact @yourbizflow on Instagram for
+                access
               </p>
             </div>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-8">
               <div className="flex flex-col items-center text-center">
                 <img
-                  alt="Télécharger YourBizFlow sur le Google Play Store"
+                  alt="Download YourBizFlow from the Google Play Store"
                   className="w-48 h-auto mb-2"
                   src="https://i.ibb.co/bjyL5dzW/1.png"
                 />
               </div>
               <div className="flex flex-col items-center text-center">
                 <img
-                  alt="Bientôt disponible sur l'Apple App Store"
+                  alt="Coming soon to the Apple App Store"
                   className="w-48 h-auto mb-2"
                   src="https://i.ibb.co/fzJB0DHr/2.png"
                 />
@@ -1312,11 +1292,10 @@ const LandingPage = () => {
           <div className="container mx-auto px-6">
             <div className="text-center mb-20">
               <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-                Ils nous font confiance
+                They trust us
               </h2>
               <p className="text-white/60 max-w-2xl mx-auto">
-                Découvrez pourquoi des milliers d'entrepreneurs choisissent
-                YourBizFlow.
+                Find out why thousands of entrepreneurs choose YourBizFlow.
               </p>
             </div>
             <TestimonialsCarousel />
@@ -1329,10 +1308,10 @@ const LandingPage = () => {
           <div className="container mx-auto px-6">
             <div className="text-center mb-12">
               <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-                Un tarif adapté à votre croissance
+                A price adapted to your growth
               </h2>
               <p className="text-white/60 max-w-2xl mx-auto">
-                Simple, transparent et sans engagement.
+                Simple, transparent and without obligation.
               </p>
               <div className="flex items-center justify-center flex-wrap gap-4 mt-8">
                 <div className="flex items-center gap-4">
@@ -1343,7 +1322,7 @@ const LandingPage = () => {
                       billingCycle === "monthly" && "text-white font-semibold"
                     )}
                   >
-                    Mensuel
+                    Monthly
                   </Label>
                   <Switch
                     id="billing-cycle-landing"
@@ -1359,7 +1338,7 @@ const LandingPage = () => {
                       billingCycle === "yearly" && "text-white font-semibold"
                     )}
                   >
-                    Annuel
+                    Annual
                   </Label>
                   <div className="bg-rose-500/20 text-rose-300 text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1">
                     <BadgePercent className="w-3 h-3" />
@@ -1417,7 +1396,7 @@ const LandingPage = () => {
                     onClick={() => openPlanDetails(plan)}
                   >
                     <Info className="w-4 h-4 mr-2" />
-                    Voir toutes les fonctionnalités
+                    See all features
                   </Button>
                   <Link to="/signup" className="w-full">
                     <Button
@@ -1428,7 +1407,7 @@ const LandingPage = () => {
                           : "bg-white/10 text-white hover:bg-white/20"
                       )}
                     >
-                      Choisir ce plan
+                      Choose this plan
                     </Button>
                   </Link>
                 </motion.div>

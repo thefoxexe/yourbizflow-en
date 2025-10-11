@@ -152,7 +152,7 @@ export const AuthProvider = ({ children }) => {
       if (error) {
         toast({
           variant: "destructive",
-          title: "Connection failed",
+          title: "Login failed",
           description: error.message || "Incorrect email or password.",
         });
         setLoading(false);
@@ -175,7 +175,7 @@ export const AuthProvider = ({ children }) => {
     if (error) {
       toast({
         variant: "destructive",
-        title: "Google connection error",
+        title: "Google Login error",
         description: error.message,
       });
     }

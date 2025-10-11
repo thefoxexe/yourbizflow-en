@@ -61,7 +61,7 @@ const AppWorkflow = () => {
     },
     {
       icon: Link2,
-      title: "Connection between Modules",
+      title: "Login between Modules",
       description:
         "Make your modules communicate with each other for unrivaled workflow.",
     },
