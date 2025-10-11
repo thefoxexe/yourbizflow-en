@@ -1,33 +1,35 @@
-import React, { useEffect } from "react";
-import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
-import { CheckCircle, XCircle } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import { Helmet } from "react-helmet";
+
+import React, { useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
+import { CheckCircle, XCircle } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
+import { Helmet } from 'react-helmet';
 
 const EmailChangeConfirmation = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+
   useEffect(() => {
     const hash = window.location.hash;
     const params = new URLSearchParams(hash.substring(1));
-    const errorDescription = params.get("error_description");
+    const errorDescription = params.get('error_description');
 
     if (errorDescription) {
       toast({
         variant: "destructive",
-        title: "Confirmation error",
-        description: "The confirmation link is invalid or expired.",
+        title: "Erreur de confirmation",
+        description: "Le lien de confirmation est invalide ou a expiré.",
       });
     } else {
       toast({
-        title: "Email updated!",
-        description: "Your email address has been successfully updated.",
+        title: "Email mis à jour !",
+        description: "Votre adresse email a été mise à jour avec succès.",
       });
     }
 
     const timer = setTimeout(() => {
-      navigate("/login");
+      navigate('/login');
     }, 5000);
 
     return () => clearTimeout(timer);
@@ -35,17 +37,17 @@ const EmailChangeConfirmation = () => {
 
   const hash = window.location.hash;
   const params = new URLSearchParams(hash.substring(1));
-  const errorDescription = params.get("error_description");
+  const errorDescription = params.get('error_description');
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-[#030303]">
       <Helmet>
-        <title>Email change confirmation - YourBizFlow</title>
+        <title>Confirmation de changement d'email - YourBizFlow</title>
       </Helmet>
       <motion.div
         initial={{ opacity: 0, y: -50, scale: 0.9 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.5, type: "spring" }}
+        transition={{ duration: 0.5, type: 'spring' }}
         className="w-full max-w-md bg-white/[0.03] border border-white/[0.08] rounded-xl p-8 shadow-lg text-center"
       >
         {errorDescription ? (
@@ -53,19 +55,20 @@ const EmailChangeConfirmation = () => {
         ) : (
           <CheckCircle className="w-24 h-24 mx-auto text-green-500" />
         )}
-
+        
         <h1 className="text-3xl font-bold mt-6 mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-          {errorDescription ? "Confirmation failed" : "Email confirmed!"}
+          {errorDescription ? "Échec de la confirmation" : "Email confirmé !"}
         </h1>
         <p className="text-white/60 mb-8">
-          {errorDescription
-            ? "The link you used is invalid or expired. Please try again from your settings."
-            : "Your email address has been successfully updated. You will be redirected to the login page."}
+          {errorDescription 
+            ? "Le lien que vous avez utilisé est invalide ou a expiré. Veuillez réessayer depuis vos paramètres."
+            : "Votre adresse email a été mise à jour avec succès. Vous allez être redirigé vers la page de connexion."
+          }
         </p>
-
+        
         <Link to="/login">
           <button className="text-primary hover:underline">
-            Return to login page
+            Retourner à la page de connexion
           </button>
         </Link>
       </motion.div>

@@ -1,61 +1,44 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/lib/customSupabaseClient";
-import { useAuth } from "@/contexts/SupabaseAuthContext";
-import { Helmet } from "react-helmet";
-import {
-  Inbox,
-  Send,
-  FileText,
-  Archive,
-  Trash2,
-  AlertTriangle,
-  Loader2,
-  RefreshCw,
-  Wrench,
-} from "lucide-react"; // Added Wrench icon
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React, { useState, useEffect, useCallback } from 'react';
+import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
+import { supabase } from '@/lib/customSupabaseClient';
+import { useAuth } from '@/contexts/SupabaseAuthContext';
+import { Helmet } from 'react-helmet';
+import { Inbox, Send, FileText, Archive, Trash2, AlertTriangle, Loader2, RefreshCw, Wrench } from 'lucide-react'; // Added Wrench icon
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const MailViewer = ({ mail }) => {
   if (!mail) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-center p-8">
-        <Inbox className="w-16h-16 text-muted-foreground mb-4" />
-        <h2 className="text-xl font-bold">Select Email</h2>
-        <p className="text-muted-foreground mt-2">
-          Choose an email from the list to read it here.
-        </p>
+        <Inbox className="w-16 h-16 text-muted-foreground mb-4" />
+        <h2 className="text-xl font-bold">Sélectionnez un e-mail</h2>
+        <p className="text-muted-foreground mt-2">Choisissez un e-mail dans la liste pour le lire ici.</p>
       </div>
     );
   }
 
-  const from =
-    mail.payload.headers.find((h) => h.name === "From")?.value || "N/A";
-  const to = mail.payload.headers.find((h) => h.name === "To")?.value || "N/A";
-  const subject =
-    mail.payload.headers.find((h) => h.name === "Subject")?.value ||
-    "Sans objet";
-  const date = new Date(
-    mail.payload.headers.find((h) => h.name === "Date")?.value
-  ).toLocaleString();
+  const from = mail.payload.headers.find(h => h.name === 'From')?.value || 'N/A';
+  const to = mail.payload.headers.find(h => h.name === 'To')?.value || 'N/A';
+  const subject = mail.payload.headers.find(h => h.name === 'Subject')?.value || 'Sans objet';
+  const date = new Date(mail.payload.headers.find(h => h.name === 'Date')?.value).toLocaleString();
 
   const getBody = (payload) => {
     if (payload.body.size > 0) {
-      return atob(payload.body.data.replace(/-/g, "+").replace(/_/g, "/"));
+      return atob(payload.body.data.replace(/-/g, '+').replace(/_/g, '/'));
     }
     if (payload.parts) {
-      const htmlPart = payload.parts.find((p) => p.mimeType === "text/html");
+      const htmlPart = payload.parts.find(p => p.mimeType === 'text/html');
       if (htmlPart) {
-        return atob(htmlPart.body.data.replace(/-/g, "+").replace(/_/g, "/"));
+        return atob(htmlPart.body.data.replace(/-/g, '+').replace(/_/g, '/'));
       }
-      const textPart = payload.parts.find((p) => p.mimeType === "text/plain");
+      const textPart = payload.parts.find(p => p.mimeType === 'text/plain');
       if (textPart) {
-        return atob(textPart.body.data.replace(/-/g, "+").replace(/_/g, "/"));
+        return atob(textPart.body.data.replace(/-/g, '+').replace(/_/g, '/'));
       }
     }
-    return "Content not available.";
+    return 'Contenu non disponible.';
   };
 
   const bodyContent = getBody(mail.payload);
@@ -88,8 +71,7 @@ const IntegratedMail = () => {
 
   const handleConnectGmail = async () => {
     toast({
-      title:
-        "🚧 Cette fonctionnalité n'est pas encore implémentée—mais ne vous inquiétez pas ! Vous pouvez la demander dans votre prochaine requête ! 🚀",
+      title: "🚧 Cette fonctionnalité n'est pas encore implémentée—mais ne vous inquiétez pas ! Vous pouvez la demander dans votre prochaine requête ! 🚀",
     });
     // const { error } = await supabase.auth.signInWithOAuth({
     //   provider: 'google',
@@ -105,8 +87,7 @@ const IntegratedMail = () => {
 
   const handleDisconnectGmail = async () => {
     toast({
-      title:
-        "🚧 Cette fonctionnalité n'est pas encore implémentée—mais ne vous inquiétez pas ! Vous pouvez la demander dans votre prochaine requête ! 🚀",
+      title: "🚧 Cette fonctionnalité n'est pas encore implémentée—mais ne vous inquiétez pas ! Vous pouvez la demander dans votre prochaine requête ! 🚀",
     });
     // const { error } = await supabase.auth.signOut();
     // if (error) {
@@ -120,8 +101,7 @@ const IntegratedMail = () => {
 
   const fetchMails = useCallback(async () => {
     toast({
-      title:
-        "🚧 Cette fonctionnalité n'est pas encore implémentée—mais ne vous inquiétez pas ! Vous pouvez la demander dans votre prochaine requête ! 🚀",
+      title: "🚧 Cette fonctionnalité n'est pas encore implémentée—mais ne vous inquiétez pas ! Vous pouvez la demander dans votre prochaine requête ! 🚀",
     });
     // if (!isConnected) return;
     // setIsFetchingMails(true);
@@ -175,34 +155,16 @@ const IntegratedMail = () => {
     <div className="flex flex-col items-center justify-center h-full text-center">
       <Helmet>
         <title>Mail Intégré - Bientôt Disponible</title>
-        <meta
-          name="description"
-          content="Le module de mail intégré est en cours de développement et sera bientôt disponible."
-        />
+        <meta name="description" content="Le module de mail intégré est en cours de développement et sera bientôt disponible." />
       </Helmet>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-card p-8 rounded-xl border shadow-lg max-w-md"
-      >
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-card p-8 rounded-xl border shadow-lg max-w-md">
         <Wrench className="w-20 h-20 mx-auto mb-4 text-primary" />
-        <h1 className="text-2xl font-bold text-foreground mb-2">
-          Mail Intégré
-        </h1>
+        <h1 className="text-2xl font-bold text-foreground mb-2">Mail Intégré</h1>
         <p className="text-muted-foreground mb-6">
-          Ce module est en cours de développement et sera bientôt disponible
-          pour vous aider à gérer vos e-mails directement depuis YourBizFlow.
+          Ce module est en cours de développement et sera bientôt disponible pour vous aider à gérer vos e-mails directement depuis YourBizFlow.
           Restez à l'écoute pour les mises à jour !
         </p>
-        <Button
-          onClick={() =>
-            toast({
-              title:
-                "🚧 Cette fonctionnalité n'est pas encore implémentée—mais ne vous inquiétez pas ! Vous pouvez la demander dans votre prochaine requête ! 🚀",
-            })
-          }
-          size="lg"
-        >
+        <Button onClick={() => toast({ title: "🚧 Cette fonctionnalité n'est pas encore implémentée—mais ne vous inquiétez pas ! Vous pouvez la demander dans votre prochaine requête ! 🚀" })} size="lg">
           En savoir plus
         </Button>
       </motion.div>

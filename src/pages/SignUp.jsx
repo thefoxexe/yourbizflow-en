@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { Mail, Lock, User, LogIn } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useAuth } from "@/contexts/SupabaseAuthContext";
-import { useToast } from "@/components/ui/use-toast";
-import { Helmet } from "react-helmet";
-import { FcGoogle } from "react-icons/fc";
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { Mail, Lock, User, LogIn } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/SupabaseAuthContext';
+import { useToast } from '@/components/ui/use-toast';
+import { Helmet } from 'react-helmet';
+import { FcGoogle } from 'react-icons/fc';
 
 const SignUp = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { signUp, signInWithGoogle } = useAuth();
   const { toast } = useToast();
@@ -21,8 +21,8 @@ const SignUp = () => {
     if (!email || !password || !fullName) {
       toast({
         variant: "destructive",
-        title: "Required fields",
-        description: "Please complete all fields.",
+        title: "Champs requis",
+        description: "Veuillez remplir tous les champs.",
       });
       return;
     }
@@ -32,42 +32,31 @@ const SignUp = () => {
       setIsSubmitting(false);
     } else {
       toast({
-        title: "Registration successful!",
-        description: "Please check your email to confirm your account.",
+        title: "Inscription réussie !",
+        description: "Veuillez vérifier votre email pour confirmer votre compte.",
       });
     }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-[#030303]">
       <Helmet>
-        <title>Registration - YourBizFlow</title>
-        <meta
-          name="description"
-          content="Create your YourBizFlow account and start managing your business more efficiently. Quick and easy sign-up."
-        />
-        <meta
-          name="keywords"
-          content="registration, signup, YourBizFlow, create account, "
-        />
+        <title>Inscription - YourBizFlow</title>
+        <meta name="description" content="Créez votre compte YourBizFlow et commencez à gérer votre entreprise plus efficacement. Inscription rapide et facile." />
+        <meta name="keywords" content="inscription, signup, YourBizFlow, créer un compte, SaaS" />
       </Helmet>
       <motion.div
         initial={{ opacity: 0, y: -50, scale: 0.9 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.5, type: "spring" }}
+        transition={{ duration: 0.5, type: 'spring' }}
         className="w-full max-w-md bg-white/[0.03] border border-white/[0.08] rounded-xl p-8 shadow-lg"
       >
         <div className="text-center mb-8">
           <Link to="/welcome" className="inline-flex items-center gap-3 mb-4">
-            <img
-              src="https://horizons-cdn.hostinger.com/58cbc4ed-cb6f-4ebd-abaf-62892e9ae2c6/6b69cc214c03819301dd8cb8579b78dc.png"
-              alt="YourBizFlow Logo"
-              className="w-12 p.m.-12"
-            />
-            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-              YourBizFlow
-            </h1>
+            <img src="https://horizons-cdn.hostinger.com/58cbc4ed-cb6f-4ebd-abaf-62892e9ae2c6/6b69cc214c03819301dd8cb8579b78dc.png" alt="YourBizFlow Logo" className="w-12 h-12" />
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">YourBizFlow</h1>
           </Link>
-          <p className="text-white/60">Create your account to get started</p>
+          <p className="text-white/60">Créez votre compte pour commencer</p>
         </div>
 
         <form onSubmit={handleSignUp} className="space-y-6">
@@ -75,7 +64,7 @@ const SignUp = () => {
             <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
             <input
               type="text"
-              placeholder="Full name"
+              placeholder="Nom complet"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               required
@@ -97,7 +86,7 @@ const SignUp = () => {
             <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Mot de passe"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -105,18 +94,19 @@ const SignUp = () => {
             />
           </div>
 
-          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
             <Button
               type="submit"
               disabled={isSubmitting}
               className="w-full py-3 text-base bg-white text-black hover:bg-white/90"
             >
-              {isSubmitting ? (
-                "Account creation…"
-              ) : (
+              {isSubmitting ? 'Création du compte...' : (
                 <>
                   <LogIn className="w-5 h-5 mr-2" />
-                  Register
+                  S'inscrire
                 </>
               )}
             </Button>
@@ -128,31 +118,32 @@ const SignUp = () => {
             <span className="w-full border-t border-white/20"></span>
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-[#0e0e10] px-2 text-white/60">
-              Or continue with
-            </span>
+            <span className="bg-[#0e0e10] px-2 text-white/60">Ou continuer avec</span>
           </div>
         </div>
 
-        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+        >
           <Button
             variant="outline"
             onClick={signInWithGoogle}
             className="w-full py-3 text-base bg-transparent border-white/20 hover:bg-white/5 text-white"
           >
             <FcGoogle className="w-5 h-5 mr-2" />
-            Sign up with Google
+            S'inscrire avec Google
           </Button>
         </motion.div>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-white/60">
-            Already have an account?{" "}
+            Déjà un compte ?{' '}
             <Link
               to="/login"
               className="font-medium text-primary hover:underline"
             >
-              Log in
+              Connectez-vous
             </Link>
           </p>
         </div>
