@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,25 +11,26 @@ const PasswordReset = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [token, setToken] = useState(null);
+  const [isReady, setIsReady] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const hash = window.location.hash;
-    const params = new URLSearchParams(hash.substring(1));
-    const accessToken = params.get('access_token');
-    if (accessToken) {
-      setToken(accessToken);
-    }
-
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'PASSWORD_RECOVERY') {
-        if (session?.access_token) {
-          setToken(session.access_token);
-        }
+        // This event fires when the user clicks the password recovery link.
+        // The session is now active, and we can allow the user to update their password.
+        setIsReady(true);
       }
     });
+
+    // Also check if the URL already contains the recovery token fragment,
+    // which happens on initial load after clicking the email link.
+    const hash = window.location.hash;
+    if (hash.includes('type=recovery')) {
+        setIsReady(true);
+    }
+
 
     return () => {
       subscription.unsubscribe();
@@ -57,6 +57,8 @@ const PasswordReset = () => {
     }
 
     setIsSubmitting(true);
+    // When this component is rendered after clicking the link,
+    // Supabase automatically handles the session. We just need to update the user.
     const { error } = await supabase.auth.updateUser({ password });
     setIsSubmitting(false);
 
@@ -64,7 +66,7 @@ const PasswordReset = () => {
       toast({
         variant: "destructive",
         title: "Erreur",
-        description: error.message,
+        description: "Impossible de mettre à jour le mot de passe. Le lien est peut-être expiré.",
       });
     } else {
       toast({
@@ -75,9 +77,14 @@ const PasswordReset = () => {
     }
   };
 
-  if (!token) {
+  if (!isReady) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[#030303] text-white">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+          className="w-16 h-16 border-4 border-t-primary border-secondary rounded-full mb-4"
+        />
         <p>Vérification du lien de réinitialisation...</p>
         <p className="text-sm text-muted-foreground mt-2">Si rien ne se passe, le lien est peut-être invalide ou a expiré.</p>
       </div>

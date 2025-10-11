@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+    import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { User, Lock, LogOut, CreditCard, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -76,9 +76,10 @@ const Settings = () => {
   const handleChangeEmail = async () => {
     const newEmail = prompt("Veuillez entrer votre nouvelle adresse email :");
     if (newEmail && newEmail !== user.email) {
-      const { error } = await supabase.auth.updateUser({ email: newEmail }, {
-        emailRedirectTo: `${window.location.origin}/email-change-confirmation`
-      });
+      const { data, error } = await supabase.auth.updateUser(
+        { email: newEmail },
+        { emailRedirectTo: `${window.location.origin}/email-change-confirmation` }
+      );
       if (error) {
         toast({ variant: 'destructive', title: 'Erreur', description: error.message });
       } else {
@@ -220,3 +221,4 @@ const Settings = () => {
 };
 
 export default Settings;
+  
