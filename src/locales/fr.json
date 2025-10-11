@@ -1,0 +1,97 @@
+{
+  "translation": {
+    "sidebar": {
+      "dashboard": "Tableau de bord",
+      "marketplace": "Marketplace",
+      "billing": "Facturation",
+      "quotes": "Devis",
+      "crm": "CRM",
+      "inventory": "Achat/Revente",
+      "analytics": "Analytique IA",
+      "notes": "Notes & Documents",
+      "settings": "Paramètres",
+      "calendar": "Calendrier",
+      "projects": "Suivi de Projets",
+      "time-tracking": "Gestion du Temps",
+      "expenses": "Suivi des Dépenses",
+      "financial-report": "Rapport Financier",
+      "recurring-payments": "Paiements Récurrents",
+      "automated-reminders": "Relances Automatisées",
+      "ai-strategist": "AI Business Strategist",
+      "hr": "RH & Paie",
+      "automation": "Automatisation"
+    },
+    "settings": {
+      "manageSubscription": "Gérer mon abonnement"
+    },
+    "subscription": {
+      "title": "Choisissez le plan qui vous convient",
+      "subtitle": "Commencez gratuitement et ajoutez des fonctionnalités à mesure que vous grandissez.",
+      "free": "Gratuit",
+      "pro": "Pro",
+      "business": "Business",
+      "choosePlan": "Choisir ce plan",
+      "startNow": "Commencer maintenant",
+      "freeFeaturesShort": [
+        "Facturation & CRM de base",
+        "Gestion de 5 clients",
+        "Module Notes & Calendrier"
+      ],
+      "proFeaturesShort": [
+        "Toutes les fonctionnalités du plan Free",
+        "Clients illimités",
+        "Module Achat/Revente"
+      ],
+      "businessFeaturesShort": [
+        "Toutes les fonctionnalités du plan Pro",
+        "Modules d'automatisation & IA",
+        "Support prioritaire"
+      ],
+      "freeFeatures": [
+        "Facturation & Devis (limité, avec filigrane)",
+        "CRM (jusqu'à 5 clients)",
+        "Module Notes & Documents (2 max)",
+        "Module Calendrier",
+        "Support par email"
+      ],
+      "proFeatures": [
+        "Toutes les fonctionnalités du plan Free",
+        "Clients illimités",
+        "Facturation & Devis illimités",
+        "Module Achat/Revente (Inventaire)",
+        "Module Suivi des Dépenses",
+        "Module Notes & Documents (15 max)",
+        "Support prioritaire par email"
+      ],
+      "businessFeatures": [
+        "Toutes les fonctionnalités du plan Pro",
+        "Module Suivi de Projets (Kanban)",
+        "Module Gestion du Temps",
+        "Module Rapport Financier",
+        "Module Paiements Récurrents",
+        "Module Relances Automatisées",
+        "Module AI Business Strategist",
+        "Module RH & Paie",
+        "Module Automatisation de Workflow",
+        "Module Notes & Documents (illimité)",
+        "Accès API",
+        "Support dédié (téléphone & visio)"
+      ]
+    },
+    "landing": {
+      "login": "Connexion",
+      "signup": "S'inscrire",
+      "title": "Votre Business, Simplifié.",
+      "subtitle": "De la facturation à la gestion client, en passant par l'analyse IA, YourBizFlow est la seule plateforme dont vous avez besoin pour piloter votre entreprise.",
+      "cta": "Commencer gratuitement",
+      "featuresTitle": "Une plateforme, tous vos outils.",
+      "featuresSubtitle": "Activez les modules dont vous avez besoin, quand vous en avez besoin.",
+      "testimonialsTitle": "Ils nous font confiance",
+      "testimonialsSubtitle": "Découvrez pourquoi des milliers d'entrepreneurs choisissent YourBizFlow.",
+      "pricingTitle": "Un tarif adapté à votre croissance",
+      "pricingSubtitle": "Simple, transparent et sans engagement.",
+      "choosePlan": "Choisir ce plan",
+      "footer": "© {{year}} YourBizFlow. Tous droits réservés."
+    }
+  }
+}

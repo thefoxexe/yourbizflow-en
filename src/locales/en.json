@@ -1,0 +1,96 @@
+{
+  "translation": {
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "marketplace": "Marketplace",
+      "billing": "Billing",
+      "quotes": "Quotes",
+      "crm": "CRM",
+      "inventory": "Inventory",
+      "analytics": "AI Analytics",
+      "notes": "Notes & Docs",
+      "settings": "Settings",
+      "calendar": "Calendar",
+      "projects": "Projects",
+      "time-tracking": "Time Tracking",
+      "expenses": "Expenses",
+      "financial-report": "Financial Report",
+      "recurring-payments": "Recurring Payments",
+      "automated-reminders": "Automated Reminders",
+      "ai-strategist": "AI Business Strategist",
+      "hr": "HR & Payroll",
+      "automation": "Automation"
+    },
+    "settings": {
+      "manageSubscription": "Manage Subscription"
+    },
+    "subscription": {
+      "title": "Choose your plan",
+      "subtitle": "Unlock the power of YourBizFlow with a subscription tailored to your needs.",
+      "free": "Free",
+      "pro": "Pro",
+      "business": "Business",
+      "choosePlan": "Choose this plan",
+      "startNow": "Start now",
+      "freeFeaturesShort": [
+        "Basic Invoicing & CRM",
+        "Manage 5 clients",
+        "Notes & Calendar module"
+      ],
+      "proFeaturesShort": [
+        "All Free plan features",
+        "Unlimited clients",
+        "Inventory module"
+      ],
+      "businessFeaturesShort": [
+        "All Pro plan features",
+        "Automation & AI modules",
+        "Priority support"
+      ],
+      "freeFeatures": [
+        "Limited Invoicing & Quotes (with watermark)",
+        "CRM (up to 5 clients)",
+        "Notes & Docs module (2 max)",
+        "Calendar module",
+        "Email support"
+      ],
+      "proFeatures": [
+        "All Free plan features",
+        "Unlimited clients",
+        "Unlimited Invoicing & Quotes",
+        "Inventory module",
+        "Expenses module",
+        "Notes & Docs module (15 max)",
+        "Priority email support"
+      ],
+      "businessFeatures": [
+        "All Pro plan features",
+        "Projects module (Kanban)",
+        "Time Tracking module",
+        "Financial Report module",
+        "Recurring Payments module",
+        "Automated Reminders module",
+        "AI Business Strategist module",
+        "HR & Payroll module",
+        "Workflow Automation module",
+        "Notes & Docs module (unlimited)",
+        "API Access",
+        "Dedicated support (phone & video)"
+      ]
+    },
+    "landing": {
+      "login": "Log in",
+      "signup": "Sign up",
+      "title": "Your Business, Simplified.",
+      "subtitle": "From invoicing to customer management and AI analytics, YourBizFlow is the only platform you need to run your business.",
+      "cta": "Start for free",
+      "featuresTitle": "One platform, all your tools.",
+      "featuresSubtitle": "Activate the modules you need, when you need them.",
+      "testimonialsTitle": "They trust us",
+      "testimonialsSubtitle": "Discover why thousands of entrepreneurs choose YourBizFlow.",
+      "pricingTitle": "Pricing that scales with you",
+      "pricingSubtitle": "Simple, transparent, and no commitment.",
+      "footer": "© {{year}} YourBizFlow. All rights reserved."
+    }
+  }
+}
