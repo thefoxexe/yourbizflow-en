@@ -99,8 +99,8 @@ const PaymentSuccessHandler = () => {
 
   useEffect(() => {
     toast({
-      title: "Successful purchase!",
-      description: "Updating your account...",
+      title: "Achat réussi !",
+      description: "Mise à jour de votre compte...",
     });
 
     const timer = setTimeout(async () => {
@@ -116,10 +116,10 @@ const PaymentSuccessHandler = () => {
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-        className="w-4 p.m. border-4 border-t-primary border-secondary rounded-full"
+        className="w-16 h-16 border-4 border-t-primary border-secondary rounded-full"
       />
       <p className="mt-4 text-muted-foreground">
-        Finalizing your subscription...
+        Finalisation de votre abonnement...
       </p>
     </div>
   );
@@ -724,16 +724,16 @@ function App() {
   return (
     <>
       <Helmet>
-        <title>YourBizFlow - Your Business, Simplified</title>
+        <title>YourBizFlow - Votre Business, Simplifié</title>
         <meta
           name="description"
-          content="Manage your business from A to Z from a single platform: YourBizFlow."
+          content="Gérez votre business de A à Z depuis une seule plateforme : YourBizFlow."
         />
       </Helmet>
       <ScrollToTop />
       <div className="min-h-screen bg-background">
         <AppRoutes />
-        <Toast />
+        <Toaster />
       </div>
     </>
   );
