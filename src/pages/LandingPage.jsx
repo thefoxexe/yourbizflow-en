@@ -361,7 +361,7 @@ const ContactSection = () => {
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">Contactez-nous</h2>
           <p className="text-white/60 max-w-2xl mx-auto mb-8">Une question ? Une suggestion ? Nous sommes à votre écoute.</p>
         </div>
-        <form name="contact" method="POST" netlify className="space-y-6">
+        <form name="contact" method="POST" data-netlify="true" className="space-y-6">
           <input type="hidden" name="form-name" value="contact" />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
