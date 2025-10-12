@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useNavigate, useLocation } from "react-router-dom";
 import { MinimalFooter } from "@/components/ui/minimal-footer";
-import { Helmet } from 'react-helmet';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { PublicHeader } from '@/pages/LandingPage';
+import { Helmet } from "react-helmet";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { PublicHeader } from "@/pages/LandingPage";
 
 const LegalDialog = ({ isOpen, onOpenChange, title, children }) => {
   return (
@@ -24,14 +29,24 @@ const LegalDialog = ({ isOpen, onOpenChange, title, children }) => {
 const PrivacyPolicyContent = () => (
   <>
     <p className="text-white/60">Dernière mise à jour : 01/10/2025</p>
-    <p>YourBizFlow ("nous", "notre" ou "nos") exploite le site web et l'application YourBizFlow (le "Service"). Cette page vous informe de nos politiques concernant la collecte, l'utilisation et la divulgation des données personnelles lorsque vous utilisez notre Service et les choix que vous avez associés à ces données.</p>
+    <p>
+      YourBizFlow ("nous", "notre" ou "nos") exploite le site web et
+      l'application YourBizFlow (le "Service"). Cette page vous informe de nos
+      politiques concernant la collecte, l'utilisation et la divulgation des
+      données personnelles lorsque vous utilisez notre Service et les choix que
+      vous avez associés à ces données.
+    </p>
   </>
 );
 
 const TermsContent = () => (
   <>
     <p className="text-white/60">Dernière mise à jour : 01/10/2025</p>
-    <p>Veuillez lire attentivement ces termes et conditions ("Termes", "Termes et Conditions") avant d'utiliser le site web et l'application YourBizFlow (le "Service") exploités par YourBizFlow.</p>
+    <p>
+      Veuillez lire attentivement ces termes et conditions ("Termes", "Termes et
+      Conditions") avant d'utiliser le site web et l'application YourBizFlow (le
+      "Service") exploités par YourBizFlow.
+    </p>
   </>
 );
 
@@ -43,30 +58,31 @@ const About = () => {
 
   const handleNavClick = (e, href) => {
     e.preventDefault();
-    const isExternal = href.startsWith('/');
-    const isAnchor = href.startsWith('#');
+    const isExternal = href.startsWith("/");
+    const isAnchor = href.startsWith("#");
 
     if (isExternal) {
-        navigate(href);
+      navigate(href);
     } else if (isAnchor) {
-        const hash = href;
-        if (location.pathname !== '/welcome') {
-            navigate(`/welcome${hash}`);
-        } else {
-            const id = hash.substring(1);
-            const element = document.getElementById(id);
-            if (element) {
-                const yOffset = -80; // header height
-                const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                window.scrollTo({ top: y, behavior: 'smooth' });
-            }
+      const hash = href;
+      if (location.pathname !== "/welcome") {
+        navigate(`/welcome${hash}`);
+      } else {
+        const id = hash.substring(1);
+        const element = document.getElementById(id);
+        if (element) {
+          const yOffset = -80; // header height
+          const y =
+            element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({ top: y, behavior: "smooth" });
         }
+      }
     }
   };
 
   useEffect(() => {
-    if (location.pathname === '/about') {
-        window.scrollTo(0, 0);
+    if (location.pathname === "/about") {
+      window.scrollTo(0, 0);
     }
   }, [location]);
 
@@ -74,14 +90,28 @@ const About = () => {
     <div className="w-full min-h-screen text-white bg-[#030303] flex flex-col">
       <Helmet>
         <title>À Propos de YourBizFlow - Notre Mission</title>
-        <meta name="description" content="Découvrez la mission de YourBizFlow : simplifier la gestion d'entreprise pour les indépendants et les PME avec une plateforme tout-en-un." />
-        <meta name="keywords" content="YourBizFlow, mission, à propos, gestion d'entreprise, SaaS, PME, freelance" />
+        <meta
+          name="description"
+          content="Découvrez la mission de YourBizFlow : simplifier la gestion d'entreprise pour les indépendants et les PME avec une plateforme tout-en-un."
+        />
+        <meta
+          name="keywords"
+          content="YourBizFlow, mission, à propos, gestion d'entreprise, PME, freelance"
+        />
       </Helmet>
 
-      <LegalDialog isOpen={isPrivacyOpen} onOpenChange={setIsPrivacyOpen} title="Politique de Confidentialité">
+      <LegalDialog
+        isOpen={isPrivacyOpen}
+        onOpenChange={setIsPrivacyOpen}
+        title="Politique de Confidentialité"
+      >
         <PrivacyPolicyContent />
       </LegalDialog>
-      <LegalDialog isOpen={isTermsOpen} onOpenChange={setIsTermsOpen} title="Termes et Conditions">
+      <LegalDialog
+        isOpen={isTermsOpen}
+        onOpenChange={setIsTermsOpen}
+        title="Termes et Conditions"
+      >
         <TermsContent />
       </LegalDialog>
 
@@ -100,16 +130,24 @@ const About = () => {
               </h1>
               <div className="space-y-6 text-base md:text-lg text-white/70 leading-relaxed">
                 <p>
-                  Chez YourBizFlow, nous croyons que la gestion d’entreprise doit être simple, efficace et accessible à tous.
+                  Chez YourBizFlow, nous croyons que la gestion d’entreprise
+                  doit être simple, efficace et accessible à tous.
                 </p>
                 <p>
-                  Notre plateforme réunit en un seul espace les outils essentiels pour piloter votre activité : facturation, gestion client, suivi de projet, analytique, CRM, et bien plus encore.
+                  Notre plateforme réunit en un seul espace les outils
+                  essentiels pour piloter votre activité : facturation, gestion
+                  client, suivi de projet, analytique, CRM, et bien plus encore.
                 </p>
                 <p>
-                  Conçue pour les indépendants comme pour les entreprises, YourBizFlow automatise les tâches chronophages et vous permet de vous concentrer sur l’essentiel : le développement de votre business.
+                  Conçue pour les indépendants comme pour les entreprises,
+                  YourBizFlow automatise les tâches chronophages et vous permet
+                  de vous concentrer sur l’essentiel : le développement de votre
+                  business.
                 </p>
                 <p>
-                  Avec une interface intuitive, des intégrations modernes et des fonctionnalités intelligentes, YourBizFlow est le partenaire digital qui accompagne votre croissance au quotidien.
+                  Avec une interface intuitive, des intégrations modernes et des
+                  fonctionnalités intelligentes, YourBizFlow est le partenaire
+                  digital qui accompagne votre croissance au quotidien.
                 </p>
               </div>
             </motion.div>
@@ -122,13 +160,17 @@ const About = () => {
               <img
                 className="w-full h-full object-cover"
                 alt="Équipe travaillant dans un bureau moderne et lumineux"
-               src="https://images.unsplash.com/photo-1560821630-1a7c45c3286e" />
+                src="https://images.unsplash.com/photo-1560821630-1a7c45c3286e"
+              />
             </motion.div>
           </div>
         </div>
       </main>
 
-      <MinimalFooter onPrivacyClick={() => setIsPrivacyOpen(true)} onTermsClick={() => setIsTermsOpen(true)} />
+      <MinimalFooter
+        onPrivacyClick={() => setIsPrivacyOpen(true)}
+        onTermsClick={() => setIsTermsOpen(true)}
+      />
     </div>
   );
 };
