@@ -49,35 +49,35 @@ const AppHR = () => {
   const features = [
     {
       icon: Users,
-      title: "Employee Files",
+      title: "Dossiers Employés",
       description:
-        "Centralize contracts, personal information and important documents for each team member.",
+        "Centralisez contrats, informations personnelles et documents importants pour chaque membre de l'équipe.",
     },
     {
       icon: FileText,
-      title: "Payroll Management",
+      title: "Gestion de la Paie",
       description:
-        "Simplify payroll preparation with tracking of salaries, bonuses and deductions.",
+        "Simplifiez la préparation de la paie avec un suivi des salaires, primes et déductions.",
     },
     {
       icon: Calendar,
-      title: "Leave Monitoring",
+      title: "Suivi des Congés",
       description:
-        "Manage leave requests, track balances and view the team's schedule at a glance.",
+        "Gérez les demandes de congés, suivez les soldes et visualisez le planning de l'équipe en un clin d'œil.",
     },
   ];
 
-  const pageUrl = "https://yourbizflow.com/apps/hr";
-  const title = "HR & Payroll | YourBizFlow – Employee Management and Salaries";
+  const pageUrl = "https://yourbizflow.fr/apps/hr";
+  const title = "RH & Paie | YourBizFlow – Gestion des employés et salaires";
   const description =
-    "Simplify the management of your human resources. Centralize your employees' information and manage payroll in a few clicks.";
+    "Simplifiez la gestion de vos ressources humaines. Centralisez les informations de vos employés et gérez la paie en quelques clics.";
   const imageUrl =
     "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200";
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "HR and Payroll - Your BizFlow",
+    name: "RH & Paie - YourBizFlow",
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description: description,
@@ -101,7 +101,7 @@ const AppHR = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="HR management, payroll, human resources, HR software, pay slip, SME, YourBizFlow"
+          content="gestion rh, paie, ressources humaines, logiciel rh, fiche de paie, PME, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -136,7 +136,7 @@ const AppHR = () => {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
           >
-            Integrated HR & Payroll Management
+            Gestion RH & Paie Intégrée
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -144,8 +144,8 @@ const AppHR = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-8"
           >
-            Centralize your employee data, track payroll and manage leave. From
-            onboarding to payroll, everything is simplified.
+            Centralisez les données de vos employés, suivez la masse salariale
+            et gérez les congés. De l'onboarding à la paie, tout est simplifié.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -157,8 +157,7 @@ const AppHR = () => {
                 size="lg"
                 className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90 shadow-lg shadow-indigo-500/30"
               >
-                Simplify my HR management{" "}
-                <ArrowRight className="ml-2 w-5 h-5" />
+                Simplifier ma gestion RH <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </motion.div>
@@ -215,13 +214,13 @@ const AppHR = () => {
         <section className="py-20">
           <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-              Why choose the HR module?
+              Pourquoi choisir le module RH ?
             </h2>
             <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              Your team is your greatest asset. This module helps you take care
-              of it by simplifying HR administrative tasks. You save time on
-              paperwork to focus on what matters: the well-being and performance
-              of your employees.
+              Votre équipe est votre plus grand atout. Ce module vous aide à en
+              prendre soin en simplifiant les tâches administratives RH. Vous
+              gagnez du temps sur la paperasse pour vous concentrer sur ce qui
+              compte : le bien-être et la performance de vos collaborateurs.
             </p>
           </div>
         </section>

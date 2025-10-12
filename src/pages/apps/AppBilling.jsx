@@ -49,35 +49,35 @@ const AppBilling = () => {
   const features = [
     {
       icon: Zap,
-      title: "Quick Creation",
+      title: "Création Rapide",
       description:
-        "Generate invoices and quotes in less than 60 seconds with our ready-to-use templates.",
+        "Générez des factures et devis en moins de 60 secondes grâce à nos modèles prêts à l'emploi.",
     },
     {
       icon: Palette,
-      title: "Personalization",
+      title: "Personnalisation",
       description:
-        "Add your logo and adapt the colors for documents that reflect your brand.",
+        "Ajoutez votre logo et adaptez les couleurs pour des documents à l'image de votre marque.",
     },
     {
       icon: Repeat,
-      title: "Recurring Billing",
+      title: "Facturation Récurrente",
       description:
-        "Automate the sending of invoices for your subscriptions and maintenance contracts.",
+        "Automatisez l'envoi de factures pour vos abonnements et contrats de maintenance.",
     },
   ];
 
-  const pageUrl = "https://yourbizflow.com/apps/facturation";
-  const title =
-    "Invoicing | YourBizFlow – Simplified management for professionals";
+  const pageUrl = "https://yourbizflow.fr/apps/facturation";
+  const title = "Facturation | YourBizFlow – Gestion simplifiée pour les pros";
   const description =
-    "Create and send professional invoices and quotes in just a few clicks. Automate your invoicing and get paid faster with YourBizFlow.";
+    "Créez et envoyez des factures et devis professionnels en quelques clics. Automatisez votre facturation et soyez payé plus rapidement avec YourBizFlow.";
   const imageUrl =
     "https://images.unsplash.com/photo-1560520455-5f252df858a4?q=80&w=1200";
+
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Billing - YourBizFlow",
+    name: "Facturation - YourBizFlow",
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description: description,
@@ -101,7 +101,7 @@ const AppBilling = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="online invoicing, invoicing software, quotes, invoices, self-employed, freelance, SME, YourBizFlow"
+          content="facturation en ligne, logiciel de facturation, devis, factures, auto-entrepreneur, freelance, PME, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -136,7 +136,7 @@ const AppBilling = () => {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
           >
-            Simplified invoicing & quotes
+            Facturation & Devis Simplifiés
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -144,8 +144,9 @@ const AppBilling = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-8"
           >
-            Create professional invoices and quotes in seconds. Save time, get
-            paid faster and give your business a professional image.
+            Créez des factures et des devis professionnels en quelques secondes.
+            Gagnez du temps, soyez payé plus vite et donnez une image
+            professionnelle à votre entreprise.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -157,7 +158,8 @@ const AppBilling = () => {
                 size="lg"
                 className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90 shadow-lg shadow-indigo-500/30"
               >
-                Try billing for free <ArrowRight className="ml-2 w-5 h-5" />
+                Essayer la facturation gratuitement{" "}
+                <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </motion.div>
@@ -214,13 +216,13 @@ const AppBilling = () => {
         <section className="py-20">
           <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-              Why choose YourBizFlow Billing?
+              Pourquoi choisir la Facturation YourBizFlow ?
             </h2>
             <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              Because your time is precious. Stop juggling complicated
-              spreadsheets and Word documents. Our invoicing module is designed
-              to be so simple and quick that administrative management becomes a
-              pleasure again.
+              Parce que votre temps est précieux. Arrêtez de jongler avec des
+              tableurs compliqués et des documents Word. Notre module de
+              facturation est conçu pour être si simple et rapide que la gestion
+              administrative redevient un plaisir.
             </p>
           </div>
         </section>

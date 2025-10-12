@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const LanguageSelector = () => {
-  const [lang, setLang] = useState("English");
+  const [lang, setLang] = useState("Français");
 
   return (
     <DropdownMenu>
@@ -39,7 +39,7 @@ const LanguageSelector = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onSelect={() => setLang("Français")} asChild>
-          <a href="https://yourbizflow.fr/dashboard">Français</a>
+          <a href="/">Français</a>
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => setLang("English")} asChild>
           <a href="/">English</a>
@@ -98,16 +98,16 @@ const Header = ({ onMenuClick, openCompanyDialog }) => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>
-                  {profile?.full_name || "My Account"}
+                  {profile?.full_name || "Mon Compte"}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate("/settings")}>
                   <UserCircle className="w-4 h-4 mr-2" />
-                  Profile
+                  Profil
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate("/settings")}>
                   <Settings className="w-4 h-4 mr-2" />
-                  Settings
+                  Paramètres
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem

@@ -41,17 +41,17 @@ const AppRentalManagement = () => {
     }
   };
 
-  const pageUrl = "https://yourbizflow.com/apps/rental-management";
-  const title = "Rental Management | YourBizFlow";
+  const pageUrl = "https://yourbizflow.fr/apps/rental-management";
+  const title = "Gestion de Location | YourBizFlow";
   const description =
-    "Optimize the management of your rental properties, track your reservations and availability in one place with YourBizFlow.";
+    "Optimisez la gestion de vos biens en location, suivez vos réservations et vos disponibilités en un seul endroit avec YourBizFlow.";
   const imageUrl =
     "https://images.unsplash.com/photo-1435527173128-983b87201f4d?q=80&w=1200";
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Rental Management - YourBizFlow",
+    name: "Gestion de Location - YourBizFlow",
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description: description,
@@ -75,7 +75,7 @@ const AppRentalManagement = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="rental management, equipment rental, car rental, rental software, YourBizFlow"
+          content="gestion de location, location de matériel, location de voiture, logiciel de location, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -92,11 +92,11 @@ const AppRentalManagement = () => {
         <section className="container mx-auto px-6 py-12 text-center">
           <KeyRound className="w-24 h-24 mx-auto text-orange-300" />
           <h1 className="text-5xl font-bold mt-6 mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
-            Rental Management
+            Gestion de Location
           </h1>
           <p className="text-xl text-white/60 max-w-3xl mx-auto">
-            Manage your goods, your reservations and your availability with
-            disconcerting simplicity. From cars to professional equipment.
+            Gérez vos biens, vos réservations et vos disponibilités avec une
+            simplicité déconcertante. De la voiture au matériel professionnel.
           </p>
         </section>
 
@@ -111,35 +111,35 @@ const AppRentalManagement = () => {
             </div>
             <div>
               <h2 className="text-3xl font-bold mb-6">
-                An overview for perfect management
+                Une vue d'ensemble pour une gestion parfaite
               </h2>
               <ul className="space-y-4 text-white/80">
                 <li className="flex items-start">
                   <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
                   <span>
-                    Add and organize all your rental properties (cars,
-                    equipment, real estate, etc.) with photos and prices.
+                    Ajoutez et organisez tous vos biens à louer (voitures,
+                    matériel, immobilier...) avec photos et tarifs.
                   </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
                   <span>
-                    View all your reservations on an interactive calendar so you
-                    never miss a rental.
+                    Visualisez toutes vos réservations sur un calendrier
+                    interactif pour ne jamais manquer une location.
                   </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
                   <span>
-                    Manage the status of your assets (Available, Rented,
-                    Maintenance) for precise monitoring of your fleet.
+                    Gérez les statuts de vos biens (Disponible, Loué,
+                    Maintenance) pour un suivi précis de votre parc.
                   </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
                   <span>
-                    Automatically generate an invoice for each confirmed
-                    reservation, integrated into your invoicing module.
+                    Générez automatiquement une facture pour chaque réservation
+                    confirmée, intégrée à votre module de facturation.
                   </span>
                 </li>
               </ul>
@@ -149,18 +149,18 @@ const AppRentalManagement = () => {
 
         <section className="container mx-auto px-6 py-12 text-center">
           <h2 className="text-3xl font-bold mb-4">
-            Maximize the profitability of your assets.
+            Maximisez la rentabilité de vos biens.
           </h2>
           <p className="text-lg text-white/60 mb-8">
-            Join YourBizFlow and never again leave a property unoccupied due to
-            lack of organization.
+            Rejoignez YourBizFlow et ne laissez plus jamais un bien inoccupé par
+            manque d'organisation.
           </p>
           <Link to="/signup">
             <Button
               size="lg"
               className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90"
             >
-              Get started for free <ArrowRight className="ml-2 w-5 h-5" />
+              Commencer gratuitement <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
           </Link>
         </section>

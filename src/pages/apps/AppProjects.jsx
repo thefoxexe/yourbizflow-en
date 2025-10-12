@@ -49,35 +49,36 @@ const AppProjects = () => {
   const features = [
     {
       icon: Layers,
-      title: "Kanban boards",
+      title: "Tableaux Kanban",
       description:
-        "Organize your tasks into columns (To Do, In Progress, Done) for visual and intuitive tracking.",
+        "Organisez vos tâches en colonnes (À faire, En cours, Terminé) pour un suivi visuel et intuitif.",
     },
     {
       icon: Users,
-      title: "Team Collaboration",
+      title: "Collaboration d'Équipe",
       description:
-        "Assign tasks, add comments, and track the activity of each project member.",
+        "Assignez des tâches, ajoutez des commentaires et suivez l'activité de chaque membre du projet.",
     },
     {
       icon: Clock,
-      title: "Link to Time Tracking",
+      title: "Lien avec le Suivi du Temps",
       description:
-        "Link time spent to each task and project for accurate billing and profitability analysis.",
+        "Associez le temps passé à chaque tâche et projet pour une facturation précise et une analyse de rentabilité.",
     },
+    yourbizflow.fr,
   ];
 
-  const pageUrl = "https://yourbizflow.com/apps/projects";
-  const title = "Project Management | YourBizFlow – Kanban Boards";
+  const pageUrl = "https://yourbizflow.fr/apps/projects";
+  const title = "Gestion de Projets | YourBizFlow – Tableaux Kanban";
   const description =
-    "Organize your projects with visual and intuitive Kanban boards. Track progress, assign tasks, and collaborate with your team on YourBizFlow.";
+    "Organisez vos projets avec des tableaux Kanban visuels et intuitifs. Suivez l'avancement, assignez des tâches et collaborez avec votre équipe sur YourBizFlow.";
   const imageUrl =
     "https://images.unsplash.com/photo-1542626991-cbc4e32524cc?q=80&w=1200";
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Project Management - YourBizFlow",
+    name: "Gestion de Projets - YourBizFlow",
     applicationCategory: "ProjectManagementApplication",
     operatingSystem: "Web",
     description: description,
@@ -101,7 +102,7 @@ const AppProjects = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="project management, kanban, kanban tool, project management, agile, YourBizFlow"
+          content="gestion de projet, kanban, outil kanban, management de projet, agile, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -136,7 +137,7 @@ const AppProjects = () => {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
           >
-            View the Progress of your Projects
+            Visualisez l'Avancement de vos Projets
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -144,9 +145,9 @@ const AppProjects = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-8"
           >
-            Use the Kanban method to organize your tasks, track progress, and
-            deliver your projects on time, every time. Simple, flexible and
-            perfectly integrated.
+            Utilisez la méthode Kanban pour organiser vos tâches, suivre les
+            progrès et livrer vos projets à temps, à chaque fois. Simple,
+            flexible et parfaitement intégré.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -158,7 +159,7 @@ const AppProjects = () => {
                 size="lg"
                 className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90 shadow-lg shadow-indigo-500/30"
               >
-                Organize my projects <ArrowRight className="ml-2 w-5 h-5" />
+                Organiser mes projets <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </motion.div>
@@ -215,13 +216,14 @@ const AppProjects = () => {
         <section className="py-20">
           <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-              Why choose Project Management?
+              Pourquoi choisir la Gestion de Projets ?
             </h2>
             <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              Clarity is the key to project success. Our Kanban module
-              transforms chaos into order, giving you a clear overview of who is
-              doing what and when. It's the ideal tool for teams who want to
-              collaborate effectively and meet deadlines.
+              La clarté est la clé du succès d'un projet. Notre module Kanban
+              transforme le chaos en ordre, vous donnant une vue d'ensemble
+              claire de qui fait quoi et quand. C'est l'outil idéal pour les
+              équipes qui veulent collaborer efficacement et respecter leurs
+              délais.
             </p>
           </div>
         </section>

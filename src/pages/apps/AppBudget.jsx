@@ -55,34 +55,35 @@ const AppBudget = () => {
   const features = [
     {
       icon: Target,
-      title: "Budgets by Category",
+      title: "Budgets par Catégorie",
       description:
-        "Allocate specific budgets for marketing, supplies, salaries and track expenses for each division.",
+        "Allouez des budgets spécifiques pour le marketing, les fournitures, les salaires et suivez les dépenses pour chaque pôle.",
     },
     {
       icon: PieChart,
-      title: "Real-Time Tracking",
+      title: "Suivi en Temps Réel",
       description:
-        "Instantly see where you are relative to your budget goals with clear, intuitive graphs.",
+        "Voyez instantanément où vous en êtes par rapport à vos objectifs budgétaires grâce à des graphiques clairs et intuitifs.",
     },
     {
       icon: TrendingUp,
-      title: "Predictive Analysis",
+      title: "Analyse Prédictive",
       description:
-        "Receive alerts when you approach limits and forecasts on your future spending to avoid overspending.",
+        "Recevez des alertes lorsque vous approchez des limites et des prévisions sur vos dépenses futures pour éviter les dépassements.",
     },
   ];
-  const pageUrl = "https://yourbizflow.com/apps/budget";
-  const title = "Budget Management | YourBizFlow";
+
+  const pageUrl = "https://yourbizflow.fr/apps/budget";
+  const title = "Gestion de Budget | YourBizFlow";
   const description =
-    "Plan your finances, track your spending against your goals, and take full control of your budget with YourBizFlow.";
+    "Planifiez vos finances, suivez vos dépenses par rapport à vos objectifs et prenez le contrôle total de votre budget avec YourBizFlow.";
   const imageUrl =
     "https://images.unsplash.com/photo-1554224155-1696413565d3?q=80&w=1200";
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Budget Management - YourBizFlow",
+    name: "Gestion de Budget - YourBizFlow",
     applicationCategory: "FinanceApplication",
     operatingSystem: "Web",
     description: description,
@@ -106,7 +107,7 @@ const AppBudget = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="budget management, forecast budget, expense tracking, financial planning, YourBizFlow"
+          content="gestion de budget, budget prévisionnel, suivi des dépenses, planification financière, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -143,7 +144,7 @@ const AppBudget = () => {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
           >
-            Plan Your Financial Success
+            Planifiez Votre Succès Financier
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -151,9 +152,9 @@ const AppBudget = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-8"
           >
-            Define your financial goals, allocate your resources intelligently
-            and track your expenses in real time for perfect control of your
-            budget.
+            Définissez vos objectifs financiers, allouez vos ressources
+            intelligemment et suivez vos dépenses en temps réel pour une
+            maîtrise parfaite de votre budget.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -165,7 +166,7 @@ const AppBudget = () => {
                 size="lg"
                 className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90 shadow-lg shadow-indigo-500/30"
               >
-                Build my budget <ArrowRight className="ml-2 w-5 h-5" />
+                Construire mon budget <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </motion.div>
@@ -222,12 +223,13 @@ const AppBudget = () => {
         <section className="py-20">
           <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-              Why choose the Budget module?
+              Pourquoi choisir le module Budget ?
             </h2>
             <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              A budget is not a constraint, it is a roadmap for your growth.
-              This module transforms budgeting from a tedious exercise into a
-              powerful strategic tool to drive your business towards its goals.
+              Un budget n'est pas une contrainte, c'est une feuille de route
+              pour votre croissance. Ce module transforme la budgétisation d'un
+              exercice fastidieux en un outil stratégique puissant pour piloter
+              votre entreprise vers ses objectifs.
             </p>
           </div>
         </section>

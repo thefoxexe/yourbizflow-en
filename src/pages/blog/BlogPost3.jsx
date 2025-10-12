@@ -19,9 +19,9 @@ const BlogPost3 = () => {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline:
-      "How to Calculate the Profitability of Your Products (and Stop Losing Money)",
+      "Comment Calculer la Rentabilité de Vos Produits (et Arrêter de Perdre de l'Argent)",
     description:
-      "Learn how to calculate the true profitability of each product by taking into account all costs to make informed decisions and maximize your profits.",
+      "Apprenez à calculer la rentabilité réelle de chaque produit en prenant en compte tous les coûts pour prendre des décisions éclairées et maximiser vos profits.",
     image:
       "https://images.unsplash.com/photo-1578574577315-3fbeb0cecdc2?q=80&w=1200",
     author: {
@@ -40,29 +40,29 @@ const BlogPost3 = () => {
     dateModified: "2025-09-25",
   };
   const pageUrl =
-    "https://yourbizflow.com/blog/comment-calculer-la-rentabilite-de-vos-produits";
+    "https://yourbizflow.fr/blog/comment-calculer-la-rentabilite-de-vos-produits";
 
   return (
     <div className="w-full min-h-screen text-white bg-[#030303] flex flex-col">
       <Helmet>
         <title>
-          Calculate the Profitability of Your Products | YourBizFlow Blog
+          Calculer la Rentabilité de Vos Produits | YourBizFlow Blog
         </title>
         <meta
           name="description"
-          content="Learn how to calculate the true profitability of each product taking into account all costs. Make informed decisions and maximize your profits with YourBizFlow."
+          content="Apprenez à calculer la rentabilité réelle de chaque produit en prenant en compte tous les coûts. Prenez des décisions éclairées et maximisez vos profits avec YourBizFlow."
         />
         <meta
           name="keywords"
-          content="product profitability, margin calculation, cost price, e-commerce, YourBizFlow"
+          content="rentabilité produit, calcul marge, coût de revient, e-commerce, YourBizFlow"
         />
         <meta
           property="og:title"
-          content="Calculate the Profitability of Your Products | YourBizFlow Blog"
+          content="Calculer la Rentabilité de Vos Produits | YourBizFlow Blog"
         />
         <meta
           property="og:description"
-          content="Learn how to calculate the true profitability of each product to make informed decisions and maximize your profits."
+          content="Apprenez à calculer la rentabilité réelle de chaque produit pour prendre des décisions éclairées et maximiser vos profits."
         />
         <meta property="og:url" content={pageUrl} />
         <meta property="og:type" content="article" />
@@ -70,11 +70,11 @@ const BlogPost3 = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
-          content="Calculate the Profitability of Your Products | YourBizFlow Blog"
+          content="Calculer la Rentabilité de Vos Produits | YourBizFlow Blog"
         />
         <meta
           name="twitter:description"
-          content="Learn how to calculate the true profitability of each product to make informed decisions and maximize your profits."
+          content="Apprenez à calculer la rentabilité réelle de chaque produit pour prendre des décisions éclairées et maximiser vos profits."
         />
         <meta name="twitter:image" content={articleSchema.image} />
         <script type="application/ld+json">
@@ -87,7 +87,7 @@ const BlogPost3 = () => {
       <main className="flex-grow pt-24">
         <div className="relative h-64 md:h-96 w-full">
           <img
-            alt="Profitability calculator and graphs on a desktop"
+            alt="Calculatrice et graphiques de rentabilité sur un bureau"
             className="w-full h-full object-cover"
             src="https://images.unsplash.com/photo-1578574577315-3fbeb0cecdc2?q=80&w=1200"
           />
@@ -99,11 +99,11 @@ const BlogPost3 = () => {
               className="text-center px-4"
             >
               <h1 className="text-3xl md:text-5xl font-bold text-white max-w-4xl">
-                How to Calculate the Profitability of Your Products (and Stop
-                Losing Money)
+                Comment Calculer la Rentabilité de Vos Produits (et Arrêter de
+                Perdre de l'Argent)
               </h1>
               <p className="text-lg text-white/80 mt-4">
-                September 25, 2025 &bull; 6 min read
+                25 Septembre 2025 &bull; 6 min de lecture
               </p>
             </motion.div>
           </div>
@@ -112,118 +112,130 @@ const BlogPost3 = () => {
         <div className="container mx-auto px-6 py-16 max-w-3xl">
           <article className="prose prose-invert lg:prose-xl mx-auto">
             <p>
-              Turnover is often seen as the ultimate indicator of success.
-              However, it says nothing about your profitability. You could sell
-              thousands of products and still lose money. The key? Understand
-              and calculate the profitability of each product you sell.
+              Le chiffre d'affaires est souvent vu comme l'indicateur ultime de
+              succès. Pourtant, il ne dit rien de votre rentabilité. Vous
+              pourriez vendre des milliers de produits et quand même perdre de
+              l'argent. La clé ? Comprendre et calculer la rentabilité de chaque
+              produit que vous vendez.
             </p>
 
-            <h2>1. The Cost of Production: More than the Purchase Price</h2>
+            <h2>1. Le Coût de Revient : Plus que le Prix d'Achat</h2>
             <p>
-              The cost price of a product is not limited to its purchase price.
-              To calculate it precisely, you must include:
+              Le coût de revient d'un produit ne se limite pas à son prix
+              d'achat. Pour le calculer précisément, vous devez inclure :
             </p>
             <ul>
               <li>
-                <strong>Purchase cost:</strong> The price you pay to your
-                supplier.
+                <strong>Le coût d'achat :</strong> Le prix que vous payez à
+                votre fournisseur.
               </li>
               <li>
-                <strong>Shipping costs:</strong> The costs of receiving the
-                product.
+                <strong>Les frais de port :</strong> Les coûts pour recevoir le
+                produit.
               </li>
               <li>
-                <strong>Customs fees:</strong> If you import goods.
+                <strong>Les frais de douane :</strong> Si vous importez des
+                marchandises.
               </li>
               <li>
-                <strong>Storage costs:</strong> Part of the rent for your
-                warehouse, for example.
+                <strong>Les coûts de stockage :</strong> Une partie du loyer de
+                votre entrepôt, par exemple.
               </li>
             </ul>
 
             <img
-              alt="E-commerce warehouse with product shelves"
+              alt="Entrepôt de e-commerce avec des étagères de produits"
               className="rounded-lg my-8"
               src="https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?q=80&w=800"
             />
 
-            <h2>2. Variable Costs Linked to Sales</h2>
-            <p>Each sale generates costs. Don't forget them:</p>
+            <h2>2. Les Coûts Variables Liés à la Vente</h2>
+            <p>Chaque vente engendre des coûts. Ne les oubliez pas :</p>
             <ul>
               <li>
-                <strong>Transaction fees:</strong> The commission of your
-                payment platform (Stripe, PayPal, etc.).
+                <strong>Les frais de transaction :</strong> La commission de
+                votre plateforme de paiement (Stripe, PayPal...).
               </li>
               <li>
-                <strong>Platform fees:</strong> The commission from the
-                marketplace where you sell (Amazon, Etsy, etc.).
+                <strong>Les frais de plateforme :</strong> La commission de la
+                marketplace où vous vendez (Amazon, Etsy...).
               </li>
               <li>
-                <strong>Packaging costs:</strong> Cardboards, adhesive tape,
+                <strong>Les coûts d'emballage :</strong> Cartons, ruban adhésif,
                 protections...
               </li>
               <li>
-                <strong>Shipping costs:</strong> What you pay to send the
-                package to the customer.
+                <strong>Les coûts d'expédition :</strong> Ce que vous payez pour
+                envoyer le colis au client.
               </li>
             </ul>
 
-            <h2>3. Customer Acquisition Cost (CAC)</h2>
+            <h2>3. Le Coût d'Acquisition Client (CAC)</h2>
             <p>
-              This is the cost most often forgotten. If you spend €100 on
-              advertising to make 10 sales, your CAC per product is €10. You
-              must integrate it into your profitability calculation to have a
-              fair view.
+              C'est le coût le plus souvent oublié. Si vous dépensez 100€ en
+              publicité pour réaliser 10 ventes, votre CAC par produit est de
+              10€. Vous devez l'intégrer dans votre calcul de rentabilité pour
+              avoir une vision juste.
             </p>
 
             <div className="my-12 p-8 bg-card/50 border border-primary/30 rounded-xl text-center">
               <h3 className="text-2xl font-bold text-white">
-                Calculate your profitability in one click.
+                Calculez votre rentabilité en un clic.
               </h3>
               <p className="text-white/80 mt-2 mb-6">
-                The YourBizFlow “Product Management” module allows you to enter
-                all your costs and instantly see your gross margin and net
-                profit per product.
+                Le module "Gestion des Produits" de YourBizFlow vous permet de
+                renseigner tous vos coûts et de voir instantanément votre marge
+                brute et votre bénéfice net par produit.
               </p>
               <Link to="/signup">
                 <Button
                   size="lg"
                   className="bg-primary text-primary-foreground hover:bg-primary/90"
                 >
-                  Analyze my products with YourBizFlow{" "}
+                  Analyser mes produits avec YourBizFlow{" "}
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
             </div>
 
-            <h2>The Magic Formula</h2>
-            <p>The basic formula for net profit per product is simple:</p>
+            <h2>La Formule Magique</h2>
+            <p>
+              La formule de base pour le bénéfice net par produit est simple :
+            </p>
             <p className="text-center font-mono bg-secondary p-4 rounded-md">
               <code>
-                Net Profit = Selling Price - Cost Cost - Selling Costs -
-                Acquisition Cost
+                Bénéfice Net = Prix de Vente - Coût de Revient - Coûts de Vente
+                - Coût d'Acquisition
               </code>
             </p>
-            <p>And for the net margin:</p>
+            <p>Et pour la marge nette :</p>
             <p className="text-center font-mono bg-secondary p-4 rounded-md">
-              <code>Net Margin (%) = (Net Profit / Selling Price) * 100</code>
+              <code>
+                Marge Nette (%) = (Bénéfice Net / Prix de Vente) * 100
+              </code>
             </p>
 
-            <h2>Why is this crucial?</h2>
-            <p>By calculating this for each product, you will be able to:</p>
+            <h2>Pourquoi c'est crucial ?</h2>
+            <p>En calculant cela pour chaque produit, vous pourrez :</p>
             <ul>
-              <li>Identify your most (and least) profitable products.</li>
-              <li>Adjust your sales prices knowingly.</li>
-              <li>Optimize your advertising spend on high-margin products.</li>
               <li>
-                Decide to stop selling products that are losing you money.
+                Identifier vos produits les plus (et les moins) rentables.
+              </li>
+              <li>Ajuster vos prix de vente en connaissance de cause.</li>
+              <li>
+                Optimiser vos dépenses publicitaires sur les produits à forte
+                marge.
+              </li>
+              <li>
+                Décider d'arrêter de vendre les produits qui vous font perdre de
+                l'argent.
               </li>
             </ul>
             <p>
-              Stop browsing by sight. Take control of your profitability and
-              make decisions based on reliable data. Tools like YourBizFlow are
-              designed to make your life easier and give you that essential
-              visibility.
+              Arrêtez de naviguer à vue. Prenez le contrôle de votre rentabilité
+              et prenez des décisions basées sur des données fiables. Des outils
+              comme YourBizFlow sont conçus pour vous simplifier la vie et vous
+              donner cette visibilité essentielle.
             </p>
           </article>
         </div>

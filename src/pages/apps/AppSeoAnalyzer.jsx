@@ -49,34 +49,35 @@ const AppSeoAnalyzer = () => {
   const features = [
     {
       icon: Search,
-      title: "Complete Audit",
+      title: "Audit Complet",
       description:
-        "Analysis of tags (H1, title, meta), images, links and the structure of your site.",
+        "Analyse des balises (H1, title, meta), des images, des liens et de la structure de votre site.",
     },
     {
       icon: Activity,
-      title: "Performance Score",
+      title: "Score de Performance",
       description:
-        "Get your Google PageSpeed ​​scores for mobile and desktop, a key ranking factor.",
+        "Obtenez vos scores Google PageSpeed pour mobile et desktop, un facteur clé du classement.",
     },
     {
       icon: Bot,
-      title: "AI Recommendations",
+      title: "Recommandations IA",
       description:
-        "Our AI analyzes your report and provides you with a clear action plan to improve your SEO.",
+        "Notre IA analyse votre rapport et vous fournit un plan d'action clair pour améliorer votre SEO.",
     },
   ];
-  const pageUrl = "https://yourbizflow.com/apps/seo-analyzer";
-  const title = "AI SEO Analysis | YourBizFlow – Optimize your SEO";
+
+  const pageUrl = "https://yourbizflow.fr/apps/seo-analyzer";
+  const title = "Analyse SEO IA | YourBizFlow – Optimisez votre référencement";
   const description =
-    "Optimize your site's SEO with YourBizFlow's SEO analyzer: overall score, strengths, weaknesses and AI recommendations.";
+    "Optimisez le référencement de votre site avec l’analyseur SEO de YourBizFlow : score global, points forts, points faibles et recommandations par IA.";
   const imageUrl =
     "https://images.unsplash.com/photo-1560472354-b3330b6433f5?q=80&w=1200";
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "AI SEO Analyzer - YourBizFlow",
+    name: "Analyseur SEO IA - YourBizFlow",
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description: description,
@@ -100,7 +101,7 @@ const AppSeoAnalyzer = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="SEO analysis, SEO audit, SEO tool, SEO, SEO AI, Google pagespeed, YourBizFlow"
+          content="analyse seo, audit seo, outil seo, référencement, seo ia, google pagespeed, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -135,7 +136,7 @@ const AppSeoAnalyzer = () => {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
           >
-            Intelligent SEO Analysis with AI
+            Analyse SEO Intelligente avec l'IA
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -143,9 +144,10 @@ const AppSeoAnalyzer = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-8"
           >
-            Enter your site URL and receive a complete SEO audit. Our AI
-            identifies your strengths, your weaknesses and gives you clear
-            recommendations to climb the search results.
+            Entrez l'URL de votre site et recevez un audit SEO complet. Notre IA
+            identifie vos points forts, vos faiblesses et vous donne des
+            recommandations claires pour grimper dans les résultats de
+            recherche.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -157,7 +159,8 @@ const AppSeoAnalyzer = () => {
                 size="lg"
                 className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90 shadow-lg shadow-indigo-500/30"
               >
-                Analyze my site for free <ArrowRight className="ml-2 w-5 h-5" />
+                Analyser mon site gratuitement{" "}
+                <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </motion.div>
@@ -214,12 +217,13 @@ const AppSeoAnalyzer = () => {
         <section className="py-20">
           <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-              Why choose SEO Analyzer?
+              Pourquoi choisir l'Analyseur SEO ?
             </h2>
             <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              SEO may seem complex, but it doesn't have to be. This tool
-              demystifies SEO and gives you concrete actions to implement. It's
-              like having an SEO consultant at your side, available 24/7.
+              Le SEO peut sembler complexe, mais il n'a pas à l'être. Cet outil
+              démystifie le référencement et vous donne des actions concrètes à
+              mettre en place. C'est comme avoir un consultant SEO à vos côtés,
+              disponible 24/7.
             </p>
           </div>
         </section>

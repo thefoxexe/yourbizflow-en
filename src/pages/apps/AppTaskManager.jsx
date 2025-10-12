@@ -55,35 +55,36 @@ const AppTaskManager = () => {
   const features = [
     {
       icon: ListTodo,
-      title: "Task Lists",
+      title: "Listes de Tâches",
       description:
-        "Create lists for each project or department for seamless organization.",
+        "Créez des listes pour chaque projet ou département pour une organisation sans faille.",
     },
     {
       icon: Flag,
-      title: "Priority Levels",
+      title: "Niveaux de Priorité",
       description:
-        "Mark tasks as urgent, important or normal to focus on what matters.",
+        "Marquez les tâches comme urgentes, importantes ou normales pour vous concentrer sur l'essentiel.",
     },
     {
       icon: Calendar,
-      title: "Deadlines and Reminders",
+      title: "Échéances et Rappels",
       description:
-        "Set deadlines for each task and receive reminders so you never forget anything.",
+        "Fixez des dates limites pour chaque tâche et recevez des rappels pour ne jamais rien oublier.",
     },
   ];
 
-  const pageUrl = "https://yourbizflow.com/apps/task-manager";
-  const title = "Task Manager | YourBizFlow – Organize your work";
+  const pageUrl = "https://yourbizflow.fr/apps/task-manager";
+  const title =
+    "Gestionnaire de Tâches | YourBizFlow – Organisez votre travail";
   const description =
-    "Never lose track again. Create, assign and track your tasks with YourBizFlow's simple and effective task manager.";
+    "Ne perdez plus jamais le fil. Créez, assignez et suivez vos tâches avec le gestionnaire de tâches simple et efficace de YourBizFlow.";
   const imageUrl =
     "https://images.unsplash.com/photo-1547480053-7d174f67b557?q=80&w=1200";
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Task Manager - YourBizFlow",
+    name: "Gestionnaire de Tâches - YourBizFlow",
     applicationCategory: "ProductivityApplication",
     operatingSystem: "Web",
     description: description,
@@ -107,7 +108,7 @@ const AppTaskManager = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="task manager, to-do list, project management, productivity, YourBizFlow"
+          content="gestionnaire de tâches, to-do list, gestion de projet, productivité, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -142,7 +143,7 @@ const AppTaskManager = () => {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
           >
-            Organize Your Day, Achieve Your Goals
+            Organisez Votre Journée, Atteignez Vos Objectifs
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -150,8 +151,9 @@ const AppTaskManager = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-8"
           >
-            Create to-do lists, set priorities, set deadlines, and collaborate
-            with your team. Clarity for maximum productivity.
+            Créez des listes de tâches, définissez des priorités, fixez des
+            échéances et collaborez avec votre équipe. La clarté pour une
+            productivité maximale.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -163,7 +165,7 @@ const AppTaskManager = () => {
                 size="lg"
                 className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90 shadow-lg shadow-indigo-500/30"
               >
-                Plan my tasks <ArrowRight className="ml-2 w-5 h-5" />
+                Planifier mes tâches <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </motion.div>
@@ -220,13 +222,13 @@ const AppTaskManager = () => {
         <section className="py-20">
           <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-              Why choose Task Manager?
+              Pourquoi choisir le Gestionnaire de Tâches ?
             </h2>
             <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              The feeling of control over your work is a powerful driver of
-              productivity. This module transforms the feeling of being
-              overwhelmed into a clear vision of your priorities. It's the
-              perfect tool to stay organized, focused and efficient.
+              La sensation de contrôle sur son travail est un puissant moteur de
+              productivité. Ce module transforme le sentiment d'être débordé en
+              une vision claire de vos priorités. C'est l'outil parfait pour
+              rester organisé, concentré et efficace.
             </p>
           </div>
         </section>

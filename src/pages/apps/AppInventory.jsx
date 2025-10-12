@@ -55,35 +55,35 @@ const AppInventory = () => {
   const features = [
     {
       icon: Warehouse,
-      title: "Stock Tracking",
+      title: "Suivi des Stocks",
       description:
-        "Know exactly what you have in stock, where it is, and when to reorder.",
+        "Sachez exactement ce que vous avez en stock, où ça se trouve, et quand commander à nouveau.",
     },
     {
       icon: DollarSign,
-      title: "Margin Calculation",
+      title: "Calcul de Marge",
       description:
-        "The system automatically calculates your gross margin on each sale for a clear view of your profitability.",
+        "Le système calcule automatiquement votre marge brute sur chaque vente pour une vision claire de votre rentabilité.",
     },
     {
       icon: BarChart2,
-      title: "Sales Analysis",
+      title: "Analyse des Ventes",
       description:
-        "Identify your star products, your unsold items, and optimize your catalog to maximize your profits.",
+        "Identifiez vos produits stars, vos invendus, et optimisez votre catalogue pour maximiser vos profits.",
     },
   ];
 
-  const pageUrl = "https://yourbizflow.com/apps/inventory";
-  const title = "Purchase/Resale | YourBizFlow";
+  const pageUrl = "https://yourbizflow.fr/apps/inventory";
+  const title = "Achat/Revente | YourBizFlow";
   const description =
-    "Manage your inventory, track your products from purchase to sale, and automatically calculate your gross margin with the YourBizFlow inventory module.";
+    "Gérez votre stock, suivez vos produits de l'achat à la vente, et calculez automatiquement votre marge brute avec le module d'inventaire de YourBizFlow.";
   const imageUrl =
     "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?q=80&w=1200";
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Buy/Resell - YourBizFlow",
+    name: "Achat/Revente - YourBizFlow",
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description: description,
@@ -142,7 +142,7 @@ const AppInventory = () => {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
           >
-            Master Your Purchase/Resale Activity
+            Maîtrisez Votre Activité d'Achat/Revente
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -150,9 +150,9 @@ const AppInventory = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-8"
           >
-            Track your products, manage your stock levels and analyze your
-            profitability. The perfect module for purchase/resale activities and
-            e-commerce.
+            Suivez vos produits, gérez vos niveaux de stock et analysez votre
+            rentabilité. Le module parfait pour les activités d'achat/revente et
+            l'e-commerce.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -164,7 +164,7 @@ const AppInventory = () => {
                 size="lg"
                 className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90 shadow-lg shadow-indigo-500/30"
               >
-                Optimize my stock <ArrowRight className="ml-2 w-5 h-5" />
+                Optimiser mon stock <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </motion.div>
@@ -221,13 +221,13 @@ const AppInventory = () => {
         <section className="py-20">
           <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-              Why choose the Buy/Resell module?
+              Pourquoi choisir le module Achat/Revente ?
             </h2>
             <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              Inventory management is the heart of your business. This module
-              gives you total control over your inventory and your
-              profitability. No more stock shortages and unclear margins. Make
-              decisions based on reliable data.
+              La gestion de stock est le cœur de votre activité. Ce module vous
+              donne le contrôle total sur votre inventaire et votre rentabilité.
+              Fini les ruptures de stock et les marges floues. Prenez des
+              décisions basées sur des données fiables.
             </p>
           </div>
         </section>

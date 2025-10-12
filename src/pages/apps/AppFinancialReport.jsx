@@ -55,35 +55,35 @@ const AppFinancialReport = () => {
   const features = [
     {
       icon: FileText,
-      title: "Income statement",
+      title: "Compte de Résultat",
       description:
-        "Automatically generate your income statement to clearly see your profits and losses.",
+        "Générez automatiquement votre compte de résultat pour voir clairement vos profits et pertes.",
     },
     {
       icon: BarChart,
-      title: "Income Analysis",
+      title: "Analyse des Revenus",
       description:
-        "Visualize your revenue sources, identify your best customers and products.",
+        "Visualisez vos sources de revenus, identifiez vos meilleurs clients et produits.",
     },
     {
       icon: TrendingDown,
-      title: "Breakdown of Costs",
+      title: "Ventilation des Coûts",
       description:
-        "Understand where your money is going with a detailed analysis of your spending categories.",
+        "Comprenez où va votre argent avec une analyse détaillée de vos catégories de dépenses.",
     },
   ];
 
-  const pageUrl = "https://yourbizflow.com/apps/financial-report";
-  const title = "Financial Report | YourBizFlow";
+  const pageUrl = "https://yourbizflow.fr/apps/financial-report";
+  const title = "Rapport Financier | YourBizFlow";
   const description =
-    "Get a complete overview of your income and expenses. Make informed decisions with clear, automated financial reports on YourBizFlow.";
+    "Obtenez un bilan complet de vos revenus et dépenses. Prenez des décisions éclairées grâce à des rapports financiers clairs et automatisés sur YourBizFlow.";
   const imageUrl =
     "https://images.unsplash.com/photo-1642792691509-8d5958a1d2e8?q=80&w=1200";
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Financial Report - YourBizFlow",
+    name: "Rapport Financier - YourBizFlow",
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description: description,
@@ -107,7 +107,7 @@ const AppFinancialReport = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="financial report, financial statement, income statement, financial analysis, SME, YourBizFlow"
+          content="rapport financier, bilan financier, compte de résultat, analyse financière, PME, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -142,7 +142,7 @@ const AppFinancialReport = () => {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
           >
-            Automated Financial Reports
+            Rapports Financiers Automatisés
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -150,8 +150,9 @@ const AppFinancialReport = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-8"
           >
-            Get an overview of your business's financial health. Track your
-            revenue, costs and profit in real time to make strategic decisions.
+            Obtenez une vue d'ensemble de la santé financière de votre
+            entreprise. Suivez votre chiffre d'affaires, vos coûts et votre
+            bénéfice en temps réel pour prendre des décisions stratégiques.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -163,7 +164,7 @@ const AppFinancialReport = () => {
                 size="lg"
                 className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90 shadow-lg shadow-indigo-500/30"
               >
-                Analyze my finances <ArrowRight className="ml-2 w-5 h-5" />
+                Analyser mes finances <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </motion.div>
@@ -220,13 +221,13 @@ const AppFinancialReport = () => {
         <section className="py-20">
           <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-              Why choose Financial Reports?
+              Pourquoi choisir les Rapports Financiers ?
             </h2>
             <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              It’s the cockpit of your business. At a glance, you understand the
-              health of your business and can anticipate the future. No more
-              surprises, you have all the cards in hand to ensure your
-              profitability.
+              C'est le poste de pilotage de votre entreprise. En un coup d'œil,
+              vous comprenez la santé de votre activité et pouvez anticiper
+              l'avenir. Fini les surprises, vous avez toutes les cartes en main
+              pour assurer votre rentabilité.
             </p>
           </div>
         </section>

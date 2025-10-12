@@ -70,7 +70,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 const LanguageSelector = () => {
-  const [lang, setLang] = useState("English");
+  const [lang, setLang] = useState("Français");
 
   return (
     <DropdownMenu>
@@ -86,7 +86,7 @@ const LanguageSelector = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-[#030303] border-white/10 text-white">
         <DropdownMenuItem onSelect={() => setLang("Français")} asChild>
-          <Link to="https://yourbizflow.fr">Français</Link>
+          <Link to="/">Français</Link>
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => setLang("English")} asChild>
           <Link to="/">English</Link>
@@ -1145,7 +1145,7 @@ const LandingPage = () => {
     operatingSystem: "Web",
     description:
       "La plateforme tout-en-un pour gérer votre facturation, CRM, projets et plus encore. Simplifiez votre gestion d'entreprise et concentrez-vous sur votre croissance.",
-    url: "https://yourbizflow.com/welcome",
+    url: "https://yourbizflow.fr/welcome",
     offers: {
       "@type": "AggregateOffer",
       priceCurrency: "EUR",
@@ -1198,25 +1198,25 @@ const LandingPage = () => {
     <div className="w-full text-white bg-[#030303] overflow-x-hidden">
       <Helmet>
         <title>
-          YourBizFlow | Logiciel de Gestion d'Entreprise Tout-en-Un ( )
+          YourBizFlow | Logiciel de Gestion d'Entreprise Tout-en-Un (SaaS)
         </title>
         <meta
           name="description"
-          content="Découvrez YourBizFlow, la plateforme tout-en-un pour entrepreneurs. Gérez facturation, CRM, projets et plus, simplement. Essayez gratuitement !"
+          content="Découvrez YourBizFlow, la plateforme SaaS tout-en-un pour entrepreneurs. Gérez facturation, CRM, projets et plus, simplement. Essayez gratuitement !"
         />
         <meta
           name="keywords"
-          content="gestion d'entreprise, facturation, CRM, devis, freelance, PME, auto-entrepreneur, logiciel de gestion, YourBizFlow"
+          content="SaaS, gestion d'entreprise, facturation, CRM, devis, freelance, PME, auto-entrepreneur, logiciel de gestion, YourBizFlow"
         />
         <meta
           property="og:title"
-          content="YourBizFlow | Logiciel de Gestion d'Entreprise Tout-en-Un"
+          content="YourBizFlow | Logiciel de Gestion d'Entreprise Tout-en-Un (SaaS)"
         />
         <meta
           property="og:description"
-          content="Découvrez YourBizFlow, la solution tout-en-un pour les entrepreneurs et PME. Gérez factures, clients et projets avec une facilité déconcertante."
+          content="Découvrez YourBizFlow, la solution SaaS tout-en-un pour les entrepreneurs et PME. Gérez factures, clients et projets avec une facilité déconcertante."
         />
-        <meta property="og:url" content="https://yourbizflow.com/welcome" />
+        <meta property="og:url" content="https://yourbizflow.fr/welcome" />
         <meta property="og:type" content="website" />
         <meta
           property="og:image"
@@ -1225,11 +1225,11 @@ const LandingPage = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
-          content="YourBizFlow | Logiciel de Gestion d'Entreprise Tout-en-Un"
+          content="YourBizFlow | Logiciel de Gestion d'Entreprise Tout-en-Un (SaaS)"
         />
         <meta
           name="twitter:description"
-          content="Découvrez YourBizFlow, la solution tout-en-un pour les entrepreneurs et PME. Gérez factures, clients et projets avec une facilité déconcertante."
+          content="Découvrez YourBizFlow, la solution SaaS tout-en-un pour les entrepreneurs et PME. Gérez factures, clients et projets avec une facilité déconcertante."
         />
         <meta
           name="twitter:image"

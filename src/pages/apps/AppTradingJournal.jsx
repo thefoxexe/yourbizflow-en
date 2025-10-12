@@ -43,17 +43,17 @@ const AppTradingJournal = () => {
     }
   };
 
-  const pageUrl = "https://yourbizflow.com/apps/trading-journal";
-  const title = "Trading Journal | YourBizFlow";
+  const pageUrl = "https://yourbizflow.fr/apps/trading-journal";
+  const title = "Journal de Trading | YourBizFlow";
   const description =
-    "Analyze your trading performance, identify your strengths and weaknesses, and optimize your strategy with the YourBizFlow Trading Journal.";
+    "Analysez vos performances de trading, identifiez vos forces et faiblesses, et optimisez votre stratégie avec le Journal de Trading de YourBizFlow.";
   const imageUrl =
     "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1200";
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Trading Journal - YourBizFlow",
+    name: "Journal de Trading - YourBizFlow",
     applicationCategory: "FinanceApplication",
     operatingSystem: "Web",
     description: description,
@@ -77,7 +77,7 @@ const AppTradingJournal = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="trading journal, trading, performance analysis, trading strategy, NLP, YourBizFlow"
+          content="journal de trading, trading, analyse de performance, stratégie de trading, PNL, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -117,7 +117,7 @@ const AppTradingJournal = () => {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
           >
-            Trading Journal
+            Journal de Trading
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -125,8 +125,8 @@ const AppTradingJournal = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-8"
           >
-            Track, analyze and optimize your trading performance. Make decisions
-            based on data, not emotions.
+            Suivez, analysez et optimisez vos performances de trading. Prenez
+            des décisions basées sur des données, pas des émotions.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -138,7 +138,7 @@ const AppTradingJournal = () => {
                 size="lg"
                 className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90 shadow-lg shadow-indigo-500/30"
               >
-                Optimize my trading <ArrowRight className="ml-2 w-5 h-5" />
+                Optimiser mon trading <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </motion.div>
@@ -172,26 +172,27 @@ const AppTradingJournal = () => {
                 transition={{ duration: 0.5 }}
               >
                 <h2 className="text-3xl font-bold mb-4">
-                  Simplified Input, Powerful Analysis
+                  Saisie Simplifiée, Analyse Puissante
                 </h2>
                 <p className="text-white/70 mb-6">
-                  Save each position in just a few clicks: asset, trade type,
-                  P&L, and strategy notes. Our system automatically calculates
-                  your key statistics to give you a clear view of your
-                  performance.
+                  Enregistrez chaque position en quelques clics : actif, type de
+                  trade, P&L, et notes de stratégie. Notre système calcule
+                  automatiquement vos statistiques clés pour vous donner une
+                  vision claire de vos performances.
                 </p>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
                     <BarChart className="w-5 h-5 text-green-400 mt-1 flex-shrink-0" />
                     <span>
-                      Real-time statistics (Win Rate, Average P&L, R/R Ratio).
+                      Statistiques en temps réel (Win Rate, P&L moyen, Ratio
+                      R/R).
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <FileText className="w-5 h-5 text-green-400 mt-1 flex-shrink-0" />
                     <span>
-                      Complete history of all your positions, easy to filter and
-                      analyze.
+                      Historique complet de toutes vos positions, facile à
+                      filtrer et à analyser.
                     </span>
                   </li>
                 </ul>
@@ -203,7 +204,7 @@ const AppTradingJournal = () => {
                 transition={{ duration: 0.5, delay: 0.1 }}
               >
                 <img
-                  alt="Form for entering a new trade in the trading journal"
+                  alt="Formulaire de saisie d'un nouveau trade dans le journal de trading"
                   className="rounded-xl border border-white/10 shadow-lg"
                   src="https://images.unsplash.com/photo-1627719172031-ab42dc849bc3?q=80&w=800"
                 />
@@ -219,7 +220,7 @@ const AppTradingJournal = () => {
                 transition={{ duration: 0.5, delay: 0.1 }}
               >
                 <img
-                  alt="Capital evolution graph in the Trading Journal"
+                  alt="Graphique d'évolution du capital dans le Journal de Trading"
                   className="rounded-xl border border-white/10 shadow-lg"
                   src="https://images.unsplash.com/photo-1518186285589-2f7649de83e0?q=80&w=800"
                 />
@@ -232,23 +233,26 @@ const AppTradingJournal = () => {
                 transition={{ duration: 0.5 }}
               >
                 <h2 className="text-3xl font-bold mb-4">
-                  Visualize Your Growth
+                  Visualisez Votre Croissance
                 </h2>
                 <p className="text-white/70 mb-6">
-                  Follow the evolution of your capital with a clear and
-                  motivating graph. Identify periods of high performance and
-                  understand phases of stagnation to adjust your strategy.
+                  Suivez l'évolution de votre capital avec un graphique clair et
+                  motivant. Identifiez les périodes de haute performance et
+                  comprenez les phases de stagnation pour ajuster votre
+                  stratégie.
                 </p>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
                     <TrendingUp className="w-5 h-5 text-green-400 mt-1 flex-shrink-0" />
-                    <span>Cumulative P&L chart to track your progress.</span>
+                    <span>
+                      Graphique de P&L cumulé pour suivre votre progression.
+                    </span>
                   </li>
                   <li className="flex items-start gap-3">
                     <Zap className="w-5 h-5 text-green-400 mt-1 flex-shrink-0" />
                     <span>
-                      Filters by period to analyze your performance over the
-                      short, medium and long term.
+                      Filtres par période pour analyser vos performances sur le
+                      court, moyen et long terme.
                     </span>
                   </li>
                 </ul>

@@ -49,35 +49,36 @@ const AppExpenses = () => {
   const features = [
     {
       icon: Camera,
-      title: "Receipt Scan",
+      title: "Scan de Reçus",
       description:
-        "Take a photo of your receipt, and let our AI extract the important information for you.",
+        "Prenez une photo de votre reçu, et laissez notre IA extraire les informations importantes pour vous.",
     },
     {
       icon: PieChart,
-      title: "Intelligent Categorization",
+      title: "Catégorisation Intelligente",
       description:
-        "Classify your expenses (transportation, meals, supplies...) for a clear analysis of your costs.",
+        "Classez vos dépenses (transport, repas, fournitures...) pour une analyse claire de vos coûts.",
     },
     {
       icon: Paperclip,
-      title: "Link with Projects",
+      title: "Lien avec les Projets",
       description:
-        "Link your expenses to specific clients or projects for precise tracking of profitability.",
+        "Associez vos dépenses à des clients ou des projets spécifiques pour un suivi précis de la rentabilité.",
     },
+    yourbizflow.fr,
   ];
 
-  const pageUrl = "https://yourbizflow.com/apps/expenses";
-  const title = "Expense Tracker | YourBizFlow";
+  const pageUrl = "https://yourbizflow.fr/apps/expenses";
+  const title = "Suivi des Dépenses | YourBizFlow";
   const description =
-    "Record, categorize and analyze all your business expenses. Keep an eye on your costs and optimize your profitability with YourBizFlow.";
+    "Enregistrez, catégorisez et analysez toutes vos dépenses professionnelles. Gardez un œil sur vos coûts et optimisez votre rentabilité avec YourBizFlow.";
   const imageUrl =
     "https://images.unsplash.com/photo-1579621970795-87f91d236086?q=80&w=1200";
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Expense Tracking - YourBizFlow",
+    name: "Suivi des Dépenses - YourBizFlow",
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description: description,
@@ -101,7 +102,7 @@ const AppExpenses = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="expense tracking, cost management, expense reports, business expenses, profitability, YourBizFlow"
+          content="suivi des dépenses, gestion des coûts, notes de frais, dépenses professionnelles, rentabilité, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -136,7 +137,7 @@ const AppExpenses = () => {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
           >
-            Simplified Expense Tracking
+            Suivi des Dépenses Simplifié
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -144,9 +145,9 @@ const AppExpenses = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-8"
           >
-            Photograph your receipts, categorize your expenses and keep a clear
-            view of your cash outflows. Managing your costs has never been
-            easier.
+            Photographiez vos reçus, catégorisez vos dépenses et gardez une vue
+            claire sur vos sorties d'argent. La gestion de vos coûts n'a jamais
+            été aussi simple.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -158,7 +159,7 @@ const AppExpenses = () => {
                 size="lg"
                 className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90 shadow-lg shadow-indigo-500/30"
               >
-                Track my expenses <ArrowRight className="ml-2 w-5 h-5" />
+                Suivre mes dépenses <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </motion.div>
@@ -215,13 +216,13 @@ const AppExpenses = () => {
         <section className="py-20">
           <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-              Why choose Expense Tracking?
+              Pourquoi choisir le Suivi des Dépenses ?
             </h2>
             <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              Controlling your costs is the key to profitability. This module
-              turns a tedious task into a simple and quick process. You obtain a
-              clear vision of your expenses to better manage your budget and
-              maximize your margins.
+              Maîtriser ses coûts est la clé de la rentabilité. Ce module
+              transforme une tâche fastidieuse en un processus simple et rapide.
+              Vous obtenez une vision claire de vos dépenses pour mieux piloter
+              votre budget et maximiser vos marges.
             </p>
           </div>
         </section>

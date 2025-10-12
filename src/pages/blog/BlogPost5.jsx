@@ -18,9 +18,9 @@ const BlogPost5 = () => {
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    headline: "Creating Quotes That Guarantee Convert: The Complete Guide",
+    headline: "Créer des Devis qui Convertissent à Coup Sûr : Le Guide Complet",
     description:
-      "Learn how to create clear, professional, and persuasive quotes that turn your prospects into loyal customers. The complete guide to effective quotes.",
+      "Apprenez à créer des devis clairs, professionnels et persuasifs qui transforment vos prospects en clients fidèles. Le guide complet pour des devis efficaces.",
     image:
       "https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=1200",
     author: {
@@ -39,27 +39,27 @@ const BlogPost5 = () => {
     dateModified: "2025-09-18",
   };
   const pageUrl =
-    "https://yourbizflow.com/blog/creer-des-devis-qui-convertissent-a-coup-sur";
+    "https://yourbizflow.fr/blog/creer-des-devis-qui-convertissent-a-coup-sur";
 
   return (
     <div className="w-full min-h-screen text-white bg-[#030303] flex flex-col">
       <Helmet>
-        <title>Create Quotes that Convert | YourBizFlow Blog</title>
+        <title>Créer des Devis qui Convertissent | YourBizFlow Blog</title>
         <meta
           name="description"
-          content="Learn how to create clear, professional, and persuasive quotes that turn prospects into loyal customers. The complete guide to effective quotes."
+          content="Apprenez à créer des devis clairs, professionnels et persuasifs qui transforment vos prospects en clients fidèles. Le guide complet pour des devis efficaces."
         />
         <meta
           name="keywords"
-          content="quote, commercial proposal, conversion, sale, freelance, YourBizFlow"
+          content="devis, proposition commerciale, conversion, vente, freelance, YourBizFlow"
         />
         <meta
           property="og:title"
-          content="Create Quotes that Convert | YourBizFlow Blog"
+          content="Créer des Devis qui Convertissent | YourBizFlow Blog"
         />
         <meta
           property="og:description"
-          content="Learn how to create clear, professional, and persuasive quotes that turn your prospects into customers."
+          content="Apprenez à créer des devis clairs, professionnels et persuasifs qui transforment vos prospects en clients."
         />
         <meta property="og:url" content={pageUrl} />
         <meta property="og:type" content="article" />
@@ -67,11 +67,11 @@ const BlogPost5 = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
-          content="Create Quotes that Convert | YourBizFlow Blog"
+          content="Créer des Devis qui Convertissent | YourBizFlow Blog"
         />
         <meta
           name="twitter:description"
-          content="Learn how to create clear, professional, and persuasive quotes that turn your prospects into customers."
+          content="Apprenez à créer des devis clairs, professionnels et persuasifs qui transforment vos prospects en clients."
         />
         <meta name="twitter:image" content={articleSchema.image} />
         <script type="application/ld+json">
@@ -96,10 +96,10 @@ const BlogPost5 = () => {
               className="text-center px-4"
             >
               <h1 className="text-3xl md:text-5xl font-bold text-white max-w-4xl">
-                Create Quotes That Guarantee Convert: The Complete Guide
+                Créer des Devis qui Convertissent à Coup Sûr : Le Guide Complet
               </h1>
               <p className="text-lg text-white/80 mt-4">
-                September 18, 2025 &bull; 6 min read
+                18 Septembre 2025 &bull; 6 min de lecture
               </p>
             </motion.div>
           </div>
@@ -108,90 +108,97 @@ const BlogPost5 = () => {
         <div className="container mx-auto px-6 py-16 max-w-3xl">
           <article className="prose prose-invert lg:prose-xl mx-auto">
             <p>
-              A quote is much more than just a price list. This is your first
-              concrete value proposition to a prospect. A well-designed quote
-              can make the difference between a won deal and a missed
-              opportunity. Here's how to create quotes that not only inform, but
-              persuade.
+              Un devis est bien plus qu'une simple liste de prix. C'est votre
+              première proposition de valeur concrète à un prospect. Un devis
+              bien conçu peut faire la différence entre une affaire gagnée et
+              une opportunité manquée. Voici comment créer des devis qui non
+              seulement informent, mais persuadent.
             </p>
 
-            <h2>1. Clarity above all</h2>
+            <h2>1. La Clarté avant Tout</h2>
             <p>
-              Your prospect must instantly understand what you are offering and
-              at what price. Use clear titles and detail each position. Group
-              the services by logical categories (e.g.: "Phase 1: Design",
-              "Phase 2: Development"). Transparency is a guarantee of trust.
+              Votre prospect doit comprendre instantanément ce que vous proposez
+              et à quel prix. Utilisez des intitulés clairs et détaillez chaque
+              poste. Regroupez les prestations par catégories logiques (ex:
+              "Phase 1 : Conception", "Phase 2 : Développement"). La
+              transparence est un gage de confiance.
             </p>
 
-            <h2>2. Personalize your Proposal</h2>
+            <h2>2. Personnalisez votre Proposition</h2>
             <p>
-              Don't settle for a generic model. Use the terms that your prospect
-              used during your discussions. Add a short introduction that
-              summarizes the problem and how your solution addresses it. Show
-              that you have listened and understood.
+              Ne vous contentez pas d'un modèle générique. Reprenez les termes
+              que votre prospect a utilisés lors de vos échanges. Ajoutez une
+              courte introduction qui résume sa problématique et comment votre
+              solution y répond. Montrez que vous l'avez écouté et compris.
             </p>
 
             <img
-              alt="Example of a personalized and professional quote on a laptop screen"
+              alt="Exemple de devis personnalisé et professionnel sur l'écran d'un ordinateur portable"
               className="rounded-lg my-8"
               src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=800"
             />
 
-            <h2>3. Emphasize Value, Not Just Price</h2>
+            <h2>3. Mettez en Avant la Valeur, pas Seulement le Prix</h2>
             <p>
-              Instead of just listing “Website Creation,” write “Creating a
-              conversion-optimized website, including responsive design and
-              basic SEO.” Each line should remind you of the benefit for the
-              customer, not just the task you are going to accomplish.
+              Au lieu de simplement lister "Création de site web", écrivez
+              "Création d'un site web optimisé pour la conversion, incluant le
+              design responsive et le SEO de base". Chaque ligne doit rappeler
+              le bénéfice pour le client, pas seulement la tâche que vous allez
+              accomplir.
             </p>
 
-            <h2>4. Propose Options (Strategic Pricing)</h2>
+            <h2>4. Proposez des Options (Pricing Stratégique)</h2>
             <p>
-              Offering several options (e.g.: “Essential”, “Recommended”,
-              “Premium”) is a formidable sales technique. This shifts the
-              client's question from "Do I work with them?" to “Which option is
-              best for me?”. The "Recommended" option is often the one chosen.
+              Proposer plusieurs options (ex: "Essentiel", "Recommandé",
+              "Premium") est une technique de vente redoutable. Cela déplace la
+              question du client de "Est-ce que je travaille avec eux ?" à
+              "Quelle option est la meilleure pour moi ?". L'option "Recommandé"
+              est souvent celle qui est choisie.
             </p>
 
             <div className="my-12 p-8 bg-card/50 border border-primary/30 rounded-xl text-center">
               <h3 className="text-2xl font-bold text-white">
-                Create professional quotes in 2 minutes.
+                Créez des devis professionnels en 2 minutes.
               </h3>
               <p className="text-white/80 mt-2 mb-6">
-                YourBizFlow's quote module allows you to create, customize and
-                send quotes that impress your customers and turn into invoices
-                in one click.
+                Le module de devis de YourBizFlow vous permet de créer,
+                personnaliser et envoyer des devis qui impressionnent vos
+                clients et se transforment en factures en un clic.
               </p>
               <Link to="/signup">
                 <Button
                   size="lg"
                   className="bg-primary text-primary-foreground hover:bg-primary/90"
                 >
-                  Create my first quote <ArrowRight className="w-5 h-5 ml-2" />
+                  Créer mon premier devis{" "}
+                  <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
             </div>
 
-            <h2>5. Include Next Steps and Conditions</h2>
+            <h2>5. Incluez les Prochaines Étapes et les Conditions</h2>
             <p>
-              Don't leave your prospect in the dark. Clearly indicate the next
-              steps: "To accept this quote, please sign and return it by [date].
-              A 30% deposit will then be required to start the project." Also
-              specify your payment and delivery conditions.
+              Ne laissez pas votre prospect dans le flou. Indiquez clairement
+              les prochaines étapes : "Pour accepter ce devis, veuillez le
+              signer et le retourner avant le [date]. Un acompte de 30% sera
+              alors requis pour démarrer le projet." Précisez également vos
+              conditions de paiement et de livraison.
             </p>
 
-            <h2>6. Take care of the Presentation</h2>
+            <h2>6. Soignez la Présentation</h2>
             <p>
-              A quote with your logo, a streamlined layout and professional
-              typography has much more impact than a simple table on a Word
-              document. Tools like YourBizFlow allow you to generate impeccable
-              PDFs that reinforce your brand image.
+              Un devis avec votre logo, une mise en page aérée et une
+              typographie professionnelle a beaucoup plus d'impact qu'un simple
+              tableau sur un document Word. Des outils comme YourBizFlow vous
+              permettent de générer des PDF impeccables qui renforcent votre
+              image de marque.
             </p>
 
             <p>
-              By applying these principles, your quotes will become real
-              conversion tools, helping you secure more projects and build
-              trusting relationships with your customers from the first contact.
+              En appliquant ces principes, vos devis deviendront de véritables
+              outils de conversion, vous aidant à sécuriser plus de projets et à
+              construire des relations de confiance avec vos clients dès le
+              premier contact.
             </p>
           </article>
         </div>

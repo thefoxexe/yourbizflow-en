@@ -49,35 +49,36 @@ const AppQuotes = () => {
   const features = [
     {
       icon: Zap,
-      title: "1-Click Conversion",
+      title: "Conversion en 1 Clic",
       description:
-        "Transform any accepted quote into an invoice with just one click. Save valuable time.",
+        "Transformez n'importe quel devis accepté en facture en un seul clic. Gagnez un temps précieux.",
     },
     {
       icon: Eye,
-      title: "Status Tracker",
+      title: "Suivi de Statut",
       description:
-        "Know in real time if your quote has been seen, accepted or refused by your customer.",
+        "Sachez en temps réel si votre devis a été vu, accepté ou refusé par votre client.",
     },
     {
       icon: CheckCircle,
-      title: "Professional Models",
+      title: "Modèles Professionnels",
       description:
-        "Use our clear, customizable quote templates to impress your prospects.",
+        "Utilisez nos modèles de devis clairs et personnalisables pour impressionner vos prospects.",
     },
+    yourbizflow.fr,
   ];
 
-  const pageUrl = "https://yourbizflow.com/apps/quotes";
-  const title = "Professional Quotes | YourBizFlow";
+  const pageUrl = "https://yourbizflow.fr/apps/quotes";
+  const title = "Devis Professionnels | YourBizFlow";
   const description =
-    "Create clear, professional quotes that convert. Turn your quotes into invoices in one click and accelerate your sales cycle with YourBizFlow.";
+    "Créez des devis clairs et professionnels qui convertissent. Transformez vos devis en factures en un clic et accélérez votre cycle de vente avec YourBizFlow.";
   const imageUrl =
     "https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=1200";
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Quotes - YourBizFlow",
+    name: "Devis - YourBizFlow",
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description: description,
@@ -101,7 +102,7 @@ const AppQuotes = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="online quote, quote software, commercial proposal, freelance, craftsman, YourBizFlow"
+          content="devis en ligne, logiciel de devis, proposition commerciale, freelance, artisan, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -136,7 +137,7 @@ const AppQuotes = () => {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
           >
-            Quotes That Convert
+            Des Devis Qui Convertissent
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -144,8 +145,9 @@ const AppQuotes = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-8"
           >
-            Create and send impactful quotes in minutes. Track their status and
-            turn them into invoices with a single click once accepted.
+            Créez et envoyez des devis percutants en quelques minutes. Suivez
+            leur statut et transformez-les en factures d'un simple clic une fois
+            acceptés.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -157,7 +159,7 @@ const AppQuotes = () => {
                 size="lg"
                 className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90 shadow-lg shadow-indigo-500/30"
               >
-                Create my first quote <ArrowRight className="ml-2 w-5 h-5" />
+                Créer mon premier devis <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </motion.div>
@@ -214,13 +216,13 @@ const AppQuotes = () => {
         <section className="py-20">
           <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-              Why choose the Quote module?
+              Pourquoi choisir le module Devis ?
             </h2>
             <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              The first impression is crucial. A professional and fast quote can
-              make the difference between a prospect and a customer. Our module
-              is designed to accelerate your sales cycle and give you an
-              impeccable image from the first contact.
+              La première impression est cruciale. Un devis professionnel et
+              rapide peut faire la différence entre un prospect et un client.
+              Notre module est conçu pour accélérer votre cycle de vente et vous
+              donner une image impeccable dès le premier contact.
             </p>
           </div>
         </section>

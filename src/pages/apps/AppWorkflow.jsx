@@ -55,35 +55,35 @@ const AppWorkflow = () => {
   const features = [
     {
       icon: Zap,
-      title: "Triggers & Actions",
+      title: "Déclencheurs & Actions",
       description:
-        "Create event-based scenarios: 'When a quote is accepted, then create a task'.",
+        "Créez des scénarios basés sur des événements : 'Quand un devis est accepté, alors créer une tâche'.",
     },
     {
       icon: Link2,
-      title: "Connection between Modules",
+      title: "Connexion entre Modules",
       description:
-        "Make your modules communicate with each other for unrivaled workflow.",
+        "Faites communiquer vos modules entre eux pour une fluidité de travail inégalée.",
     },
     {
       icon: Bell,
-      title: "Smart Notifications",
+      title: "Notifications Intelligentes",
       description:
-        "Be alerted to important actions without being drowned in unnecessary notifications.",
+        "Soyez alerté des actions importantes sans être noyé sous les notifications inutiles.",
     },
   ];
 
-  const pageUrl = "https://yourbizflow.com/apps/workflow";
-  const title = "Automation & Workflows | YourBizFlow";
+  const pageUrl = "https://yourbizflow.fr/apps/workflow";
+  const title = "Automatisation & Workflows | YourBizFlow";
   const description =
-    "Automate your repetitive tasks and create intelligent workflows. Save time and focus on your growth with YourBizFlow.";
+    "Automatisez vos tâches répétitives et créez des flux de travail intelligents. Gagnez du temps et concentrez-vous sur votre croissance avec YourBizFlow.";
   const imageUrl =
     "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?q=80&w=1200";
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Automation & Workflows - YourBizFlow",
+    name: "Automatisation & Workflows - YourBizFlow",
     applicationCategory: "ProductivityApplication",
     operatingSystem: "Web",
     description: description,
@@ -107,7 +107,7 @@ const AppWorkflow = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="automation, workflow, productivity, task automation, SME, YourBizFlow"
+          content="automatisation, workflow, productivité, automatisation des tâches, PME, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -142,7 +142,7 @@ const AppWorkflow = () => {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
           >
-            Put Your Business on Autopilot
+            Mettez Votre Business en Pilote Automatique
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -150,9 +150,9 @@ const AppWorkflow = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-8"
           >
-            Create automation scenarios to make YourBizFlow work for you, even
-            when you sleep. Free yourself from repetitive tasks and focus on
-            strategy.
+            Créez des scénarios d'automatisation pour que YourBizFlow travaille
+            pour vous, même quand vous dormez. Libérez-vous des tâches
+            répétitives et concentrez-vous sur la stratégie.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -164,7 +164,8 @@ const AppWorkflow = () => {
                 size="lg"
                 className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90 shadow-lg shadow-indigo-500/30"
               >
-                Discover automation <ArrowRight className="ml-2 w-5 h-5" />
+                Découvrir l'automatisation{" "}
+                <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </motion.div>
@@ -203,12 +204,13 @@ const AppWorkflow = () => {
         <section className="py-20">
           <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-              Why choose Automation?
+              Pourquoi choisir l'Automatisation ?
             </h2>
             <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              This is the superpower of productive companies. In automating
-              small tasks that take up your time, you free up hours each week to
-              focus on innovation, customer relations and growth.
+              C'est le super-pouvoir des entreprises productives. En
+              automatisant les petites tâches qui vous prennent du temps, vous
+              libérez des heures chaque semaine pour vous concentrer sur
+              l'innovation, la relation client et la croissance.
             </p>
           </div>
         </section>

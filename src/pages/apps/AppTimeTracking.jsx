@@ -55,34 +55,35 @@ const AppTimeTracking = () => {
   const features = [
     {
       icon: PlayCircle,
-      title: "Add time in 1 click",
-      description: "Enter time for any task without leaving your work screen.",
+      title: "Ajout d'heure en 1 clique",
+      description:
+        "Entrez du temps pour n'importe quelle tâche sans quitter votre écran de travail.",
     },
     {
       icon: FileText,
-      title: "Automated Billing",
+      title: "Facturation Automatisée",
       description:
-        "Convert your tracked hours into accurate invoice lines for complete transparency with your customers.",
+        "Convertissez vos heures suivies en lignes de facture précises pour une transparence totale avec vos clients.",
     },
     {
       icon: BarChart,
-      title: "Profitability Reports",
+      title: "Rapports de Rentabilité",
       description:
-        "Analyze time spent per project or per client to understand where your time is most profitable.",
+        "Analysez le temps passé par projet ou par client pour comprendre où votre temps est le plus rentable.",
     },
   ];
 
-  const pageUrl = "https://yourbizflow.com/apps/time-tracking";
-  const title = "Time Tracking | YourBizFlow – Time tracking for projects";
+  const pageUrl = "https://yourbizflow.fr/apps/time-tracking";
+  const title = "Suivi du Temps | YourBizFlow – Time tracking pour projets";
   const description =
-    "Precisely track the time spent on each project and each task. Bill your clients for time spent and analyze the profitability of your missions.";
+    "Suivez précisément le temps passé sur chaque projet et chaque tâche. Facturez vos clients au temps passé et analysez la rentabilité de vos missions.";
   const imageUrl =
     "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=1200";
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Time Tracking - YourBizFlow",
+    name: "Suivi du Temps - YourBizFlow",
     applicationCategory: "ProductivityApplication",
     operatingSystem: "Web",
     description: description,
@@ -106,7 +107,7 @@ const AppTimeTracking = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="time tracking, time tracking, timesheet, time-based billing, freelance, YourBizFlow"
+          content="suivi du temps, time tracking, feuille de temps, facturation au temps passé, freelance, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -141,7 +142,7 @@ const AppTimeTracking = () => {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
           >
-            Every hour counts. Calculate them.
+            Chaque Heure compte. Calcule-les.
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -149,8 +150,8 @@ const AppTimeTracking = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-8"
           >
-            Per project, record your hours and turn your time into income. The
-            essential tool for freelancers and agencies.
+            Par projet, enregistrez vos heures et transformez votre temps en
+            revenus. L'outil indispensable pour les freelances et les agences.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -162,7 +163,8 @@ const AppTimeTracking = () => {
                 size="lg"
                 className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90 shadow-lg shadow-indigo-500/30"
               >
-                Start time tracking <ArrowRight className="ml-2 w-5 h-5" />
+                Commencer le suivi du temps{" "}
+                <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </motion.div>
@@ -219,13 +221,13 @@ const AppTimeTracking = () => {
         <section className="py-20">
           <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-              Why choose Time Tracking?
+              Pourquoi choisir le Suivi du Temps ?
             </h2>
             <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              Your time is your most valuable resource. This module helps you
-              quantify, value and invoice it correctly. This is the assurance of
-              never working for free again and of understanding the true
-              profitability of your projects.
+              Votre temps est votre ressource la plus précieuse. Ce module vous
+              aide à le quantifier, le valoriser et le facturer correctement.
+              C'est l'assurance de ne plus jamais travailler gratuitement et de
+              comprendre la vraie rentabilité de vos projets.
             </p>
           </div>
         </section>

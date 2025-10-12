@@ -55,34 +55,35 @@ const AppAnalytics = () => {
   const features = [
     {
       icon: TrendingUp,
-      title: "Real-Time Tracking",
-      description: "View your income, expenses and profits as they occur.",
+      title: "Suivi en Temps Réel",
+      description:
+        "Visualisez vos revenus, dépenses et bénéfices au moment où ils se produisent.",
     },
     {
       icon: Target,
-      title: "Custom Reports",
+      title: "Rapports Personnalisés",
       description:
-        "Create tailor-made reports to analyze the most important aspects of your business.",
+        "Créez des rapports sur mesure pour analyser les aspects les plus importants de votre business.",
     },
     {
       icon: Lightbulb,
-      title: "Intelligent Insights",
+      title: "Insights Intelligents",
       description:
-        "Receive suggestions based on your data to identify growth opportunities.",
+        "Recevez des suggestions basées sur vos données pour identifier des opportunités de croissance.",
     },
   ];
 
-  const pageUrl = "https://yourbizflow.com/apps/analytics";
-  const title = "Analytics | YourBizFlow – Dashboards and Reports";
+  const pageUrl = "https://yourbizflow.frapps/analytics";
+  const title = "Analytique | YourBizFlow – Tableaux de bord et rapports";
   const description =
-    "Make data-driven decisions with YourBizFlow's analytical dashboards. Track your revenue, profitability, and key metrics.";
+    "Prenez des décisions basées sur les données grâce aux tableaux de bord analytiques de YourBizFlow. Suivez vos revenus, votre rentabilité et vos indicateurs clés.";
   const imageUrl =
     "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200";
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Analytical - YourBizFlow",
+    name: "Analytique - YourBizFlow",
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description: description,
@@ -106,7 +107,7 @@ const AppAnalytics = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="analytics, reporting, dashboard, KPI, business intelligence, SME, YourBizFlow"
+          content="analytique, reporting, tableau de bord, KPI, business intelligence, PME, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -141,7 +142,7 @@ const AppAnalytics = () => {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
           >
-            Your Data, Your Decisions
+            Vos Données, Vos Décisions
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -149,9 +150,10 @@ const AppAnalytics = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-8"
           >
-            Transform your raw data into actionable insights. Track your key
-            performance indicators (KPIs) in real time and manage your growth
-            with clear and customizable dashboards.
+            Transformez vos données brutes en informations exploitables. Suivez
+            vos indicateurs de performance clés (KPIs) en temps réel et pilotez
+            votre croissance avec des tableaux de bord clairs et
+            personnalisables.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -163,7 +165,7 @@ const AppAnalytics = () => {
                 size="lg"
                 className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90 shadow-lg shadow-indigo-500/30"
               >
-                Discover my KPIs <ArrowRight className="ml-2 w-5 h-5" />
+                Découvrir mes KPIs <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </motion.div>
@@ -220,13 +222,13 @@ const AppAnalytics = () => {
         <section className="py-20">
           <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-              Why choose YourBizFlow Analytics?
+              Pourquoi choisir l'Analytique YourBizFlow ?
             </h2>
             <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              Don't navigate blindly anymore. Our analytical module gives you a
-              360° vision of your activity so that each decision is the right
-              one. Identify what’s working, fix what’s wrong, and accelerate
-              your growth.
+              Ne naviguez plus à l'aveugle. Notre module analytique vous donne
+              une vision à 360° de votre activité pour que chaque décision soit
+              la bonne. Identifiez ce qui fonctionne, corrigez ce qui ne va pas,
+              et accélérez votre croissance.
             </p>
           </div>
         </section>

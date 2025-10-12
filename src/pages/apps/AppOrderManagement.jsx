@@ -41,17 +41,17 @@ const AppOrderManagement = () => {
     }
   };
 
-  const pageUrl = "https://yourbizflow.com/apps/order-management";
-  const title = "Order Management | YourBizFlow";
+  const pageUrl = "https://yourbizflow.frapps/order-management";
+  const title = "Gestion des Commandes | YourBizFlow";
   const description =
-    "Effectively manage your order lifecycle, from preparation to delivery, with YourBizFlow's order management module.";
+    "Gérez efficacement le cycle de vie de vos commandes, de la préparation à la livraison, avec le module de gestion des commandes de YourBizFlow.";
   const imageUrl =
     "https://images.unsplash.com/photo-1571677246347-5040036b95cc?q=80&w=1200";
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Order Management - YourBizFlow",
+    name: "Gestion des Commandes - YourBizFlow",
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description: description,
@@ -75,7 +75,7 @@ const AppOrderManagement = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="order management, order management, logistics, e-commerce, YourBizFlow"
+          content="gestion des commandes, order management, logistique, e-commerce, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -95,8 +95,8 @@ const AppOrderManagement = () => {
             Gestion des Commandes
           </h1>
           <p className="text-xl text-white/60 max-w-3xl mx-auto">
-            Manage the entire processing cycle of your customer orders with
-            incredible efficiency, from preparation to delivery.
+            Pilotez l'ensemble du cycle de traitement de vos commandes clients
+            avec une efficacité redoutable, de la préparation à la livraison.
           </p>
         </section>
 
@@ -104,35 +104,35 @@ const AppOrderManagement = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl font-bold mb-6">
-                Centralize and automate your order flow
+                Centralisez et automatisez votre flux de commandes
               </h2>
               <ul className="space-y-4 text-white/80">
                 <li className="flex items-start">
                   <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
                   <span>
-                    Create orders manually or transform your accepted quotes in
-                    one click.
+                    Créez des commandes manuellement ou transformez vos devis
+                    acceptés en un clic.
                   </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
                   <span>
-                    Follow each step with visual statuses: In preparation, To be
-                    shipped, Shipped, Delivered, Canceled.
+                    Suivez chaque étape grâce à des statuts visuels : En
+                    préparation, À expédier, Expédiée, Livrée, Annulée.
                   </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
                   <span>
-                    Automatically synchronize your stock: products are
-                    decremented as soon as an order is shipped or delivered.
+                    Synchronisez automatiquement votre stock : les produits sont
+                    décrémentés dès qu'une commande est expédiée ou livrée.
                   </span>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
                   <span>
-                    In case of cancellation or deletion, the stock is
-                    automatically restored. No more inventory errors!
+                    En cas d'annulation ou de suppression, le stock est
+                    automatiquement restauré. Fini les erreurs d'inventaire !
                   </span>
                 </li>
               </ul>
@@ -149,18 +149,18 @@ const AppOrderManagement = () => {
 
         <section className="container mx-auto px-6 py-12 text-center">
           <h2 className="text-3xl font-bold mb-4">
-            Ready to optimize your logistics?
+            Prêt à optimiser votre logistique ?
           </h2>
           <p className="text-lg text-white/60 mb-8">
-            Join YourBizFlow and turn your order management into a competitive
-            advantage.
+            Rejoignez YourBizFlow et transformez la gestion de vos commandes en
+            un avantage concurrentiel.
           </p>
           <Link to="/signup">
             <Button
               size="lg"
               className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90"
             >
-              Get started for free <ArrowRight className="ml-2 w-5 h-5" />
+              Commencer gratuitement <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
           </Link>
         </section>

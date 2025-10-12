@@ -49,27 +49,29 @@ const AppCRM = () => {
   const features = [
     {
       icon: Contact,
-      title: "360° Customer Sheets",
+      title: "Fiches Client 360°",
       description:
-        "Centralize all information: contacts, exchange history, invoices and projects.",
+        "Centralisez toutes les informations : contacts, historique des échanges, factures et projets.",
     },
     {
       icon: History,
-      title: "Interaction Tracking",
+      title: "Suivi des Interactions",
       description:
-        "Never lose the thread of a conversation. Record every call, email and appointment.",
+        "Ne perdez jamais le fil d'une conversation. Enregistrez chaque appel, email et rendez-vous.",
     },
     {
       icon: Filter,
-      title: "Easy Segmentation",
+      title: "Segmentation Facile",
       description:
-        "Sort and filter your customers by tags, status or turnover for targeted actions.",
+        "Triez et filtrez vos clients par tags, statut ou chiffre d'affaires pour des actions ciblées.",
     },
+    yourbizflow.fr,
   ];
-  const pageUrl = "https://yourbizflow.com/apps/crm";
-  const title = "CRM | YourBizFlow – Customer monitoring and lead management";
+
+  const pageUrl = "https://yourbizflow.fr/apps/crm";
+  const title = "CRM | YourBizFlow – Suivi client et gestion des prospects";
   const description =
-    "Centralize all your customer information, track your interactions and never miss a sales opportunity again with YourBizFlow's integrated CRM.";
+    "Centralisez toutes vos informations clients, suivez vos interactions et ne manquez plus jamais une opportunité de vente avec le CRM intégré de YourBizFlow.";
   const imageUrl =
     "https://images.unsplash.com/photo-1556740758-90de374c12ad?q=80&w=1200";
 
@@ -100,7 +102,7 @@ const AppCRM = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="CRM, customer management, prospect tracking, CRM software, customer relations, SME, YourBizFlow"
+          content="CRM, gestion client, suivi prospect, logiciel crm, relation client, PME, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -135,7 +137,7 @@ const AppCRM = () => {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
           >
-            Your CRM, simple and powerful
+            Votre CRM, simple et puissant
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -143,8 +145,8 @@ const AppCRM = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-8"
           >
-            Centralize your contacts, track each interaction and transform your
-            prospects into loyal customers. All without leaving YourBizFlow.
+            Centralisez vos contacts, suivez chaque interaction et transformez
+            vos prospects en clients fidèles. Le tout, sans quitter YourBizFlow.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -156,7 +158,7 @@ const AppCRM = () => {
                 size="lg"
                 className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90 shadow-lg shadow-indigo-500/30"
               >
-                Manage my clients for free{" "}
+                Gérer mes clients gratuitement{" "}
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
@@ -214,13 +216,13 @@ const AppCRM = () => {
         <section className="py-20">
           <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-              Why choose YourBizFlow CRM?
+              Pourquoi choisir le CRM YourBizFlow ?
             </h2>
             <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              Forget gas factory CRMs. Our approach is simple: give you the
-              essential tools to build strong relationships with your customers,
-              without the complexity. It's the perfect ally to never let an
-              opportunity pass you by again.
+              Oubliez les CRM usines à gaz. Notre approche est simple : vous
+              donner les outils essentiels pour construire des relations solides
+              avec vos clients, sans la complexité. C'est l'allié parfait pour
+              ne plus jamais laisser passer une opportunité.
             </p>
           </div>
         </section>

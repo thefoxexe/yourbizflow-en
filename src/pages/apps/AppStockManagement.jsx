@@ -49,35 +49,36 @@ const AppStockManagement = () => {
   const features = [
     {
       icon: Bell,
-      title: "Low Stock Alerts",
+      title: "Alertes de Stock Bas",
       description:
-        "Configure alert thresholds to be notified before stock runs out and never miss a sale.",
+        "Configurez des seuils d'alerte pour être notifié avant la rupture de stock et ne jamais manquer une vente.",
     },
     {
       icon: BarChart,
-      title: "Stock Valuation",
+      title: "Valorisation du Stock",
       description:
-        "Know the total value of your inventory in real time, a key indicator for your balance sheet.",
+        "Connaissez la valeur totale de votre inventaire en temps réel, un indicateur clé pour votre bilan.",
     },
     {
       icon: Truck,
-      title: "Supplier Management",
+      title: "Gestion des Fournisseurs",
       description:
-        "Centralize information from your suppliers and track your purchase orders.",
+        "Centralisez les informations de vos fournisseurs et suivez vos commandes d'achat.",
     },
+    yourbizflow.fr,
   ];
 
-  const pageUrl = "https://yourbizflow.com/apps/stock-management";
-  const title = "Stock Management | YourBizFlow";
+  const pageUrl = "https://yourbizflow.fr/apps/stock-management";
+  const title = "Gestion de Stock | YourBizFlow";
   const description =
-    "Track your inventory levels in real time, record entries and exits, and avoid shortages. Professional inventory management for your business.";
+    "Suivez vos niveaux de stock en temps réel, enregistrez les entrées et sorties, et évitez les ruptures. La gestion de stock professionnelle pour votre entreprise.";
   const imageUrl =
     "https://images.unsplash.com/photo-1576185458878-62411a281893?q=80&w=1200";
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Stock Management - YourBizFlow",
+    name: "Gestion de Stock - YourBizFlow",
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description: description,
@@ -101,7 +102,7 @@ const AppStockManagement = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="stock management, inventory, stock levels, logistics, e-commerce, YourBizFlow"
+          content="gestion de stock, inventaire, niveaux de stock, logistique, e-commerce, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -136,7 +137,7 @@ const AppStockManagement = () => {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
           >
-            Advanced Inventory Management
+            Gestion de Stock Avancée
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -144,8 +145,9 @@ const AppStockManagement = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-8"
           >
-            Control your flow of goods, from reception to shipping. Track every
-            item, optimize your stock levels and never miss a sale again.
+            Maîtrisez vos flux de marchandises, de la réception à l'expédition.
+            Suivez chaque article, optimisez vos niveaux de stock et ne manquez
+            plus jamais une vente.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -157,7 +159,7 @@ const AppStockManagement = () => {
                 size="lg"
                 className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90 shadow-lg shadow-indigo-500/30"
               >
-                Optimize my stock <ArrowRight className="ml-2 w-5 h-5" />
+                Optimiser mon stock <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </motion.div>
@@ -214,13 +216,13 @@ const AppStockManagement = () => {
         <section className="py-20">
           <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-              Why choose Inventory Management?
+              Pourquoi choisir la Gestion de Stock ?
             </h2>
             <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              Well-managed inventory means satisfied customers and optimized
-              cash flow. This module gives you the tools to transform your
-              inventory management from a cost center to a competitive
-              advantage.
+              Un stock bien géré est synonyme de clients satisfaits et de
+              trésorerie optimisée. Ce module vous donne les outils pour
+              transformer votre gestion de stock d'un centre de coût à un
+              avantage compétitif.
             </p>
           </div>
         </section>

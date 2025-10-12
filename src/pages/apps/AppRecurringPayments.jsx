@@ -49,35 +49,35 @@ const AppRecurringPayments = () => {
   const features = [
     {
       icon: Settings,
-      title: "Flexible Subscriptions",
+      title: "Abonnements Flexibles",
       description:
-        "Create monthly, annual, or custom plans to perfectly meet your customers' needs.",
+        "Créez des plans mensuels, annuels ou personnalisés pour répondre parfaitement aux besoins de vos clients.",
     },
     {
       icon: Shield,
-      title: "Secure Payments",
+      title: "Paiements Sécurisés",
       description:
-        "Integration with Stripe for secure transactions and simplified payment management.",
+        "Intégration avec Stripe pour des transactions sécurisées et une gestion simplifiée des paiements.",
     },
     {
       icon: BarChart,
-      title: "MRR monitoring",
+      title: "Suivi du MRR",
       description:
-        "Track your Monthly Recurring Revenue (MRR) and other key metrics to drive your growth.",
+        "Suivez votre Revenu Mensuel Récurrent (MRR) et d'autres métriques clés pour piloter votre croissance.",
     },
   ];
 
-  const pageUrl = "https://yourbizflow.com/apps/recurring-payments";
-  const title = "Recurring Payments | YourBizFlow";
+  const pageUrl = "https://yourbizflow.fr/apps/recurring-payments";
+  const title = "Paiements Récurrents | YourBizFlow";
   const description =
-    "Manage your subscriptions and automatically bill your customers at regular intervals. Stabilize your revenue and simplify your management with YourBizFlow.";
+    "Gérez vos abonnements et facturez automatiquement vos clients à intervalle régulier. Stabilisez vos revenus et simplifiez votre gestion avec YourBizFlow.";
   const imageUrl =
     "https://images.unsplash.com/photo-1639755249856-4071d0afe31a?q=80&w=1200";
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Recurring Payments - YourBizFlow",
+    name: "Paiements Récurrents - YourBizFlow",
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     description: description,
@@ -101,7 +101,7 @@ const AppRecurringPayments = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="recurring payment, subscription, automatic billing, MRR, recurring revenue, YourBizFlow"
+          content="paiement récurrent, abonnement, facturation automatique, MRR, revenus récurrents, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -136,7 +136,7 @@ const AppRecurringPayments = () => {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60"
           >
-            Effortless Recurring Payments
+            Paiements Récurrents Sans Effort
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -144,9 +144,9 @@ const AppRecurringPayments = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto mb-8"
           >
-            Create subscription plans, manage your subscribed customers and
-            automate billing. The ideal way to build predictable and stable
-            income.
+            Créez des plans d'abonnement, gérez vos clients abonnés et
+            automatisez la facturation. Le moyen idéal pour construire des
+            revenus prévisibles et stables.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -158,7 +158,7 @@ const AppRecurringPayments = () => {
                 size="lg"
                 className="text-lg px-8 py-6 bg-white text-black hover:bg-white/90 shadow-lg shadow-indigo-500/30"
               >
-                Launch my subscriptions <ArrowRight className="ml-2 w-5 h-5" />
+                Lancer mes abonnements <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </motion.div>
@@ -215,13 +215,13 @@ const AppRecurringPayments = () => {
         <section className="py-20">
           <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-              Why choose Recurring Payments?
+              Pourquoi choisir les Paiements Récurrents ?
             </h2>
             <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              Recurring revenue is the holy grail of financial stability. This
-              module allows you to set up a solid subscription model, build
-              customer loyalty and make your revenue predictable, month after
-              month.
+              Les revenus récurrents sont le Saint Graal de la stabilité
+              financière. Ce module vous permet de mettre en place un modèle
+              d'abonnement solide, de fidéliser vos clients et de rendre vos
+              revenus prévisibles, mois après mois.
             </p>
           </div>
         </section>
