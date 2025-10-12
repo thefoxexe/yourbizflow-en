@@ -70,7 +70,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 const LanguageSelector = () => {
-  const [lang, setLang] = useState("Français");
+  const [lang, setLang] = useState("English");
 
   return (
     <DropdownMenu>
@@ -86,10 +86,10 @@ const LanguageSelector = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-[#030303] border-white/10 text-white">
         <DropdownMenuItem onSelect={() => setLang("Français")} asChild>
-          <Link to="/">Français</Link>
+          <Link to="https://yourbizflow.fr">Français</Link>
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => setLang("English")} asChild>
-          <Link to="https://yourbizflow.com">English</Link>
+          <Link to="/">English</Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

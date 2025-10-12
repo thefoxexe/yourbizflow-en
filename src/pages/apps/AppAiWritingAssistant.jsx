@@ -53,10 +53,9 @@ const AppAiWritingAssistant = () => {
   const pageUrl = "https://yourbizflow.com/apps/ai-writing-assistant";
   const title = "AI Writing Assistant | YourBizFlow";
   const description =
-    "Découvrez l'AI Writing Assistant de YourBizFlow. Générez du contenu professionnel en un clic : emails, posts LinkedIn, descriptions de produits, et plus encore.";
+    "Discover YourBizFlow's AI Writing Assistant. Generate professional content in one click: emails, LinkedIn posts, product descriptions, and more.";
   const imageUrl =
     "https://images.unsplash.com/photo-1677696795198-5ac0e21060ed?q=80&w=1200";
-
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -84,7 +83,7 @@ const AppAiWritingAssistant = () => {
         <meta name="description" content={description} />
         <meta
           name="keywords"
-          content="assistant d'écriture IA, générateur de contenu, rédaction automatique, marketing de contenu, YourBizFlow"
+          content="AI writing assistant, content generator, automatic writing, content marketing, YourBizFlow"
         />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -111,16 +110,16 @@ const AppAiWritingAssistant = () => {
               AI Writing Assistant
             </h1>
             <p className="text-lg md:text-xl text-white/60 max-w-3xl mx-auto mb-8">
-              Ne soyez plus jamais à court de mots. Générez du contenu de
-              qualité professionnelle en quelques secondes, de l'email de
-              prospection au post LinkedIn engageant.
+              Never be at a loss for words again. Generate content from
+              professional quality in seconds, from email to prospecting with an
+              engaging LinkedIn post.
             </p>
             <Link to="/signup">
               <Button
                 size="lg"
                 className="bg-white text-black hover:bg-white/90"
               >
-                Essayer l'Assistant IA <ArrowRight className="ml-2 w-5 h-5" />
+                Try the AI ​​Assistant <ArrowRight class="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </motion.div>
@@ -156,7 +155,7 @@ const AppAiWritingAssistant = () => {
                 <div className="absolute -inset-2 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-lg blur-xl opacity-20"></div>
                 <div className="relative bg-card p-4 rounded-lg shadow-lg">
                   <img
-                    alt="Capture d'écran de l'interface de l'AI Writing Assistant"
+                    alt="Screenshot of the AI ​​Writing Assistant interface"
                     className="rounded-md shadow-2xl"
                     src="https://images.unsplash.com/photo-1677696795198-5ac0e21060ed?q=80&w=800"
                   />
@@ -170,43 +169,41 @@ const AppAiWritingAssistant = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="space-y-6"
             >
-              <h2 className="text-3xl font-bold">Votre partenaire créatif</h2>
+              <h2 className="text-3xl font-bold">Your creative partner</h2>
               <p className="text-white/70">
-                L'AI Writing Assistant est intégré à YourBizFlow pour vous aider
-                là où vous en avez le plus besoin. Gagnez un temps précieux et
-                assurez-vous que chaque communication est percutante et
-                professionnelle.
+                AI Writing Assistant is integrated into YourBizFlow to help you
+                where you need it most. Save valuable time and make sure every
+                communication is impactful and professional.
               </p>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-green-400 mt-1 flex-shrink-0" />
                   <span>
                     <strong className="text-white">
-                      Génération multi-contenus :
+                      Multi-content generation:
                     </strong>{" "}
-                    Emails, posts pour réseaux sociaux, descriptions de
-                    produits, messages courts... L'IA s'adapte à vos besoins.
+                    Emails, social media posts, descriptions of products, short
+                    messages... AI adapts to your needs.
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-green-400 mt-1 flex-shrink-0" />
                   <span>
                     <strong className="text-white">
-                      Ton et style personnalisables :
+                      Customizable tone and style:
                     </strong>{" "}
-                    Choisissez le ton (formel, amical, persuasif...) et la
-                    longueur pour un résultat parfaitement adapté à votre
-                    audience.
+                    Choose the tone (formal, friendly, persuasive...) and the
+                    length for a result perfectly suited to your audience.
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-green-400 mt-1 flex-shrink-0" />
                   <span>
                     <strong className="text-white">
-                      Suggestions et réécriture :
+                      Suggestions and rewrite:
                     </strong>{" "}
-                    Obtenez plusieurs variantes pour chaque demande et affinez
-                    le texte généré jusqu'à ce qu'il soit parfait.
+                    Get multiple variations for each request and refine the
+                    generated text until it is perfect.
                   </span>
                 </li>
               </ul>
@@ -216,34 +213,34 @@ const AppAiWritingAssistant = () => {
 
         <section className="py-20 bg-white/5">
           <div className="container mx-auto px-6 text-center">
-            <h2 className="text-3xl font-bold mb-10">Cas d'usage principaux</h2>
+            <h2 className="text-3xl font-bold mb-10">Main use cases</h2>
             <div className="grid md:grid-cols-3 gap-8">
               <div className="bg-card p-8 rounded-lg">
                 <Mail className="w-12 h-12 text-violet-400 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold mb-2">
-                  Emails Professionnels
+                  Professional Emails
                 </h3>
                 <p className="text-white/60">
-                  Générez des emails de prospection, de relance ou de suivi qui
-                  captent l'attention et obtiennent des réponses.
+                  Generate prospecting, reminder or follow-up emails that
+                  capture attention and get responses.
                 </p>
               </div>
               <div className="bg-card p-8 rounded-lg">
                 <Users className="w-12 h-12 text-violet-400 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold mb-2">Posts LinkedIn</h3>
+                <h3 className="text-xl font-semibold mb-2">LinkedIn Posts</h3>
                 <p className="text-white/60">
-                  Créez des posts engageants pour développer votre marque
-                  personnelle ou promouvoir votre entreprise sur LinkedIn.
+                  Create engaging posts to grow your brand personal or promote
+                  your business on LinkedIn.
                 </p>
               </div>
               <div className="bg-card p-8 rounded-lg">
                 <BrainCircuit className="w-12 h-12 text-violet-400 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold mb-2">
-                  Descriptions de produits
+                  Product descriptions
                 </h3>
                 <p className="text-white/60">
-                  Rédigez des descriptions de produits vendeuses et optimisées
-                  pour le SEO qui convertissent les visiteurs en clients.
+                  Write salesy and optimized product descriptions for SEO that
+                  convert visitors into customers.
                 </p>
               </div>
             </div>
