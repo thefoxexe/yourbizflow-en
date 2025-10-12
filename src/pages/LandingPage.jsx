@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView, useSpring } from 'framer-motion';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -159,7 +160,7 @@ const TermsContent = () => (
   <>
     <p className="text-white/60">Dernière mise à jour : 11/10/2025</p>
     <p>Veuillez lire attentivement ces termes et conditions ("Termes", "Termes et Conditions") avant d'utiliser le site web et l'application YourBizFlow (le "Service") exploités par YourBizFlow.</p>
-    <p>Votre accès et votre utilisation du Service sont conditionnés par votre acceptation et votre respect de ces Termes. Ces Termes s'appliquent à tous les visiteurs, utilisateurs et autres personnes qui accèdent ou utilisent le Service.</p>
+    <p>Votre accès et votre utilisation du Service sont conditionnés par votre acceptation et votre respect de ces Termes. Ces Termes s'appliqueront à tous les visiteurs, utilisateurs et autres personnes qui accèdent ou utilisent le Service.</p>
 
     <h3 className="text-xl font-semibold mt-6 mb-3 text-white">1. Comptes</h3>
     <p>Lorsque vous créez un compte chez nous, vous devez nous fournir des informations exactes, complètes et à jour à tout moment. Le non-respect de cette obligation constitue une violation des Termes, ce qui peut entraîner la résiliation immédiate de votre compte sur notre Service. Vous êtes responsable de la protection du mot de passe que vous utilisez pour accéder au Service et de toute activité ou action effectuée sous votre mot de passe.</p>
@@ -354,6 +355,27 @@ const CtaSection = () => {
 };
 
 const ContactSection = () => {
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+
+    try {
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData).toString(),
+      });
+      setSubmitted(true);
+      form.reset(); // Clear the form fields
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      // Optionally, show an error message
+    }
+  };
+
   return (
     <section id="contact" className="py-20">
       <div className="container mx-auto px-6 max-w-2xl">
@@ -361,7 +383,7 @@ const ContactSection = () => {
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">Contactez-nous</h2>
           <p className="text-white/60 max-w-2xl mx-auto mb-8">Une question ? Une suggestion ? Nous sommes à votre écoute.</p>
         </div>
-        <form name="contact" method="POST" data-netlify="true" className="space-y-6">
+        <form name="contact" method="POST" data-netlify="true" onSubmit={handleSubmit} className="space-y-6">
           <input type="hidden" name="form-name" value="contact" />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
@@ -382,6 +404,18 @@ const ContactSection = () => {
               Envoyer le message
             </Button>
           </div>
+          <AnimatePresence>
+            {submitted && (
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="text-green-400 text-center mt-4"
+              >
+                Merci de nous avoir contactés ! Nous vous répondrons très bientôt.
+              </motion.p>
+            )}
+          </AnimatePresence>
         </form>
       </div>
     </section>
