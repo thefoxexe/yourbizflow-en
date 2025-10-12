@@ -1,12 +1,11 @@
-
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import React from "react";
+import { motion } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
 import { MinimalFooter } from "@/components/ui/minimal-footer";
-import { Helmet } from 'react-helmet';
-import { PublicHeader } from '@/pages/LandingPage';
-import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { Helmet } from "react-helmet";
+import { PublicHeader } from "@/pages/LandingPage";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 const BlogPost6 = () => {
   const navigate = useNavigate();
@@ -15,46 +14,72 @@ const BlogPost6 = () => {
     e.preventDefault();
     navigate(href);
   };
-  
+
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": "L'Importance du Suivi de Temps pour les Freelances (et Comment Bien le Faire)",
-    "description": "Découvrez pourquoi le suivi de temps est crucial pour les freelances, que vous facturiez à l'heure ou au projet. Améliorez votre rentabilité et votre productivité.",
-    "image": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1200",
-    "author": {
+    headline:
+      "The Importance of Time Tracking for Freelancers (and How to Do It Right)",
+    description:
+      "Find out why time tracking is crucial for freelancers, whether you charge by the hour or by the project. Improve your profitability and productivity.",
+    image:
+      "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1200",
+    author: {
       "@type": "Organization",
-      "name": "YourBizFlow"
+      name: "YourBizFlow",
     },
-    "publisher": {
+    publisher: {
       "@type": "Organization",
-      "name": "YourBizFlow",
-      "logo": {
+      name: "YourBizFlow",
+      logo: {
         "@type": "ImageObject",
-        "url": "https://horizons-cdn.hostinger.com/58cbc4ed-cb6f-4ebd-abaf-62892e9ae2c6/6b69cc214c03819301dd8cb8579b78dc.png"
-      }
+        url: "https://horizons-cdn.hostinger.com/58cbc4ed-cb6f-4ebd-abaf-62892e9ae2c6/6b69cc214c03819301dd8cb8579b78dc.png",
+      },
     },
-    "datePublished": "2025-09-15",
-    "dateModified": "2025-09-15"
+    datePublished: "2025-09-15",
+    dateModified: "2025-09-15",
   };
-  const pageUrl = "https://yourbizflow.com/blog/l-importance-du-suivi-de-temps-pour-les-freelances";
+  const pageUrl =
+    "https://yourbizflow.com/blog/l-importance-du-suivi-de-temps-pour-les-freelances";
 
   return (
     <div className="w-full min-h-screen text-white bg-[#030303] flex flex-col">
       <Helmet>
-        <title>L'Importance du Suivi de Temps pour Freelances | YourBizFlow Blog</title>
-        <meta name="description" content="Découvrez pourquoi le suivi de temps est crucial pour les freelances, que vous facturiez à l'heure ou au projet. Améliorez votre rentabilité et votre productivité." />
-        <meta name="keywords" content="suivi de temps, time tracking, freelance, rentabilité, productivité, YourBizFlow" />
-        <meta property="og:title" content="L'Importance du Suivi de Temps pour Freelances | YourBizFlow Blog" />
-        <meta property="og:description" content="Découvrez pourquoi le suivi de temps est crucial pour les freelances, que vous facturiez à l'heure ou au projet." />
+        <title>
+          The Importance of Time Tracking for Freelancers | YourBizFlow Blog
+        </title>
+        <meta
+          name="description"
+          content="Find out why time tracking is crucial for freelancers, whether you charge by the hour or by the project. Improve your profitability and productivity."
+        />
+        <meta
+          name="keywords"
+          content="time tracking, time tracking, freelance, profitability, productivity, YourBizFlow"
+        />
+        <meta
+          property="og:title"
+          content="The Importance of Time Tracking for Freelancers | YourBizFlow Blog"
+        />
+        <meta
+          property="og:description"
+          content="Find out why time tracking is crucial for freelancers, whether you charge by the hour or by the project."
+        />
         <meta property="og:url" content={pageUrl} />
         <meta property="og:type" content="article" />
         <meta property="og:image" content={articleSchema.image} />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="L'Importance du Suivi de Temps pour Freelances | YourBizFlow Blog" />
-        <meta name="twitter:description" content="Découvrez pourquoi le suivi de temps est crucial pour les freelances, que vous facturiez à l'heure ou au projet." />
+        <meta
+          name="twitter:title"
+          content="The Importance of Time Tracking for Freelancers | YourBizFlow Blog"
+        />
+        <meta
+          name="twitter:description"
+          content="Find out why time tracking is crucial for freelancers, whether you charge by the hour or by the project."
+        />
         <meta name="twitter:image" content={articleSchema.image} />
-        <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
+        <script type="application/ld+json">
+          {JSON.stringify(articleSchema)}
+        </script>
       </Helmet>
 
       <PublicHeader onNavClick={handleNavClick} />
@@ -62,9 +87,10 @@ const BlogPost6 = () => {
       <main className="flex-grow pt-24">
         <div className="relative h-64 md:h-96 w-full">
           <img
-            alt="Chronomètre et ordinateur portable sur un bureau de freelance moderne"
+            alt="Stopwatch and laptop on modern freelance desk"
             className="w-full h-full object-cover"
-           src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1200" />
+            src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1200"
+          />
           <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -73,48 +99,107 @@ const BlogPost6 = () => {
               className="text-center px-4"
             >
               <h1 className="text-3xl md:text-5xl font-bold text-white max-w-4xl">
-                L'Importance du Suivi de Temps pour les Freelances (et Comment Bien le Faire)
+                The Importance of Time Tracking for Freelancers (and How to Do
+                It Right)
               </h1>
-              <p className="text-lg text-white/80 mt-4">15 Septembre 2025 &bull; 5 min de lecture</p>
+              <p className="text-lg text-white/80 mt-4">
+                September 15, 2025 &bull; 5 min read
+              </p>
             </motion.div>
           </div>
         </div>
 
         <div className="container mx-auto px-6 py-16 max-w-3xl">
           <article className="prose prose-invert lg:prose-xl mx-auto">
-            <p>Pour beaucoup de freelances, le "time tracking" semble être une contrainte, surtout pour ceux qui facturent au projet. Pourtant, c'est l'un des outils les plus puissants pour comprendre et optimiser son activité. Que vous soyez payé à l'heure ou non, savoir où passe votre temps est fondamental.</p>
-            
-            <h2>1. Évaluer la Rentabilité Réelle de vos Projets</h2>
-            <p>Vous avez vendu un projet 2000€. Bonne affaire ? Impossible à dire sans savoir combien de temps vous y avez consacré. Si vous y avez passé 100 heures, votre taux horaire réel n'est que de 20€. Le suivi de temps vous permet de calculer la rentabilité de chaque projet et d'ajuster vos tarifs pour les prochains.</p>
+            <p>
+              For many freelancers, time tracking seems to be a constraint,
+              especially for those who bill per project. However, it is one of
+              the most powerful tools for understanding and optimizing your
+              activity. Whether you're paid hourly or not, knowing where your
+              time is spent is fundamental.
+            </p>
 
-            <h2>2. Créer des Devis Plus Précis</h2>
-            <p>Comment estimer le temps nécessaire pour un futur projet ? En vous basant sur les données de vos projets passés. Un suivi de temps rigoureux vous donne une base de données fiable pour estimer vos futurs devis avec une précision redoutable, évitant ainsi de sous-évaluer votre travail.</p>
+            <h2>1. Evaluate the Real Profitability of Your Projects</h2>
+            <p>
+              You sold a project for €2000. Good deal? Impossible to say without
+              knowing how much time you spent on it. If you spent 100 hours
+              there, your actual hourly rate is only €20. Time tracking allows
+              you to calculate the profitability of each project and adjust your
+              rates for future ones.
+            </p>
 
-            <img alt="Graphique de YourBizFlow montrant la répartition du temps passé sur différents projets" className="rounded-lg my-8" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800" />
+            <h2>2. Create More Accurate Quotes</h2>
+            <p>
+              How to estimate the time needed for a future project? Based on
+              data from your past projects. Rigorous time tracking gives you a
+              reliable database to estimate your future quotes with formidable
+              precision, thus avoiding undervaluing your work.
+            </p>
 
-            <h2>3. Justifier vos Factures et Gagner en Transparence</h2>
-            <p>Même si vous facturez au forfait, pouvoir fournir un rapport détaillé du temps passé sur chaque grande tâche (conception, développement, révisions...) est un gage de professionnalisme et de transparence. Cela renforce la confiance de votre client et justifie la valeur de votre travail.</p>
+            <img
+              alt="Graph from YourBizFlow showing the breakdown of time spent on different projects"
+              className="rounded-lg my-8"
+              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800"
+            />
+
+            <h2>3. Justify your Invoices and Gain Transparency</h2>
+            <p>
+              Even if you charge on a flat rate basis, being able to provide a
+              detailed report of the time spent on each major task (design,
+              development, revisions, etc.) is a guarantee of professionalism
+              and transparency. This builds trust with your client and justifies
+              the value of your work.
+            </p>
 
             <div className="my-12 p-8 bg-card/50 border border-primary/30 rounded-xl text-center">
-              <h3 className="text-2xl font-bold text-white">Sachez exactement où va votre temps.</h3>
-              <p className="text-white/80 mt-2 mb-6">Le module de Suivi de Temps de YourBizFlow vous permet de lancer un chronomètre pour chaque tâche et de générer des rapports détaillés pour vos factures.</p>
+              <h3 className="text-2xl font-bold text-white">
+                Know exactly where your time is going.
+              </h3>
+              <p className="text-white/80 mt-2 mb-6">
+                The YourBizFlow Time Tracking module allows you to start a timer
+                for each task and generate detailed reports for your invoices.
+              </p>
               <Link to="/signup">
-                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                  Optimiser mon temps avec YourBizFlow <ArrowRight className="w-5 h-5 ml-2" />
+                <Button
+                  size="lg"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90"
+                >
+                  Optimize my time with YourBizFlow{" "}
+                  <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
             </div>
 
-            <h2>4. Identifier les Tâches Chronophages</h2>
-            <p>En analysant vos données de suivi de temps, vous pourriez réaliser que vous passez 30% de votre temps sur des tâches administratives non facturables. Cette prise de conscience est la première étape pour optimiser, déléguer ou automatiser ces tâches et ainsi augmenter votre temps facturable.</p>
+            <h2>4. Identify Time-consuming Tasks</h2>
+            <p>
+              By analyzing your time tracking data, you might realize that you
+              spend 30% of your time on non-billable administrative tasks. This
+              awareness is the first step to optimizing, delegating or
+              automating these tasks and thus increasing your billable time.
+            </p>
 
-            <h2>Comment bien suivre son temps ?</h2>
+            <h2>How to track your time?</h2>
             <ul>
-              <li><strong>Soyez discipliné :</strong> Lancez un minuteur pour chaque tâche, même les plus courtes.</li>
-              <li><strong>Soyez précis :</strong> Associez chaque entrée de temps à un projet et à une tâche spécifique.</li>
-              <li><strong>Utilisez un outil intégré :</strong> Un outil comme YourBizFlow, qui lie le suivi de temps à vos projets et à votre facturation, vous fera gagner un temps considérable par rapport à des applications séparées.</li>
+              <li>
+                <strong>Be disciplined:</strong> Start a timer for every task,
+                even the shortest ones.
+              </li>
+              <li>
+                <strong>Be specific:</strong> Associate each time entry with a
+                specific project and task.
+              </li>
+              <li>
+                <strong>Use an integrated tool:</strong> A tool like
+                YourBizFlow, which links time tracking to your projects and
+                invoicing, will save you considerable time compared to separate
+                applications.
+              </li>
             </ul>
-            <p>Le suivi de temps n'est pas là pour vous fliquer, mais pour vous éclairer. C'est un investissement minime en discipline pour un retour sur investissement énorme en termes de rentabilité et de productivité.</p>
+            <p>
+              Time tracking is not there to fool you, but to enlighten you. It's
+              a minimal investment in discipline for a huge return on investment
+              in profitability and productivity.
+            </p>
           </article>
         </div>
       </main>

@@ -89,28 +89,28 @@ const About = () => {
   return (
     <div className="w-full min-h-screen text-white bg-[#030303] flex flex-col">
       <Helmet>
-        <title>À Propos de YourBizFlow - Notre Mission</title>
+        <title>About YourBizFlow - Our Mission</title>
         <meta
           name="description"
-          content="Découvrez la mission de YourBizFlow : simplifier la gestion d'entreprise pour les indépendants et les PME avec une plateforme tout-en-un."
+          content="Discover YourBizFlow's mission: simplifying business management for freelancers and SMEs with an all-in-one platform."
         />
         <meta
           name="keywords"
-          content="YourBizFlow, mission, à propos, gestion d'entreprise, PME, freelance"
+          content="YourBizFlow, mission, about, business management, SME, freelance"
         />
       </Helmet>
 
       <LegalDialog
         isOpen={isPrivacyOpen}
         onOpenChange={setIsPrivacyOpen}
-        title="Politique de Confidentialité"
+        title="Privacy Policy"
       >
         <PrivacyPolicyContent />
       </LegalDialog>
       <LegalDialog
         isOpen={isTermsOpen}
         onOpenChange={setIsTermsOpen}
-        title="Termes et Conditions"
+        title="Terms and Conditions"
       >
         <TermsContent />
       </LegalDialog>
@@ -126,28 +126,27 @@ const About = () => {
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
               <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
-                Notre mission : <br /> simplifier votre succès.
+                Our mission: <br /> simplify your success.
               </h1>
               <div className="space-y-6 text-base md:text-lg text-white/70 leading-relaxed">
                 <p>
-                  Chez YourBizFlow, nous croyons que la gestion d’entreprise
-                  doit être simple, efficace et accessible à tous.
+                  At YourBizFlow, we believe that business management must be
+                  simple, effective and accessible to all.
                 </p>
                 <p>
-                  Notre plateforme réunit en un seul espace les outils
-                  essentiels pour piloter votre activité : facturation, gestion
-                  client, suivi de projet, analytique, CRM, et bien plus encore.
+                  Our platform brings together the tools in a single space
+                  essential to manage your activity: invoicing, management
+                  customer, project monitoring, analytics, CRM, and much more.
                 </p>
                 <p>
-                  Conçue pour les indépendants comme pour les entreprises,
-                  YourBizFlow automatise les tâches chronophages et vous permet
-                  de vous concentrer sur l’essentiel : le développement de votre
-                  business.
+                  Designed for independents and businesses alike, YourBizFlow
+                  automates time-consuming tasks and allows you to concentrate
+                  on the essential: the development of your business.
                 </p>
                 <p>
-                  Avec une interface intuitive, des intégrations modernes et des
-                  fonctionnalités intelligentes, YourBizFlow est le partenaire
-                  digital qui accompagne votre croissance au quotidien.
+                  With an intuitive interface, modern integrations and
+                  intelligent features, YourBizFlow is the partner digital that
+                  supports your daily growth.
                 </p>
               </div>
             </motion.div>
@@ -159,7 +158,7 @@ const About = () => {
             >
               <img
                 className="w-full h-full object-cover"
-                alt="Équipe travaillant dans un bureau moderne et lumineux"
+                alt="Team working in a modern, bright office"
                 src="https://images.unsplash.com/photo-1560821630-1a7c45c3286e"
               />
             </motion.div>
