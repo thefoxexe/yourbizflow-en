@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,6 +9,7 @@ import { Helmet } from 'react-helmet';
 import { FcGoogle } from 'react-icons/fc';
 import { supabase } from '@/lib/customSupabaseClient';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '@/contexts/SupabaseAuthContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -16,25 +18,10 @@ const Login = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { signInWithGoogle } = useAuth();
 
   const signIn = async (email, password) => {
     return supabase.auth.signInWithPassword({ email, password });
-  };
-
-  const signInWithGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/dashboard`,
-      },
-    });
-    if (error) {
-      toast({
-        variant: "destructive",
-        title: t('password_reset_error_title'),
-        description: error.message,
-      });
-    }
   };
 
   const handleSignIn = async (e) => {
@@ -62,7 +49,7 @@ const Login = () => {
         title: "Connexion réussie!",
         description: "Bienvenue sur votre tableau de bord.",
       });
-      navigate('/dashboard', { replace: true });
+      // The redirection is now handled by the AuthRedirect component in App.jsx
     }
   };
 

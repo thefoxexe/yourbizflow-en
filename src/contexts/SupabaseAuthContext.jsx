@@ -1,5 +1,7 @@
+
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/customSupabaseClient';
+import { useToast } from '@/components/ui/use-toast';
 
 const AuthContext = createContext(null);
 
@@ -7,6 +9,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { toast } = useToast();
 
     const signOut = async () => {
         const { error } = await supabase.auth.signOut();
@@ -72,6 +75,34 @@ export const AuthProvider = ({ children }) => {
         };
     }, [refreshProfile]);
 
+    const signUp = async (email, password, metadata) => {
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                data: metadata,
+                emailRedirectTo: `${window.location.origin}/dashboard`,
+            },
+        });
+        return { user: data.user, error };
+    };
+
+    const signInWithGoogle = async () => {
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: `${window.location.origin}/dashboard`,
+            },
+        });
+        if (error) {
+            toast({
+                variant: "destructive",
+                title: "Erreur d'authentification",
+                description: error.message,
+            });
+        }
+    };
+
     const getPlan = () => profile?.subscription_plan?.name || 'Free';
 
     const hasPermission = (requiredPlan) => {
@@ -114,6 +145,8 @@ export const AuthProvider = ({ children }) => {
         profile,
         loading,
         signOut,
+        signUp,
+        signInWithGoogle,
         getPlan,
         hasPermission,
         isModuleActive,

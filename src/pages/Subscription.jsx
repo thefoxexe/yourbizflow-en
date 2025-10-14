@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+
+    import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '@/lib/customSupabaseClient';
 import { useToast } from '@/components/ui/use-toast';
@@ -219,7 +220,7 @@ const Subscription = () => {
               <h2 className="text-2xl font-bold text-foreground mb-2">{t(`plan_${plan.name.toLowerCase()}`)}</h2>
               <div className="text-4xl font-extrabold text-foreground mb-6">
                 {price}{currencySymbol}
-                {plan.name !== 'Free' && <span className="text-lg font-medium text-muted-foreground">/{billingCycle === 'monthly' ? t('monthly').toLowerCase() : t('yearly').toLowerCase()}</span>}
+                {plan.name !== 'Free' && <span className="text-lg font-medium text-muted-foreground">/{billingCycle === 'monthly' ? t('monthly_short') : t('yearly_short')}</span>}
               </div>
               <ul className="space-y-3 mb-4 flex-grow">
                 {featureKeys.map((featureKey, i) => (
@@ -250,3 +251,4 @@ const Subscription = () => {
 };
 
 export default Subscription;
+  

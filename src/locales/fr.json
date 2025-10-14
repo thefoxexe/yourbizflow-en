@@ -1,4 +1,5 @@
-{
+
+    {
   "app_name": "YourBizFlow",
   "login": "Connexion",
   "signup": "Inscription",
@@ -1151,5 +1152,13 @@
   "automated_reminders.risk_score": "Score de Risque",
   "automated_reminders.data_load_error": "Impossible de charger les données des rappels automatiques.",
   "automated_reminders.reminder_sent_toast": "Rappel Envoyé",
-  "automated_reminders.reminder_sent_toast_desc": "Un rappel pour la facture #{{invoiceId}} a été envoyé."
+  "automated_reminders.reminder_sent_toast_desc": "Un rappel pour la facture #{{invoiceId}} a été envoyé.",
+  "subscription_page_title": "Choisissez votre plan",
+  "subscription_page_subtitle": "Trouvez le plan parfait pour accompagner la croissance de votre entreprise.",
+  "monthly": "Mensuel",
+  "yearly": "Annuel",
+  "monthly_short": "mois",
+  "yearly_short": "an",
+  "bestseller": "Meilleur choix"
 }
+  

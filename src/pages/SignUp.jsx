@@ -30,13 +30,19 @@ const SignUp = () => {
     }
     setIsSubmitting(true);
     const { error } = await signUp(email, password, { full_name: fullName });
+    setIsSubmitting(false);
     if (error) {
-      setIsSubmitting(false);
-    } else {
       toast({
-        title: "Inscription réussie !",
-        description: "Veuillez vérifier votre email pour confirmer votre compte.",
+        variant: "destructive",
+        title: "Erreur d'inscription",
+        description: error.message,
       });
+    } else {
+      // Removed the toast notification for email verification
+      // toast({
+      //   title: "Inscription réussie !",
+      //   description: "Veuillez vérifier votre email pour confirmer votre compte.",
+      // });
     }
   };
 

@@ -1,3 +1,4 @@
+
 {
   "app_name": "YourBizFlow",
   "login": "Login",
@@ -1151,5 +1152,12 @@
   "automated_reminders.risk_score": "Risk Score",
   "automated_reminders.data_load_error": "Could not load automated reminders data.",
   "automated_reminders.reminder_sent_toast": "Reminder Sent",
-  "automated_reminders.reminder_sent_toast_desc": "A reminder for invoice #{{invoiceId}} has been sent."
+  "automated_reminders.reminder_sent_toast_desc": "A reminder for invoice #{{invoiceId}} has been sent.",
+  "subscription_page_title": "Choose Your Plan",
+  "subscription_page_subtitle": "Find the perfect plan to support your business's growth.",
+  "monthly": "Monthly",
+  "yearly": "Yearly",
+  "monthly_short": "mo",
+  "yearly_short": "yr",
+  "bestseller": "Bestseller"
 }

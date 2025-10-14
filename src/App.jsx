@@ -136,13 +136,13 @@ const ProtectedRoute = ({ children }) => {
         return <Navigate to="/welcome" state={{ from: location }} replace />;
     }
     
-    const needsSubscription = profile === null;
+    const hasSubscription = !!profile?.subscription_plan_id;
 
-    if (needsSubscription && location.pathname !== '/subscription') {
+    if (!hasSubscription && location.pathname !== '/subscription') {
         return <Navigate to="/subscription" replace />;
     }
 
-    if (!needsSubscription && location.pathname === '/subscription') {
+    if (hasSubscription && location.pathname === '/subscription') {
         return <Navigate to="/dashboard" replace />;
     }
 
@@ -165,7 +165,7 @@ const ProtectedModule = ({ children, requiredPermission, moduleKey }) => {
 
 
 const AppRoutes = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, profile } = useAuth();
   const [searchParams] = useSearchParams();
   const isPaymentSuccess = searchParams.has('session_id');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -194,6 +194,15 @@ const AppRoutes = () => {
     </AppLayout>
   );
 
+  // Modified AuthRedirect to handle non-logged in state more directly for login/signup pages
+  const AuthRedirect = ({ PageComponent }) => {
+    if (!user) {
+      return <PageComponent />;
+    }
+    const hasSubscription = !!profile?.subscription_plan_id;
+    return hasSubscription ? <Navigate to="/dashboard" /> : <Navigate to="/subscription" />;
+  };
+
   return (
     <Routes>
       <Route path="/welcome" element={<LandingPage />} />
@@ -205,8 +214,8 @@ const AppRoutes = () => {
       <Route path="/blog/automatiser-les-taches-repetitives-pour-gagner-du-temps" element={<BlogPost4 />} />
       <Route path="/blog/creer-des-devis-qui-convertissent-a-coup-sur" element={<BlogPost5 />} />
       <Route path="/blog/l-importance-du-suivi-de-temps-pour-les-freelances" element={<BlogPost6 />} />
-      <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
-      <Route path="/signup" element={user ? <Navigate to="/dashboard" /> : <SignUp />} />
+      <Route path="/login" element={<AuthRedirect PageComponent={Login} />} />
+      <Route path="/signup" element={<AuthRedirect PageComponent={SignUp} />} />
       <Route path="/password-reset" element={<PasswordReset />} />
       <Route path="/email-change-confirmation" element={<EmailChangeConfirmation />} />
 
