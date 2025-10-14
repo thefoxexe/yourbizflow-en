@@ -8,11 +8,13 @@ import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { useTranslation } from 'react-i18next';
 
 const CloudStorage = () => {
   const { toast } = useToast();
   const { user, hasPermission } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -27,12 +29,12 @@ const CloudStorage = () => {
       .order('created_at', { ascending: false });
 
     if (error) {
-      toast({ variant: 'destructive', title: 'Erreur', description: 'Impossible de charger les fichiers.' });
+      toast({ variant: 'destructive', title: t('password_reset_error_title'), description: t('notes.load_error') });
     } else {
       setFiles(data);
     }
     setLoading(false);
-  }, [user, toast]);
+  }, [user, toast, t]);
 
   useEffect(() => {
     fetchFiles();
@@ -40,17 +42,17 @@ const CloudStorage = () => {
 
   const handleCreateNote = async () => {
     if (!hasPermission('drive_write')) {
-      toast({ variant: 'destructive', title: 'Accès refusé', description: 'Veuillez mettre à niveau votre abonnement.' });
+      toast({ variant: 'destructive', title: t('notes.permission_denied_title'), description: t('notes.permission_denied_desc') });
       return;
     }
     const { data, error } = await supabase
       .from('storage_items')
-      .insert({ user_id: user.id, name: 'Nouvelle note', type: 'note', content: '' })
+      .insert({ user_id: user.id, name: t('notes.new_note'), type: 'note', content: '' })
       .select()
       .single();
 
     if (error) {
-      toast({ variant: 'destructive', title: 'Erreur', description: "La note n'a pas pu être créée." });
+      toast({ variant: 'destructive', title: t('password_reset_error_title'), description: t('notes.create_error') });
     } else {
       navigate(`/drive/note/${data.id}`);
     }
@@ -59,17 +61,17 @@ const CloudStorage = () => {
   const handleDelete = async (id) => {
     const { error } = await supabase.from('storage_items').delete().eq('id', id);
     if (error) {
-      toast({ variant: 'destructive', title: 'Erreur', description: "Le fichier n'a pas pu être supprimé." });
+      toast({ variant: 'destructive', title: t('password_reset_error_title'), description: t('notes.delete_error') });
     } else {
-      toast({ title: 'Succès', description: 'Fichier supprimé.' });
+      toast({ title: t('password_reset_success_title'), description: t('notes.delete_success') });
       fetchFiles();
     }
   };
 
   const handleAiAnalysis = () => {
     toast({
-      title: "🚧 Bientôt disponible !",
-      description: "L'analyse par IA est en cours de développement.",
+      title: t('notes.coming_soon_title'),
+      description: t('notes.coming_soon_desc'),
     });
   };
 
@@ -81,19 +83,19 @@ const CloudStorage = () => {
     <div className="space-y-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Drive</h1>
-          <p className="text-muted-foreground">Votre espace de stockage sécurisé.</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{t('notes.title')}</h1>
+          <p className="text-muted-foreground">{t('notes.subtitle')}</p>
         </div>
         <Button onClick={handleCreateNote}>
           <Plus className="w-4 h-4 mr-2" />
-          Nouvelle note
+          {t('notes.new_note_button')}
         </Button>
       </motion.div>
 
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
         <Input
-          placeholder="Rechercher dans le drive..."
+          placeholder={t('notes.search_placeholder')}
           className="pl-10 w-full"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -132,13 +134,13 @@ const CloudStorage = () => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
                     <DropdownMenuItem onClick={() => navigate(`/drive/note/${file.id}`)}>
-                      <Edit className="w-4 h-4 mr-2" /> Ouvrir
+                      <Edit className="w-4 h-4 mr-2" /> {t('notes.open')}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={handleAiAnalysis}>
-                      <BrainCircuit className="w-4 h-4 mr-2" /> Analyser (IA)
+                      <BrainCircuit className="w-4 h-4 mr-2" /> {t('notes.analyze_ai')}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleDelete(file.id)} className="text-red-500 focus:text-red-500">
-                      <Trash2 className="w-4 h-4 mr-2" /> Supprimer
+                      <Trash2 className="w-4 h-4 mr-2" /> {t('page_billing_action_delete')}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -148,7 +150,7 @@ const CloudStorage = () => {
         </div>
         {!loading && filteredFiles.length === 0 && (
           <div className="text-center py-16 text-muted-foreground">
-            <p>{searchTerm ? "Aucun fichier ne correspond à votre recherche." : "Votre drive est vide. Créez votre première note !"}</p>
+            <p>{searchTerm ? t('notes.no_search_results') : t('notes.empty_drive')}</p>
           </div>
         )}
       </motion.div>

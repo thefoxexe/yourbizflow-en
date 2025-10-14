@@ -5,6 +5,7 @@ import { MinimalFooter } from "@/components/ui/minimal-footer";
 import { Helmet } from 'react-helmet';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { PublicHeader } from '@/pages/LandingPage';
+import { useTranslation } from 'react-i18next';
 
 const LegalDialog = ({ isOpen, onOpenChange, title, children }) => {
   return (
@@ -40,6 +41,7 @@ const About = () => {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   const handleNavClick = (e, href) => {
     e.preventDefault();
@@ -73,15 +75,14 @@ const About = () => {
   return (
     <div className="w-full min-h-screen text-white bg-[#030303] flex flex-col">
       <Helmet>
-        <title>À Propos de YourBizFlow - Notre Mission</title>
+        <title>{t('about')} - {t('app_name')}</title>
         <meta name="description" content="Découvrez la mission de YourBizFlow : simplifier la gestion d'entreprise pour les indépendants et les PME avec une plateforme tout-en-un." />
-        <meta name="keywords" content="YourBizFlow, mission, à propos, gestion d'entreprise, SaaS, PME, freelance" />
       </Helmet>
 
-      <LegalDialog isOpen={isPrivacyOpen} onOpenChange={setIsPrivacyOpen} title="Politique de Confidentialité">
+      <LegalDialog isOpen={isPrivacyOpen} onOpenChange={setIsPrivacyOpen} title={t('footer_privacy')}>
         <PrivacyPolicyContent />
       </LegalDialog>
-      <LegalDialog isOpen={isTermsOpen} onOpenChange={setIsTermsOpen} title="Termes et Conditions">
+      <LegalDialog isOpen={isTermsOpen} onOpenChange={setIsTermsOpen} title={t('footer_terms')}>
         <TermsContent />
       </LegalDialog>
 
@@ -95,22 +96,13 @@ const About = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
-                Notre mission : <br /> simplifier votre succès.
+              <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70" dangerouslySetInnerHTML={{ __html: t('page_about_title') }}>
               </h1>
               <div className="space-y-6 text-base md:text-lg text-white/70 leading-relaxed">
-                <p>
-                  Chez YourBizFlow, nous croyons que la gestion d’entreprise doit être simple, efficace et accessible à tous.
-                </p>
-                <p>
-                  Notre plateforme réunit en un seul espace les outils essentiels pour piloter votre activité : facturation, gestion client, suivi de projet, analytique, CRM, et bien plus encore.
-                </p>
-                <p>
-                  Conçue pour les indépendants comme pour les entreprises, YourBizFlow automatise les tâches chronophages et vous permet de vous concentrer sur l’essentiel : le développement de votre business.
-                </p>
-                <p>
-                  Avec une interface intuitive, des intégrations modernes et des fonctionnalités intelligentes, YourBizFlow est le partenaire digital qui accompagne votre croissance au quotidien.
-                </p>
+                <p>{t('page_about_p1')}</p>
+                <p>{t('page_about_p2')}</p>
+                <p>{t('page_about_p3')}</p>
+                <p>{t('page_about_p4')}</p>
               </div>
             </motion.div>
             <motion.div
@@ -121,7 +113,7 @@ const About = () => {
             >
               <img
                 className="w-full h-full object-cover"
-                alt="Équipe travaillant dans un bureau moderne et lumineux"
+                alt={t('page_about_image_alt')}
                src="https://images.unsplash.com/photo-1560821630-1a7c45c3286e" />
             </motion.div>
           </div>

@@ -1,257 +1,178 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '@/lib/customSupabaseClient';
-import { PlusCircle, Edit, MoreVertical, Trash2, Loader2, Wrench, Zap } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Package, PlusCircle, MoreVertical, Edit, Trash2 } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { useToast } from '@/components/ui/use-toast';
-import { Dialog, DialogTrigger } from '@/components/ui/dialog';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import ProductForm, { initialProductState } from '@/components/ProductForm';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
+const ProductDialog = ({ isOpen, onOpenChange, onSave, product, t }) => {
+  const [name, setName] = useState('');
+  const [salePrice, setSalePrice] = useState('');
+  const [costPrice, setCostPrice] = useState('');
+  const [stock, setStock] = useState('');
+
+  useEffect(() => {
+    if (product) {
+      setName(product.name);
+      setSalePrice(product.sale_price || '');
+      setCostPrice(product.cost_of_goods || '');
+      setStock(product.stock === null || product.stock === undefined ? '' : product.stock);
+    } else {
+      setName(''); setSalePrice(''); setCostPrice(''); setStock('');
+    }
+  }, [product, isOpen]);
+
+  const handleSave = () => {
+    onSave({ 
+        name, 
+        sale_price: parseFloat(salePrice) || 0, 
+        cost_of_goods: parseFloat(costPrice) || 0,
+        stock: stock === '' ? null : parseInt(stock, 10)
+    });
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader><DialogTitle>{product ? t('product_management.dialog_edit_title') : t('product_management.dialog_new_title')}</DialogTitle></DialogHeader>
+        <div className="py-4 grid grid-cols-2 gap-4">
+          <div className="col-span-2"><Label htmlFor="name">{t('product_management.dialog_name')}</Label><Input id="name" value={name} onChange={e => setName(e.target.value)} /></div>
+          <div><Label htmlFor="salePrice">{t('product_management.dialog_sale_price')}</Label><Input id="salePrice" type="number" value={salePrice} onChange={e => setSalePrice(e.target.value)} /></div>
+          <div><Label htmlFor="costPrice">{t('product_management.dialog_cost_price')}</Label><Input id="costPrice" type="number" value={costPrice} onChange={e => setCostPrice(e.target.value)} /></div>
+          <div className="col-span-2"><Label htmlFor="stock">{t('product_management.dialog_stock')}</Label><Input id="stock" type="number" value={stock} onChange={e => setStock(e.target.value)} placeholder="Leave blank for no tracking" /></div>
+        </div>
+        <DialogFooter>
+          <DialogClose asChild><Button variant="outline">{t('dialog_cancel')}</Button></DialogClose>
+          <Button onClick={handleSave}>{t('dialog_save')}</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 
 const ProductManagement = () => {
-  const { user, profile, getPlan } = useAuth();
+  const { user, profile } = useAuth();
   const { toast } = useToast();
-  const navigate = useNavigate();
+  const { t } = useTranslation();
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
-  const plan = getPlan();
-  const isFreePlan = plan === 'Free';
-  const productLimit = 2;
-  const canAddProduct = !isFreePlan || products.length < productLimit;
-
-  const currencySymbol = useMemo(() => (profile?.currency === 'usd' ? '$' : profile?.currency === 'chf' ? 'CHF' : '€'), [profile]);
+  const currency = useMemo(() => (profile?.currency === 'usd' ? '$' : profile?.currency === 'chf' ? 'CHF' : '€'), [profile]);
 
   const fetchProducts = useCallback(async () => {
     if (!user) return;
-    setIsLoading(true);
-    const { data, error } = await supabase
-      .from('cost_calculator_products')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false });
-
+    setLoading(true);
+    const { data, error } = await supabase.from('cost_calculator_products').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
     if (error) {
-      toast({ variant: "destructive", title: "Erreur", description: "Impossible de charger les produits." });
+      toast({ variant: 'destructive', title: t('toast_error_title'), description: t('product_management.load_error') });
     } else {
-      setProducts(data.map(p => {
-          const newP = { ...p };
-          for(const key in newP) {
-              if (typeof newP[key] === 'number' && key !== 'id' && key !== 'user_id' && key !== 'stock') {
-                  newP[key] = String(newP[key]).replace('.', ',');
-              }
-          }
-          return newP;
-      }));
+      setProducts(data);
     }
-    setIsLoading(false);
-  }, [user, toast]);
+    setLoading(false);
+  }, [user, toast, t]);
 
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
-  const handleSaveProduct = async (productToSave) => {
-    if (!productToSave.name.trim()) {
-      toast({ variant: "destructive", title: "Nom de produit requis" });
-      return;
-    }
-
-    const productData = {
-      ...productToSave,
-      user_id: user.id,
-    };
-
+  const handleSaveProduct = async (productData) => {
     let error;
-    if (productToSave.id) {
-      ({ error } = await supabase.from('cost_calculator_products').update(productData).eq('id', productToSave.id));
+    if (editingProduct) {
+      ({ error } = await supabase.from('cost_calculator_products').update(productData).eq('id', editingProduct.id));
     } else {
-      if (!canAddProduct) {
-        toast({ variant: "destructive", title: "Limite atteinte", description: "Passez à un plan supérieur pour ajouter plus de produits." });
-        return;
-      }
-      const { id, ...insertData } = productData;
-      ({ error } = await supabase.from('cost_calculator_products').insert(insertData));
+      ({ error } = await supabase.from('cost_calculator_products').insert({ ...productData, user_id: user.id }));
     }
 
     if (error) {
-      toast({ variant: "destructive", title: "Erreur", description: "Le produit n'a pas pu être sauvegardé." });
+      toast({ variant: 'destructive', title: t('toast_error_title'), description: 'Could not save product.' });
     } else {
-      toast({ title: "Succès", description: `Produit ${productToSave.id ? 'mis à jour' : 'créé'}.` });
-      setIsFormOpen(false);
+      toast({ title: t('toast_success_title'), description: 'Product saved.' });
+      setIsDialogOpen(false);
       setEditingProduct(null);
       fetchProducts();
     }
   };
 
-  const handleOpenForm = (product = null) => {
-    if (!product && !canAddProduct) {
-      toast({
-        variant: "destructive",
-        title: "Limite de produits atteinte",
-        description: "Passez à un plan supérieur pour ajouter plus de produits.",
-        action: <Button onClick={() => navigate('/subscription')}>Mettre à niveau</Button>,
-      });
-      return;
-    }
-    setEditingProduct(product ? {...product} : initialProductState);
-    setIsFormOpen(true);
-  };
-
-  const handleDeleteProduct = async (id) => {
-    const { error } = await supabase.from('cost_calculator_products').delete().eq('id', id);
+  const handleDeleteProduct = async (productId) => {
+    const { error } = await supabase.from('cost_calculator_products').delete().eq('id', productId);
     if (error) {
-      toast({ variant: "destructive", title: "Erreur", description: "Le produit n'a pas pu être supprimé." });
+      toast({ variant: 'destructive', title: t('toast_error_title'), description: t('product_management.delete_error') });
     } else {
-      toast({ title: "Produit supprimé" });
+      toast({ title: t('toast_success_title'), description: t('product_management.delete_success') });
       fetchProducts();
     }
   };
 
-  const calculateResults = useCallback((product) => {
-    const parse = (v) => parseFloat(String(v || '0').replace(',', '.')) || 0;
-    const salePrice = parse(product.sale_price);
-    const platformFee = salePrice * (parse(product.platform_fee_percent) / 100);
-    const totalCost = parse(product.cost_of_goods) + parse(product.shipping_cost) + parse(product.marketing_cost) + platformFee + parse(product.other_fees);
-    const profit = salePrice - totalCost;
-    const profitMargin = salePrice > 0 ? (profit / salePrice) * 100 : 0;
-    return { totalCost, profit, profitMargin };
-  }, []);
-
-  const formatCurrency = (value) => `${value.toFixed(2).replace('.', ',')} ${currencySymbol}`;
-  const getProfitColor = (margin) => margin < 0 ? 'text-red-500' : margin < 15 ? 'text-yellow-500' : 'text-green-500';
+  const calculateMargin = (salePrice, costPrice) => {
+    if (!salePrice || salePrice === 0) return 'N/A';
+    const margin = ((salePrice - (costPrice || 0)) / salePrice) * 100;
+    return `${margin.toFixed(1)}%`;
+  };
 
   return (
     <div className="space-y-8">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <div className="flex items-center gap-4 mb-2">
-          <Wrench className="w-8 h-8 text-primary" />
-          <h1 className="text-3xl font-bold text-foreground">Gestion des Produits</h1>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{t('product_management.title')}</h1>
+          <p className="text-muted-foreground">{t('product_management.subtitle')}</p>
         </div>
-        <p className="text-muted-foreground">Créez vos produits et définissez leurs coûts pour analyser leur rentabilité.</p>
+        <Button onClick={() => { setEditingProduct(null); setIsDialogOpen(true); }}><PlusCircle className="mr-2 h-4 w-4" /> {t('product_management.new_product')}</Button>
       </motion.div>
 
-      <Card>
-        <CardHeader>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-              <CardTitle>Catalogue de Produits</CardTitle>
-              <CardDescription>
-                {isFreePlan ? `Vous avez ${products.length}/${productLimit} produits. Passez à un plan supérieur pour en ajouter plus.` : 'Ajoutez et comparez la rentabilité de vos produits.'}
-              </CardDescription>
-            </div>
-            <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="w-full sm:w-auto">
-                      <Button onClick={() => handleOpenForm()} className="w-full sm:w-auto" disabled={!canAddProduct}>
-                        <PlusCircle className="mr-2 h-4 w-4" /> Nouveau Produit
-                      </Button>
-                    </div>
-                  </TooltipTrigger>
-                  {!canAddProduct && (
-                    <TooltipContent>
-                      <p>Limite de produits atteinte pour le plan Free.</p>
-                    </TooltipContent>
-                  )}
-                </Tooltip>
-              </TooltipProvider>
-              <ProductForm 
-                product={editingProduct} 
-                onSave={handleSaveProduct} 
-                onCancel={() => setIsFormOpen(false)} 
-                currencySymbol={currencySymbol}
-                isOpen={isFormOpen}
-                onOpenChange={setIsFormOpen}
-              />
-            </Dialog>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="hidden sm:block">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Produit</TableHead>
-                  <TableHead className="text-right">Prix de Vente</TableHead>
-                  <TableHead className="text-right">Coût Total</TableHead>
-                  <TableHead className="text-right">Bénéfice</TableHead>
-                  <TableHead className="text-right">Marge</TableHead>
-                  <TableHead className="w-[50px]"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {isLoading ? (
-                  <TableRow><TableCell colSpan={6} className="text-center h-24"><Loader2 className="mx-auto h-6 w-6 animate-spin text-primary" /></TableCell></TableRow>
-                ) : products.length > 0 ? products.map(product => {
-                  const { totalCost, profit, profitMargin } = calculateResults(product);
-                  return (
-                    <TableRow key={product.id}>
-                      <TableCell className="font-medium">{product.name}</TableCell>
-                      <TableCell className="text-right">{formatCurrency(parseFloat(String(product.sale_price || '0').replace(',', '.')))}</TableCell>
-                      <TableCell className="text-right">{formatCurrency(totalCost)}</TableCell>
-                      <TableCell className={`text-right font-bold ${getProfitColor(profitMargin)}`}>{formatCurrency(profit)}</TableCell>
-                      <TableCell className={`text-right font-bold ${getProfitColor(profitMargin)}`}>{profitMargin.toFixed(1).replace('.', ',')}%</TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild><Button variant="ghost" size="icon"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
-                          <DropdownMenuContent>
-                            <DropdownMenuItem onClick={() => handleOpenForm(product)}><Edit className="mr-2 h-4 w-4" /> Modifier</DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleDeleteProduct(product.id)} className="text-red-500 focus:text-red-500"><Trash2 className="mr-2 h-4 w-4" /> Supprimer</DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  );
-                }) : (
-                  <TableRow>
-                    <TableCell colSpan={6} className="text-center h-24 text-muted-foreground">Aucun produit. Cliquez sur "Nouveau Produit" pour commencer.</TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-          <div className="sm:hidden space-y-4">
-            {isLoading ? (
-              <div className="text-center p-8"><Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" /></div>
-            ) : products.length > 0 ? products.map(product => {
-              const { totalCost, profit, profitMargin } = calculateResults(product);
-              return (
-                <Card key={product.id} className="bg-card/50">
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <CardTitle className="text-lg">{product.name}</CardTitle>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+        <div className="border rounded-lg">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>{t('product_management.table_product')}</TableHead>
+                <TableHead>{t('product_management.table_price')}</TableHead>
+                <TableHead>{t('product_management.table_cost')}</TableHead>
+                <TableHead>{t('product_management.table_margin')}</TableHead>
+                <TableHead>{t('product_management.table_stock')}</TableHead>
+                <TableHead className="text-right">{t('product_management.table_actions')}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {loading ? (
+                <TableRow><TableCell colSpan="6" className="text-center h-24">{t('recurring_payments_loading')}</TableCell></TableRow>
+              ) : products.length > 0 ? (
+                products.map(product => (
+                  <TableRow key={product.id}>
+                    <TableCell className="font-medium">{product.name}</TableCell>
+                    <TableCell>{product.sale_price?.toFixed(2)}{currency}</TableCell>
+                    <TableCell>{product.cost_of_goods?.toFixed(2)}{currency}</TableCell>
+                    <TableCell>{calculateMargin(product.sale_price, product.cost_of_goods)}</TableCell>
+                    <TableCell>{product.stock === null || product.stock === undefined ? 'N/A' : product.stock}</TableCell>
+                    <TableCell className="text-right">
                       <DropdownMenu>
-                        <DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="-mt-2 -mr-2"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
+                        <DropdownMenuTrigger asChild><Button variant="ghost" size="icon"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
                         <DropdownMenuContent>
-                          <DropdownMenuItem onClick={() => handleOpenForm(product)}><Edit className="mr-2 h-4 w-4" /> Modifier</DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleDeleteProduct(product.id)} className="text-red-500 focus:text-red-500"><Trash2 className="mr-2 h-4 w-4" /> Supprimer</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => { setEditingProduct(product); setIsDialogOpen(true); }}><Edit className="mr-2 h-4 w-4" /> {t('recurring_payments_edit')}</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleDeleteProduct(product.id)} className="text-red-500 focus:text-red-500"><Trash2 className="mr-2 h-4 w-4" /> {t('recurring_payments_delete')}</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-2 text-sm">
-                    <div className="flex justify-between"><span>Prix de Vente:</span> <span>{formatCurrency(parseFloat(String(product.sale_price || '0').replace(',', '.')))}</span></div>
-                    <div className="flex justify-between"><span>Coût Total:</span> <span>{formatCurrency(totalCost)}</span></div>
-                    <div className={`flex justify-between font-bold ${getProfitColor(profitMargin)}`}><span>Bénéfice:</span> <span>{formatCurrency(profit)}</span></div>
-                    <div className={`flex justify-between font-bold ${getProfitColor(profitMargin)}`}><span>Marge:</span> <span>{profitMargin.toFixed(1).replace('.', ',')}%</span></div>
-                  </CardContent>
-                </Card>
-              );
-            }) : (
-              <div className="text-center py-12 text-muted-foreground">Aucun produit.</div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow><TableCell colSpan="6" className="text-center h-24">{t('product_management.no_products')}</TableCell></TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </motion.div>
+
+      <ProductDialog isOpen={isDialogOpen} onOpenChange={setIsDialogOpen} onSave={handleSaveProduct} product={editingProduct} t={t}/>
     </div>
   );
 };

@@ -1,128 +1,78 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
 import { MinimalFooter } from "@/components/ui/minimal-footer";
-import { Helmet } from "react-helmet";
-import { PublicHeader } from "@/pages/LandingPage";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { Helmet } from 'react-helmet';
+import { PublicHeader } from '@/pages/LandingPage';
+import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const blogPosts = [
   {
-    slug: "5-astuces-pour-optimiser-votre-facturation",
-    title: "5 Astuces pour Optimiser Votre Facturation et Être Payé Plus Vite",
-    description:
-      "La facturation est le nerf de la guerre pour tout entrepreneur. Découvrez 5 astuces simples pour rendre votre processus de facturation plus efficace, réduire les retards de paiement et améliorer votre trésorerie.",
-    image:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=800",
-    date: "3 Octobre 2025",
-    readTime: "4 min de lecture",
+    slug: '5-astuces-pour-optimiser-votre-facturation',
+    titleKey: 'page_blog_post1_title',
+    descriptionKey: 'page_blog_post1_desc',
+    image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=800',
+    dateKey: 'page_blog_post1_date',
+    readTimeKey: 'page_blog_post1_read_time',
   },
   {
-    slug: "pourquoi-un-crm-est-essentiel-pour-votre-pme",
-    title:
-      "Pourquoi un CRM est Essentiel pour Votre PME (Même si Vous Débutez)",
-    description:
-      "Vous pensez que les CRM sont réservés aux grandes entreprises ? Détrompez-vous. Un bon outil de gestion de la relation client peut transformer votre business, même à petite échelle. Voici pourquoi.",
-    image:
-      "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=800",
-    date: "28 Septembre 2025",
-    readTime: "5 min de lecture",
+    slug: 'pourquoi-un-crm-est-essentiel-pour-votre-pme',
+    titleKey: 'page_blog_post2_title',
+    descriptionKey: 'page_blog_post2_desc',
+    image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=800',
+    dateKey: 'page_blog_post2_date',
+    readTimeKey: 'page_blog_post2_read_time',
   },
   {
-    slug: "comment-calculer-la-rentabilite-de-vos-produits",
-    title:
-      "Comment Calculer la Rentabilité de Vos Produits (et Arrêter de Perdre de l'Argent)",
-    description:
-      "Vendre beaucoup, c'est bien. Vendre en étant rentable, c'est mieux. Apprenez à calculer la rentabilité réelle de chaque produit pour prendre des décisions éclairées et maximiser vos profits.",
-    image:
-      "https://images.unsplash.com/photo-1578574577315-3fbeb0cecdc2?q=80&w=800",
-    date: "25 Septembre 2025",
-    readTime: "6 min de lecture",
+    slug: 'comment-calculer-la-rentabilite-de-vos-produits',
+    titleKey: 'page_blog_post3_title',
+    descriptionKey: 'page_blog_post3_desc',
+    image: 'https://images.unsplash.com/photo-1578574577315-3fbeb0cecdc2?q=80&w=800',
+    dateKey: 'page_blog_post3_date',
+    readTimeKey: 'page_blog_post3_read_time',
   },
   {
-    slug: "automatiser-les-taches-repetitives-pour-gagner-du-temps",
-    title:
-      "Automatiser les Tâches Répétitives pour Gagner du Temps et de la Sérénité",
-    description:
-      "Les tâches administratives vous submergent ? Découvrez comment l'automatisation peut libérer des heures précieuses chaque semaine pour vous concentrer sur ce qui compte vraiment.",
-    image:
-      "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?q=80&w=800",
-    date: "22 Septembre 2025",
-    readTime: "5 min de lecture",
+    slug: 'automatiser-les-taches-repetitives-pour-gagner-du-temps',
+    titleKey: 'page_blog_post4_title',
+    descriptionKey: 'page_blog_post4_desc',
+    image: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?q=80&w=800',
+    dateKey: 'page_blog_post4_date',
+    readTimeKey: 'page_blog_post4_read_time',
   },
   {
-    slug: "creer-des-devis-qui-convertissent-a-coup-sur",
-    title: "Créer des Devis qui Convertissent à Coup Sûr : Le Guide Complet",
-    description:
-      "Un devis n'est pas qu'un simple document de prix. C'est un outil de vente puissant. Apprenez à créer des devis clairs, professionnels et persuasifs qui transforment les prospects en clients.",
-    image:
-      "https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=800",
-    date: "18 Septembre 2025",
-    readTime: "6 min de lecture",
+    slug: 'creer-des-devis-qui-convertissent-a-coup-sur',
+    titleKey: 'page_blog_post5_title',
+    descriptionKey: 'page_blog_post5_desc',
+    image: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=800',
+    dateKey: 'page_blog_post5_date',
+    readTimeKey: 'page_blog_post5_read_time',
   },
   {
-    slug: "l-importance-du-suivi-de-temps-pour-les-freelances",
-    title:
-      "L'Importance du Suivi de Temps pour les Freelances (et Comment Bien le Faire)",
-    description:
-      "Vous facturez à l'heure ou au projet ? Le suivi de temps est votre meilleur allié pour évaluer votre rentabilité, justifier vos tarifs et optimiser votre productivité. On vous explique tout.",
-    image:
-      "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=800",
-    date: "15 Septembre 2025",
-    readTime: "5 min de lecture",
+    slug: 'l-importance-du-suivi-de-temps-pour-les-freelances',
+    titleKey: 'page_blog_post6_title',
+    descriptionKey: 'page_blog_post6_desc',
+    image: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=800',
+    dateKey: 'page_blog_post6_date',
+    readTimeKey: 'page_blog_post6_read_time',
   },
 ];
 
 const BlogPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleNavClick = (e, href) => {
     e.preventDefault();
     navigate(href);
   };
-
-  const pageUrl = "https://yourbizflow.fr/blog";
-
+  
   return (
     <div className="w-full min-h-screen text-white bg-[#030303] flex flex-col">
       <Helmet>
-        <title>Blog YourBizFlow | Conseils pour Entrepreneurs et PME</title>
-        <meta
-          name="description"
-          content="Conseils, astuces et stratégies pour les entrepreneurs et les PME. Découvrez comment optimiser votre gestion d'entreprise avec YourBizFlow."
-        />
-        <meta
-          name="keywords"
-          content="blog, YourBizFlow, conseils entrepreneurs, gestion PME, facturation, CRM, rentabilité"
-        />
-        <meta
-          property="og:title"
-          content="Blog YourBizFlow | Conseils pour Entrepreneurs et PME"
-        />
-        <meta
-          property="og:description"
-          content="Conseils, astuces et stratégies pour les entrepreneurs et les PME. Découvrez comment optimiser votre gestion d'entreprise avec YourBizFlow."
-        />
-        <meta property="og:url" content={pageUrl} />
-        <meta property="og:type" content="website" />
-        <meta
-          property="og:image"
-          content="https://horizons-cdn.hostinger.com/58cbc4ed-cb6f-4ebd-abaf-62892e9ae2c6/yourbizflow_blog_og.png"
-        />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          name="twitter:title"
-          content="Blog YourBizFlow | Conseils pour Entrepreneurs et PME"
-        />
-        <meta
-          name="twitter:description"
-          content="Conseils, astuces et stratégies pour les entrepreneurs et les PME. Découvrez comment optimiser votre gestion d'entreprise avec YourBizFlow."
-        />
-        <meta
-          name="twitter:image"
-          content="https://horizons-cdn.hostinger.com/58cbc4ed-cb6f-4ebd-abaf-62892e9ae2c6/yourbizflow_blog_twitter.png"
-        />
+        <title>{t('page_blog_title')} | {t('app_name')}</title>
+        <meta name="description" content={t('page_blog_subtitle')} />
       </Helmet>
 
       <PublicHeader onNavClick={handleNavClick} />
@@ -136,11 +86,10 @@ const BlogPage = () => {
             className="text-center mb-16"
           >
             <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
-              Le Blog YourBizFlow
+              {t('page_blog_title')}
             </h1>
             <p className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto">
-              Conseils, astuces et stratégies pour les entrepreneurs et les PME
-              qui veulent simplifier leur gestion et accélérer leur croissance.
+              {t('page_blog_subtitle')}
             </p>
           </motion.div>
 
@@ -156,30 +105,24 @@ const BlogPage = () => {
                 <Link to={`/blog/${post.slug}`} className="block">
                   <div className="overflow-hidden">
                     <img
-                      alt={post.title}
+                      alt={t(post.titleKey)}
                       className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                      src={post.image}
-                    />
+                     src={post.image} />
                   </div>
                 </Link>
                 <div className="p-6 flex flex-col flex-grow">
                   <div className="text-sm text-muted-foreground mb-2">
-                    <span>{post.date}</span> &bull; <span>{post.readTime}</span>
+                    <span>{t(post.dateKey)}</span> &bull; <span>{t(post.readTimeKey)}</span>
                   </div>
                   <h2 className="text-xl font-bold text-foreground mb-3 flex-grow">
-                    <Link
-                      to={`/blog/${post.slug}`}
-                      className="hover:text-primary transition-colors"
-                    >
-                      {post.title}
+                    <Link to={`/blog/${post.slug}`} className="hover:text-primary transition-colors">
+                      {t(post.titleKey)}
                     </Link>
                   </h2>
-                  <p className="text-muted-foreground mb-4 text-sm">
-                    {post.description}
-                  </p>
+                  <p className="text-muted-foreground mb-4 text-sm">{t(post.descriptionKey)}</p>
                   <Link to={`/blog/${post.slug}`} className="mt-auto">
                     <Button variant="outline" className="w-full">
-                      Lire l'article <ArrowRight className="w-4 h-4 ml-2" />
+                      {t('read_article')} <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </Link>
                 </div>

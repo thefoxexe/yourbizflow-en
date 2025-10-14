@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { MailWarning, Shield, TrendingUp, TrendingDown, User, AlertTriangle, Send } from 'lucide-react';
+import { Shield, AlertTriangle, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/lib/customSupabaseClient';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { differenceInDays, parseISO } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 const AutomatedReminders = () => {
   const { toast } = useToast();
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [overdueInvoices, setOverdueInvoices] = useState([]);
   const [riskyClients, setRiskyClients] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -44,7 +46,7 @@ const AutomatedReminders = () => {
     ]);
 
     if (invoicesError || clientsError) {
-      toast({ variant: 'destructive', title: 'Erreur', description: 'Impossible de charger les données.' });
+      toast({ variant: 'destructive', title: t('toast_error_title'), description: t('automated_reminders.data_load_error') });
       setLoading(false);
       return;
     }
@@ -58,7 +60,7 @@ const AutomatedReminders = () => {
 
     setRiskyClients(clientsWithScores);
     setLoading(false);
-  }, [user, toast]);
+  }, [user, toast, t]);
 
   useEffect(() => {
     fetchData();
@@ -66,8 +68,8 @@ const AutomatedReminders = () => {
 
   const handleSendReminder = (invoiceId) => {
     toast({
-      title: 'Relance envoyée (simulation)',
-      description: `Un email de relance a été envoyé pour la facture #${invoiceId}.`,
+      title: t('automated_reminders.reminder_sent_toast'),
+      description: t('automated_reminders.reminder_sent_toast_desc', { invoiceId }),
     });
   };
 
@@ -80,42 +82,53 @@ const AutomatedReminders = () => {
   return (
     <div className="space-y-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Relances & Scoring Client</h1>
-        <p className="text-muted-foreground">Identifiez les risques et agissez sur les factures impayées.</p>
+        <h1 className="text-3xl font-bold text-foreground mb-2">{t('automated_reminders.title')}</h1>
+        <p className="text-muted-foreground">{t('automated_reminders.subtitle')}</p>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-card/50 backdrop-blur-sm border rounded-xl p-6">
-          <h2 className="text-xl font-bold text-foreground mb-4 flex items-center"><AlertTriangle className="w-5 h-5 mr-3 text-yellow-400" />Factures en Retard</h2>
-          <div className="space-y-4 max-h-96 overflow-y-auto">
-            {loading ? <p>Chargement...</p> : overdueInvoices.map(invoice => (
-              <div key={invoice.id} className="flex items-center justify-between bg-secondary/50 p-3 rounded-lg">
-                <div>
-                  <p className="font-semibold">Facture #{invoice.invoice_number}</p>
-                  <p className="text-sm text-muted-foreground">{invoice.client.name} - {invoice.amount}€ - Retard: {differenceInDays(new Date(), parseISO(invoice.due_date))} jours</p>
-                </div>
-                <Button size="sm" onClick={() => handleSendReminder(invoice.invoice_number)}><Send className="w-4 h-4 mr-2" />Relancer</Button>
-              </div>
-            ))}
-            {overdueInvoices.length === 0 && !loading && <p className="text-muted-foreground text-center py-8">Aucune facture en retard. Bravo !</p>}
+        <motion.div initial={{ opacity: 0, y: 20 }}initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+          <h2 className="text-xl font-semibold flex items-center"><AlertTriangle className="mr-2 h-5 w-5 text-yellow-500" /> {t('automated_reminders.overdue_invoices_title')}</h2>
+          <div className="border rounded-lg">
+            {loading ? (
+              <p className="p-4 text-center">{t('automated_reminders.loading')}</p>
+            ) : overdueInvoices.length > 0 ? (
+              <ul className="divide-y">
+                {overdueInvoices.map(invoice => (
+                  <li key={invoice.id} className="p-4 flex justify-between items-center">
+                    <div>
+                      <p className="font-semibold">Facture #{invoice.invoice_number} - {invoice.client.name}</p>
+                      <p className="text-sm text-muted-foreground">En retard de {differenceInDays(new Date(), parseISO(invoice.due_date))} jours - {invoice.amount}€</p>
+                    </div>
+                    <Button size="sm" onClick={() => handleSendReminder(invoice.id)}><Send className="mr-2 h-4 w-4" />{t('automated_reminders.remind_button')}</Button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="p-4 text-center text-muted-foreground">{t('automated_reminders.no_overdue_invoices')}</p>
+            )}
           </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-card/50 backdrop-blur-sm border rounded-xl p-6">
-          <h2 className="text-xl font-bold text-foreground mb-4 flex items-center"><Shield className="w-5 h-5 mr-3 text-red-400" />Clients à Risque</h2>
-          <div className="space-y-4 max-h-96 overflow-y-auto">
-            {loading ? <p>Chargement...</p> : riskyClients.map(client => (
-              <div key={client.id} className="flex items-center justify-between bg-secondary/50 p-3 rounded-lg">
-                <div>
-                  <p className="font-semibold">{client.name}</p>
-                  <p className="text-sm text-muted-foreground">{client.email}</p>
-                </div>
-                <div className={`text-lg font-bold ${getRiskColor(client.risk_score)}`}>
-                  Score: {client.risk_score}
-                </div>
-              </div>
-            ))}
-            {riskyClients.length === 0 && !loading && <p className="text-muted-foreground text-center py-8">Aucun client à risque détecté.</p>}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-4">
+          <h2 className="text-xl font-semibold flex items-center"><Shield className="mr-2 h-5 w-5 text-red-500" /> {t('automated_reminders.at_risk_clients_title')}</h2>
+          <div className="border rounded-lg">
+            {loading ? (
+              <p className="p-4 text-center">{t('automated_reminders.loading')}</p>
+            ) : riskyClients.length > 0 ? (
+              <ul className="divide-y">
+                {riskyClients.map(client => (
+                  <li key={client.id} className="p-4 flex justify-between items-center">
+                    <p className="font-semibold">{client.name}</p>
+                    <div className="flex items-center gap-2">
+                      <p className={`font-bold ${getRiskColor(client.risk_score)}`}>{t('automated_reminders.risk_score')}: {client.risk_score.toFixed(0)}/100</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="p-4 text-center text-muted-foreground">{t('automated_reminders.no_at_risk_clients')}</p>
+            )}
           </div>
         </motion.div>
       </div>

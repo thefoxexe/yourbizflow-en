@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '@/lib/customSupabaseClient';
@@ -19,10 +18,12 @@ import { cn } from '@/lib/utils';
 import { Helmet } from 'react-helmet';
 import CreateClientDialog from '@/components/CreateClientDialog';
 import ProductForm, { initialProductState } from '@/components/ProductForm';
+import { useTranslation } from 'react-i18next';
 
 const OrderManagement = () => {
     const { user, profile } = useAuth();
     const { toast } = useToast();
+    const { t } = useTranslation();
     const [orders, setOrders] = useState([]);
     const [clients, setClients] = useState([]);
     const [products, setProducts] = useState([]);
@@ -36,7 +37,13 @@ const OrderManagement = () => {
     const [statusFilter, setStatusFilter] = useState('all');
 
     const currencySymbol = useMemo(() => (profile?.currency === 'usd' ? '$' : profile?.currency === 'chf' ? 'CHF' : '€'), [profile]);
-    const orderStatuses = useMemo(() => profile?.order_statuses || [], [profile]);
+    const orderStatuses = useMemo(() => [
+        { id: 'pending', label: t('order_management.status_pending'), color: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' },
+        { id: 'in_preparation', label: t('order_management.status_in_preparation'), color: 'bg-blue-500/10 text-blue-400 border-blue-500/20' },
+        { id: 'shipped', label: t('order_management.status_shipped'), color: 'bg-purple-500/10 text-purple-400 border-purple-500/20' },
+        { id: 'delivered', label: t('order_management.status_delivered'), color: 'bg-green-500/10 text-green-400 border-green-500/20' },
+        { id: 'canceled', label: t('order_management.status_canceled'), color: 'bg-red-500/10 text-red-400 border-red-500/20' },
+    ], [t]);
 
     const fetchInitialData = useCallback(async () => {
         if (!user) return;
@@ -48,17 +55,17 @@ const OrderManagement = () => {
             supabase.from('cost_calculator_products').select('id, name, sale_price, cost_of_goods, shipping_cost, marketing_cost, platform_fee_percent, other_fees, stock').eq('user_id', user.id)
         ]);
 
-        if (ordersRes.error) toast({ variant: 'destructive', title: 'Erreur', description: 'Impossible de charger les commandes.' });
+        if (ordersRes.error) toast({ variant: 'destructive', title: t('toast_error_title'), description: t('order_management.error_loading_orders') });
         else setOrders(ordersRes.data);
 
-        if (clientsRes.error) toast({ variant: 'destructive', title: 'Erreur', description: 'Impossible de charger les clients.' });
+        if (clientsRes.error) toast({ variant: 'destructive', title: t('toast_error_title'), description: t('order_management.error_loading_clients') });
         else setClients(clientsRes.data);
 
-        if (productsRes.error) toast({ variant: 'destructive', title: 'Erreur', description: 'Impossible de charger les produits.' });
+        if (productsRes.error) toast({ variant: 'destructive', title: t('toast_error_title'), description: t('order_management.error_loading_products') });
         else setProducts(productsRes.data);
 
         setLoading(false);
-    }, [user, toast]);
+    }, [user, toast, t]);
 
     useEffect(() => {
         fetchInitialData();
@@ -73,7 +80,7 @@ const OrderManagement = () => {
             setCurrentOrder({
                 client_id: '',
                 products: [{ product_id: '', quantity: 1, price: 0 }],
-                status: orderStatuses[0]?.id || 'en_preparation',
+                status: 'pending',
                 notes: ''
             });
         }
@@ -82,7 +89,7 @@ const OrderManagement = () => {
 
     const handleSaveOrder = async () => {
         if (!currentOrder.client_id || currentOrder.products.some(p => !p.product_id)) {
-            toast({ variant: 'destructive', title: 'Champs requis', description: 'Veuillez sélectionner un client et des produits.' });
+            toast({ variant: 'destructive', title: t('toast_required_fields_title'), description: t('order_management.error_fields_required') });
             return;
         }
 
@@ -98,16 +105,19 @@ const OrderManagement = () => {
         };
 
         let error;
+        let successMessage;
         if (editingOrder) {
             ({ error } = await supabase.from('orders').update(payload).eq('id', editingOrder.id));
+            successMessage = t('order_management.success_save_updated');
         } else {
             ({ error } = await supabase.from('orders').insert(payload));
+            successMessage = t('order_management.success_save_created');
         }
 
         if (error) {
-            toast({ variant: 'destructive', title: 'Erreur', description: "La commande n'a pas pu être sauvegardée." });
+            toast({ variant: 'destructive', title: t('toast_error_title'), description: t('order_management.error_save') });
         } else {
-            toast({ title: 'Succès!', description: `Commande ${editingOrder ? 'mise à jour' : 'créée'}.` });
+            toast({ title: t('toast_success_title'), description: successMessage });
             setIsOrderDialogOpen(false);
             fetchInitialData();
         }
@@ -132,13 +142,12 @@ const OrderManagement = () => {
     };
 
     const handleDeleteOrder = async (orderId) => {
-        // DB trigger 'handle_order_delete' will handle restoring stock and deleting financials.
         const { error } = await supabase.from('orders').delete().eq('id', orderId);
         
         if (error) {
-            toast({ variant: 'destructive', title: 'Erreur', description: 'Impossible de supprimer la commande.' });
+            toast({ variant: 'destructive', title: t('toast_error_title'), description: t('order_management.error_delete') });
         } else {
-            toast({ title: 'Commande supprimée', description: 'Le stock et les finances ont été mis à jour.' });
+            toast({ title: t('toast_success_title'), description: t('order_management.success_delete') });
             fetchInitialData();
         }
     };
@@ -185,25 +194,24 @@ const OrderManagement = () => {
 
         const { error } = await supabase.from('orders').update({ status: newStatus }).eq('id', orderId);
         if (error) {
-            toast({ variant: 'destructive', title: 'Erreur', description: 'Impossible de mettre à jour le statut.' });
+            toast({ variant: 'destructive', title: t('toast_error_title'), description: t('order_management.error_status_update') });
             return;
         }
         
-        toast({ title: 'Statut mis à jour' });
+        toast({ title: t('toast_success_title'), description: t('order_management.success_status_update') });
 
         const shouldProcessStock = (newStatus === 'expedie' || newStatus === 'livree') && !order.stock_processed;
         const shouldRestoreStock = newStatus === 'annulee' && order.stock_processed;
 
         if (shouldProcessStock) {
             await processStockAndFinance({ ...order, status: newStatus });
-            toast({ title: 'Comptabilité & Stock mis à jour!' });
+            toast({ title: t('toast_success_title'), description: t('order_management.toast_stock_updated') });
         } else if (shouldRestoreStock) {
-            // The handle_order_delete trigger only fires ON DELETE, so we do it manually here for 'annulee' status.
             await restoreStock(order);
             await supabase.from('revenues').delete().match({ source_type: 'order', source_id: order.id });
             await supabase.from('expenses').delete().match({ source_type: 'order_cost', source_id: order.id });
             await supabase.from('orders').update({ stock_processed: false }).eq('id', order.id);
-            toast({ title: 'Stock et finances restaurés!' });
+            toast({ title: t('toast_success_title'), description: t('order_management.toast_stock_restored') });
         }
         
         fetchInitialData();
@@ -251,18 +259,19 @@ const OrderManagement = () => {
         });
     }, [orders, searchTerm, statusFilter]);
 
-    const handleClientCreated = (newClient) => {
-        setClients(prev => [newClient, ...prev]);
+    const handleClientAction = (newClient) => {
+      fetchInitialData();
+      if(newClient) {
         setCurrentOrder(prev => ({ ...prev, client_id: newClient.id }));
-        setIsClientDialogOpen(false);
+      }
     };
 
     const handleProductCreated = async (newProductData) => {
         const { data, error } = await supabase.from('cost_calculator_products').insert({ ...newProductData, user_id: user.id }).select().single();
         if (error) {
-            toast({ variant: "destructive", title: "Erreur", description: "Le produit n'a pas pu être créé." });
+            toast({ variant: "destructive", title: t('toast_error_title'), description: t('order_management.error_create_product') });
         } else {
-            toast({ title: "Succès", description: `Produit créé.` });
+            toast({ title: t('toast_success_title'), description: t('order_management.success_create_product') });
             setProducts(prev => [data, ...prev]);
             setIsProductDialogOpen(false);
         }
@@ -271,33 +280,33 @@ const OrderManagement = () => {
     return (
         <div className="space-y-8">
             <Helmet>
-                <title>Gestion des Commandes - YourBizFlow</title>
-                <meta name="description" content="Gérez le cycle de traitement de vos commandes clients, de la préparation à la livraison." />
+                <title>{t('order_management.title')} - {t('app_name')}</title>
+                <meta name="description" content={t('order_management.subtitle')} />
             </Helmet>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold text-foreground mb-2">Gestion des Commandes</h1>
-                    <p className="text-muted-foreground">Suivez vos commandes de la préparation à la livraison.</p>
+                    <h1 className="text-3xl font-bold text-foreground mb-2">{t('order_management.title')}</h1>
+                    <p className="text-muted-foreground">{t('order_management.subtitle')}</p>
                 </div>
                 <Button onClick={() => handleOpenOrderDialog()}>
-                    <PlusCircle className="w-4 h-4 mr-2" /> Nouvelle Commande
+                    <PlusCircle className="w-4 h-4 mr-2" /> {t('order_management.new_order')}
                 </Button>
             </motion.div>
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Liste des commandes</CardTitle>
+                    <CardTitle>{t('order_management.list_title')}</CardTitle>
                     <div className="flex flex-col sm:flex-row gap-4 mt-4">
                         <div className="relative flex-1">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5" />
-                            <Input placeholder="Rechercher par réf. ou client..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10" />
+                            <Input placeholder={t('order_management.search_placeholder')} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10" />
                         </div>
                         <Select value={statusFilter} onValueChange={setStatusFilter}>
                             <SelectTrigger className="w-full sm:w-[180px]">
-                                <Filter className="w-4 h-4 mr-2" /><SelectValue placeholder="Filtrer par statut" />
+                                <Filter className="w-4 h-4 mr-2" /><SelectValue placeholder={t('order_management.filter_status')} />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="all">Tous les statuts</SelectItem>
+                                <SelectItem value="all">{t('order_management.all_statuses')}</SelectItem>
                                 {orderStatuses.map(s => <SelectItem key={s.id} value={s.id}>{s.label}</SelectItem>)}
                             </SelectContent>
                         </Select>
@@ -308,11 +317,11 @@ const OrderManagement = () => {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>Référence</TableHead>
-                                    <TableHead>Client</TableHead>
-                                    <TableHead>Date</TableHead>
-                                    <TableHead>Statut</TableHead>
-                                    <TableHead className="text-right">Total</TableHead>
+                                    <TableHead>{t('order_management.table_ref')}</TableHead>
+                                    <TableHead>{t('order_management.table_client')}</TableHead>
+                                    <TableHead>{t('order_management.table_date')}</TableHead>
+                                    <TableHead>{t('order_management.table_status')}</TableHead>
+                                    <TableHead className="text-right">{t('order_management.table_total')}</TableHead>
                                     <TableHead className="w-[50px]"></TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -324,7 +333,7 @@ const OrderManagement = () => {
                                     return (
                                         <TableRow key={order.id}>
                                             <TableCell className="font-medium">{order.order_reference}</TableCell>
-                                            <TableCell>{order.clients?.name || 'Client supprimé'}</TableCell>
+                                            <TableCell>{order.clients?.name || t('rental.deleted_client')}</TableCell>
                                             <TableCell>{format(new Date(order.created_at), 'dd/MM/yyyy')}</TableCell>
                                             <TableCell>
                                                 <span className={cn('px-2 py-1 rounded-full text-xs font-medium border', statusInfo?.color)}>
@@ -336,20 +345,20 @@ const OrderManagement = () => {
                                                 <DropdownMenu>
                                                     <DropdownMenuTrigger asChild><Button variant="ghost" size="icon"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
                                                     <DropdownMenuContent>
-                                                        <DropdownMenuItem onClick={() => handleOpenOrderDialog(order)}><Edit className="mr-2 h-4 w-4" /> Modifier</DropdownMenuItem>
+                                                        <DropdownMenuItem onClick={() => handleOpenOrderDialog(order)}><Edit className="mr-2 h-4 w-4" /> {t('order_management.edit')}</DropdownMenuItem>
                                                         <DropdownMenuSub>
-                                                            <DropdownMenuSubTrigger>Changer statut</DropdownMenuSubTrigger>
+                                                            <DropdownMenuSubTrigger>{t('order_management.change_status')}</DropdownMenuSubTrigger>
                                                             <DropdownMenuSubContent>
                                                                 {orderStatuses.map(s => <DropdownMenuItem key={s.id} onClick={() => handleUpdateStatus(order.id, s.id)}>{s.label}</DropdownMenuItem>)}
                                                             </DropdownMenuSubContent>
                                                         </DropdownMenuSub>
-                                                        <DropdownMenuItem onClick={() => handleDeleteOrder(order.id)} className="text-red-500 focus:text-red-500"><Trash2 className="mr-2 h-4 w-4" /> Supprimer</DropdownMenuItem>
+                                                        <DropdownMenuItem onClick={() => handleDeleteOrder(order.id)} className="text-red-500 focus:text-red-500"><Trash2 className="mr-2 h-4 w-4" /> {t('order_management.delete')}</DropdownMenuItem>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
                                             </TableCell>
                                         </TableRow>
                                     )
-                                }) : <TableRow><TableCell colSpan={6} className="text-center h-24 text-muted-foreground">Aucune commande trouvée.</TableCell></TableRow>}
+                                }) : <TableRow><TableCell colSpan={6} className="text-center h-24 text-muted-foreground">{t('order_management.no_orders')}</TableCell></TableRow>}
                             </TableBody>
                         </Table>
                     </div>
@@ -363,19 +372,19 @@ const OrderManagement = () => {
                                         <div className="flex justify-between items-start">
                                             <div>
                                                 <CardTitle className="text-lg">{order.order_reference}</CardTitle>
-                                                <CardDescription>{order.clients?.name || 'Client supprimé'}</CardDescription>
+                                                <CardDescription>{order.clients?.name || t('rental.deleted_client')}</CardDescription>
                                             </div>
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="-mt-2 -mr-2"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
                                                 <DropdownMenuContent>
-                                                    <DropdownMenuItem onClick={() => handleOpenOrderDialog(order)}><Edit className="mr-2 h-4 w-4" /> Modifier</DropdownMenuItem>
+                                                    <DropdownMenuItem onClick={() => handleOpenOrderDialog(order)}><Edit className="mr-2 h-4 w-4" />{t('order_management.edit')}</DropdownMenuItem>
                                                     <DropdownMenuSub>
-                                                        <DropdownMenuSubTrigger>Changer statut</DropdownMenuSubTrigger>
+                                                        <DropdownMenuSubTrigger>{t('order_management.change_status')}</DropdownMenuSubTrigger>
                                                         <DropdownMenuSubContent>
                                                             {orderStatuses.map(s => <DropdownMenuItem key={s.id} onClick={() => handleUpdateStatus(order.id, s.id)}>{s.label}</DropdownMenuItem>)}
                                                         </DropdownMenuSubContent>
                                                     </DropdownMenuSub>
-                                                    <DropdownMenuItem onClick={() => handleDeleteOrder(order.id)} className="text-red-500 focus:text-red-500"><Trash2 className="mr-2 h-4 w-4" /> Supprimer</DropdownMenuItem>
+                                                    <DropdownMenuItem onClick={() => handleDeleteOrder(order.id)} className="text-red-500 focus:text-red-500"><Trash2 className="mr-2 h-4 w-4" /> {t('order_management.delete')}</DropdownMenuItem>
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
                                         </div>
@@ -386,13 +395,13 @@ const OrderManagement = () => {
                                             <span className={cn('px-2 py-1 rounded-full text-xs font-medium border', statusInfo?.color)}>{statusInfo?.label || order.status}</span>
                                         </div>
                                         <div className="flex justify-between items-center">
-                                            <span className="text-muted-foreground">Total</span>
+                                            <span className="text-muted-foreground">{t('order_management.table_total')}</span>
                                             <span className="font-bold text-lg">{order.total_amount.toFixed(2)} {currencySymbol}</span>
                                         </div>
                                     </CardContent>
                                 </Card>
                             )
-                         }) : <div className="text-center py-12 text-muted-foreground">Aucune commande.</div>}
+                         }) : <div className="text-center py-12 text-muted-foreground">{t('order_management.no_orders')}</div>}
                     </div>
                 </CardContent>
             </Card>
@@ -401,16 +410,16 @@ const OrderManagement = () => {
                 <Dialog open={isOrderDialogOpen} onOpenChange={setIsOrderDialogOpen}>
                     <DialogContent className="w-full max-w-md sm:max-w-xl md:max-w-2xl">
                         <DialogHeader>
-                            <DialogTitle>{editingOrder ? 'Modifier la commande' : 'Nouvelle commande'}</DialogTitle>
-                            <DialogDescription>{editingOrder ? `Réf: ${editingOrder.order_reference}` : 'Renseignez les détails de la commande.'}</DialogDescription>
+                            <DialogTitle>{editingOrder ? t('order_management.dialog_edit_title') : t('order_management.dialog_new_title')}</DialogTitle>
+                            <DialogDescription>{editingOrder ? t('order_management.dialog_edit_desc', {ref: editingOrder.order_reference}) : t('order_management.dialog_new_desc')}</DialogDescription>
                         </DialogHeader>
                         <div className="grid gap-6 py-4 max-h-[70vh] overflow-y-auto pr-3 -mr-3">
                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <Label htmlFor="client">Client</Label>
+                                    <Label htmlFor="client">{t('order_management.dialog_client')}</Label>
                                     <div className="flex gap-2">
                                         <Select value={currentOrder.client_id} onValueChange={value => setCurrentOrder(prev => ({ ...prev, client_id: value }))}>
-                                            <SelectTrigger className="flex-1"><SelectValue placeholder="Sélectionner un client" /></SelectTrigger>
+                                            <SelectTrigger className="flex-1"><SelectValue placeholder={t('order_management.dialog_select_client')} /></SelectTrigger>
                                             <SelectContent>
                                                 {clients.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
                                             </SelectContent>
@@ -419,9 +428,9 @@ const OrderManagement = () => {
                                     </div>
                                 </div>
                                 <div>
-                                    <Label htmlFor="status">Statut</Label>
+                                    <Label htmlFor="status">{t('order_management.dialog_status')}</Label>
                                     <Select value={currentOrder.status} onValueChange={value => setCurrentOrder(prev => ({ ...prev, status: value }))}>
-                                        <SelectTrigger><SelectValue placeholder="Sélectionner un statut" /></SelectTrigger>
+                                        <SelectTrigger><SelectValue placeholder={t('order_management.dialog_select_status')} /></SelectTrigger>
                                         <SelectContent>
                                             {orderStatuses.map(s => <SelectItem key={s.id} value={s.id}>{s.label}</SelectItem>)}
                                         </SelectContent>
@@ -430,46 +439,46 @@ const OrderManagement = () => {
                             </div>
                             
                             <div>
-                                <Label>Produits</Label>
+                                <Label>{t('order_management.dialog_products')}</Label>
                                 <div className="space-y-3 mt-2">
                                 {currentOrder.products.map((item, index) => (
                                     <div key={index} className="grid grid-cols-[1fr_auto_auto] sm:grid-cols-[1fr_80px_100px_auto] items-center gap-2">
                                         <Select value={item.product_id} onValueChange={value => handleProductChange(index, value)}>
-                                            <SelectTrigger><SelectValue placeholder="Produit" /></SelectTrigger>
+                                            <SelectTrigger><SelectValue placeholder={t('order_management.dialog_select_product')} /></SelectTrigger>
                                             <SelectContent>
                                                 {products.map(p => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}
                                             </SelectContent>
                                         </Select>
-                                        <Input type="number" value={item.quantity} onChange={e => handleQuantityChange(index, e.target.value)} placeholder="Qté" className="w-20" />
+                                        <Input type="number" value={item.quantity} onChange={e => handleQuantityChange(index, e.target.value)} placeholder={t('order_management.dialog_qty')} className="w-20" />
                                         <Input value={`${item.price.toFixed(2)}`} readOnly className="bg-secondary text-center w-24" />
                                         <Button variant="ghost" size="icon" onClick={() => removeProductLine(index)} className="hidden sm:inline-flex"><Trash2 className="w-4 h-4 text-red-500"/></Button>
                                     </div>
                                 ))}
                                 </div>
                                 <div className="flex gap-2 mt-3">
-                                    <Button variant="outline" size="sm" onClick={addProductLine}>Ajouter un produit</Button>
-                                    <Button variant="outline" size="sm" onClick={() => setIsProductDialogOpen(true)}><PackagePlus className="w-4 h-4 mr-2" />Créer un produit</Button>
+                                    <Button variant="outline" size="sm" onClick={addProductLine}>{t('order_management.dialog_add_product')}</Button>
+                                    <Button variant="outline" size="sm" onClick={() => setIsProductDialogOpen(true)}><PackagePlus className="w-4 h-4 mr-2" />{t('order_management.dialog_create_product')}</Button>
                                 </div>
                             </div>
 
                             <div>
-                                <Label htmlFor="notes">Notes internes</Label>
+                                <Label htmlFor="notes">{t('order_management.dialog_notes')}</Label>
                                 <Textarea id="notes" value={currentOrder.notes || ''} onChange={e => setCurrentOrder(prev => ({ ...prev, notes: e.target.value }))} />
                             </div>
 
                              <div className="mt-4 text-right">
-                                <p className="text-lg font-bold">Total: {currentOrder.products.reduce((sum, p) => sum + (p.price * p.quantity), 0).toFixed(2)} {currencySymbol}</p>
+                                <p className="text-lg font-bold">{t('order_management.dialog_total')}: {currentOrder.products.reduce((sum, p) => sum + (p.price * p.quantity), 0).toFixed(2)} {currencySymbol}</p>
                             </div>
 
                         </div>
                         <DialogFooter>
-                            <Button variant="outline" onClick={() => setIsOrderDialogOpen(false)}>Annuler</Button>
-                            <Button onClick={handleSaveOrder}>Sauvegarder</Button>
+                            <Button variant="outline" onClick={() => setIsOrderDialogOpen(false)}>{t('order_management.dialog_cancel')}</Button>
+                            <Button onClick={handleSaveOrder}>{t('order_management.dialog_save')}</Button>
                         </DialogFooter>
                     </DialogContent>
                 </Dialog>
             )}
-            <CreateClientDialog isOpen={isClientDialogOpen} onOpenChange={setIsClientDialogOpen} onClientCreated={handleClientCreated} />
+            <CreateClientDialog isOpen={isClientDialogOpen} onOpenChange={setIsClientDialogOpen} onClientCreated={handleClientAction} />
             <ProductForm 
                 product={initialProductState}
                 onSave={handleProductCreated}

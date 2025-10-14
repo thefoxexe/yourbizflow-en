@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://yourbizflow.fr/sitemap.xml
+Sitemap: https://yourbizflow.com/sitemap.xml

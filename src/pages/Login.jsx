@@ -1,29 +1,48 @@
-
-    import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { useToast } from '@/components/ui/use-toast';
 import { Helmet } from 'react-helmet';
 import { FcGoogle } from 'react-icons/fc';
 import { supabase } from '@/lib/customSupabaseClient';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { signIn, signInWithGoogle } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const signIn = async (email, password) => {
+    return supabase.auth.signInWithPassword({ email, password });
+  };
+
+  const signInWithGoogle = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/dashboard`,
+      },
+    });
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: t('password_reset_error_title'),
+        description: error.message,
+      });
+    }
+  };
 
   const handleSignIn = async (e) => {
     e.preventDefault();
     if (!email || !password) {
       toast({
         variant: "destructive",
-        title: "Champs requis",
+        title: t('password_reset_error_title'),
         description: "Veuillez entrer votre email et votre mot de passe.",
       });
       return;
@@ -32,7 +51,13 @@ const Login = () => {
     const { error } = await signIn(email, password);
     setIsSubmitting(false);
     
-    if (!error) {
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Erreur de connexion",
+        description: "Email ou mot de passe incorrect.",
+      });
+    } else {
       toast({
         title: "Connexion réussie!",
         description: "Bienvenue sur votre tableau de bord.",
@@ -56,13 +81,13 @@ const Login = () => {
     if (error) {
       toast({
         variant: "destructive",
-        title: "Erreur",
+        title: t('password_reset_error_title'),
         description: error.message,
       });
     } else {
       toast({
-        title: "Email envoyé",
-        description: "Veuillez consulter votre boîte de réception pour réinitialiser votre mot de passe.",
+        title: t('password_reset_email_sent_title'),
+        description: t('password_reset_email_sent_desc'),
       });
     }
   };
@@ -70,9 +95,8 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-[#030303]">
       <Helmet>
-        <title>Connexion - YourBizFlow</title>
+        <title>{t('login')} - {t('app_name')}</title>
         <meta name="description" content="Connectez-vous à votre compte YourBizFlow pour accéder à votre tableau de bord et gérer votre entreprise." />
-        <meta name="keywords" content="connexion, login, YourBizFlow, compte, SaaS" />
       </Helmet>
       <motion.div
         initial={{ opacity: 0, y: -50, scale: 0.9 }}
@@ -83,9 +107,9 @@ const Login = () => {
         <div className="text-center mb-8">
           <Link to="/welcome" className="inline-flex items-center gap-3 mb-4">
             <img src="https://horizons-cdn.hostinger.com/58cbc4ed-cb6f-4ebd-abaf-62892e9ae2c6/6b69cc214c03819301dd8cb8579b78dc.png" alt="YourBizFlow Logo" className="w-12 h-12" />
-            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">YourBizFlow</h1>
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">{t('app_name')}</h1>
           </Link>
-          <p className="text-white/60">Connectez-vous pour gérer votre business</p>
+          <p className="text-white/60">{t('login_title')}</p>
         </div>
         
         <form onSubmit={handleSignIn} className="space-y-6">
@@ -93,7 +117,7 @@ const Login = () => {
             <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
             <input
               type="email"
-              placeholder="Email"
+              placeholder={t('login_email_placeholder')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -105,7 +129,7 @@ const Login = () => {
               <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
               <input
                 type="password"
-                placeholder="Mot de passe"
+                placeholder={t('login_password_placeholder')}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -118,7 +142,7 @@ const Login = () => {
                 onClick={handlePasswordReset}
                 className="text-sm text-primary hover:underline"
               >
-                Mot de passe oublié ?
+                {t('login_forgot_password')}
               </button>
             </div>
           </div>
@@ -135,7 +159,7 @@ const Login = () => {
               {isSubmitting ? 'Connexion...' : (
                 <>
                   <LogIn className="w-5 h-5 mr-2" />
-                  Se connecter
+                  {t('login_button')}
                 </>
               )}
             </Button>
@@ -147,7 +171,7 @@ const Login = () => {
             <span className="w-full border-t border-white/20"></span>
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-[#0e0e10] px-2 text-white/60">Ou continuer avec</span>
+            <span className="bg-[#0e0e10] px-2 text-white/60">{t('login_or_continue_with')}</span>
           </div>
         </div>
 
@@ -161,18 +185,18 @@ const Login = () => {
             className="w-full py-3 text-base bg-transparent border-white/20 hover:bg-white/5 text-white"
           >
             <FcGoogle className="w-5 h-5 mr-2" />
-            Se connecter avec Google
+            {t('login_with_google')}
           </Button>
         </motion.div>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-white/60">
-            Pas encore de compte ?{' '}
+            {t('login_no_account')}{' '}
             <Link
               to="/signup"
               className="font-medium text-primary hover:underline"
             >
-              Inscrivez-vous
+              {t('signup')}
             </Link>
           </p>
         </div>
@@ -182,4 +206,3 @@ const Login = () => {
 };
 
 export default Login;
-  

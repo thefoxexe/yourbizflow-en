@@ -1,28 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
-import { Lock, LogIn } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { Helmet } from "react-helmet";
-import { supabase } from "@/lib/customSupabaseClient";
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
+import { Lock, LogIn } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
+import { Helmet } from 'react-helmet';
+import { supabase } from '@/lib/customSupabaseClient';
+import { useTranslation } from 'react-i18next';
 
 const PasswordReset = () => {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "PASSWORD_RECOVERY") {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') {
         toast({
           title: "Session de récupération prête",
-          description:
-            "Vous pouvez maintenant définir un nouveau mot de passe.",
+          description: "Vous pouvez maintenant définir un nouveau mot de passe.",
         });
       }
     });
@@ -37,16 +36,16 @@ const PasswordReset = () => {
     if (password !== confirmPassword) {
       toast({
         variant: "destructive",
-        title: "Erreur",
-        description: "Les mots de passe ne correspondent pas.",
+        title: t('password_reset_error_title'),
+        description: t('password_reset_error_mismatch'),
       });
       return;
     }
     if (password.length < 6) {
       toast({
         variant: "destructive",
-        title: "Erreur",
-        description: "Le mot de passe doit contenir au moins 6 caractères.",
+        title: t('password_reset_error_title'),
+        description: t('password_reset_error_length'),
       });
       return;
     }
@@ -58,56 +57,45 @@ const PasswordReset = () => {
     if (error) {
       toast({
         variant: "destructive",
-        title: "Erreur",
-        description:
-          "Impossible de mettre à jour le mot de passe. Le lien est peut-être expiré ou invalide.",
+        title: t('password_reset_error_title'),
+        description: t('password_reset_error_update'),
       });
     } else {
       toast({
-        title: "Succès",
-        description:
-          "Votre mot de passe a été mis à jour. Vous pouvez maintenant vous connecter.",
+        title: t('password_reset_success_title'),
+        description: t('password_reset_success_desc'),
       });
       await supabase.auth.signOut();
-      navigate("/login");
+      navigate('/login');
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-[#030303]">
       <Helmet>
-        <title>Réinitialiser le mot de passe - YourBizFlow</title>
-        <meta
-          name="description"
-          content="Réinitialisez votre mot de passe pour votre compte YourBizFlow."
-        />
+        <title>Réinitialiser le mot de passe - {t('app_name')}</title>
+        <meta name="description" content="Réinitialisez votre mot de passe pour votre compte YourBizFlow." />
       </Helmet>
       <motion.div
         initial={{ opacity: 0, y: -50, scale: 0.9 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.5, type: "spring" }}
+        transition={{ duration: 0.5, type: 'spring' }}
         className="w-full max-w-md bg-white/[0.03] border border-white/[0.08] rounded-xl p-8 shadow-lg"
       >
         <div className="text-center mb-8">
           <Link to="/welcome" className="inline-flex items-center gap-3 mb-4">
-            <img
-              alt="YourBizFlow Logo"
-              className="w-12 h-12"
-              src="https://horizons-cdn.hostinger.com/58cbc4ed-cb6f-4ebd-abaf-62892e9ae2c6/6b69cc214c03819301dd8cb8579b78dc.png"
-            />
-            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-              YourBizFlow
-            </h1>
+            <img alt="YourBizFlow Logo" className="w-12 h-12" src="https://horizons-cdn.hostinger.com/58cbc4ed-cb6f-4ebd-abaf-62892e9ae2c6/6b69cc214c03819301dd8cb8579b78dc.png" />
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">{t('app_name')}</h1>
           </Link>
-          <p className="text-white/60">Choisissez un nouveau mot de passe</p>
+          <p className="text-white/60">{t('password_reset_title')}</p>
         </div>
-
+        
         <form onSubmit={handlePasswordReset} className="space-y-6">
           <div className="relative">
             <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
             <input
               type="password"
-              placeholder="Nouveau mot de passe"
+              placeholder={t('password_reset_new_password')}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -118,7 +106,7 @@ const PasswordReset = () => {
             <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
             <input
               type="password"
-              placeholder="Confirmer le mot de passe"
+              placeholder={t('password_reset_confirm_password')}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
@@ -126,18 +114,19 @@ const PasswordReset = () => {
             />
           </div>
 
-          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
             <Button
               type="submit"
               disabled={isSubmitting}
               className="w-full py-3 text-base bg-white text-black hover:bg-white/90"
             >
-              {isSubmitting ? (
-                "Enregistrement..."
-              ) : (
+              {isSubmitting ? 'Enregistrement...' : (
                 <>
                   <LogIn className="w-5 h-5 mr-2" />
-                  Enregistrer le nouveau mot de passe
+                  {t('password_reset_button')}
                 </>
               )}
             </Button>

@@ -1,350 +1,217 @@
-
-    import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Trash2, MoreVertical } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/lib/customSupabaseClient';
+import { Clock, PlusCircle, Edit, Trash2, Save, Loader2 } from 'lucide-react';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Helmet } from 'react-helmet';
+import { useToast } from '@/components/ui/use-toast';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { DatePicker } from '@/components/DatePicker';
+import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
+
+const TimeEntryDialog = ({ entry, onSave, onCancel, projects, t }) => {
+  const [currentEntry, setCurrentEntry] = useState(entry || { project_id: '', hours: 0, minutes: 0, date: new Date(), description: '' });
+
+  useEffect(() => {
+    if (entry) {
+      const durationHours = Math.floor(entry.duration / 60);
+      const durationMinutes = entry.duration % 60;
+      setCurrentEntry({ ...entry, hours: durationHours, minutes: durationMinutes, date: new Date(entry.date) });
+    } else {
+      setCurrentEntry({ project_id: '', hours: 0, minutes: 0, date: new Date(), description: '' });
+    }
+  }, [entry]);
+
+  const handleSave = () => {
+    if (!currentEntry.project_id || (currentEntry.hours === 0 && currentEntry.minutes === 0)) {
+      alert(t('time_tracking.all_fields_required'));
+      return;
+    }
+    const durationInMinutes = parseInt(currentEntry.hours, 10) * 60 + parseInt(currentEntry.minutes, 10);
+    onSave({ ...currentEntry, duration: durationInMinutes, start_time: currentEntry.date, end_time: currentEntry.date });
+  };
+
+  return (
+    <DialogContent>
+      <DialogHeader><DialogTitle>{entry?.id ? t('time_tracking.edit_entry') : t('time_tracking.add_entry')}</DialogTitle></DialogHeader>
+      <div className="py-4 space-y-4">
+        <div>
+          <Label>{t('sidebar_module_projects')}</Label>
+          <Select value={currentEntry.project_id} onValueChange={project_id => setCurrentEntry({ ...currentEntry, project_id })}>
+            <SelectTrigger><SelectValue placeholder={t('time_tracking.select_project')} /></SelectTrigger>
+            <SelectContent>{projects.map(p => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}</SelectContent>
+          </Select>
+        </div>
+        <div>
+          <Label>{t('task_manager.task_desc')}</Label>
+          <Input value={currentEntry.description || ''} onChange={e => setCurrentEntry({ ...currentEntry, description: e.target.value })} />
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label>{t('time_tracking.hours')}</Label>
+            <Input type="number" value={currentEntry.hours} onChange={e => setCurrentEntry({ ...currentEntry, hours: e.target.value })} min="0" />
+          </div>
+          <div>
+            <Label>{t('time_tracking.minutes')}</Label>
+            <Input type="number" value={currentEntry.minutes} onChange={e => setCurrentEntry({ ...currentEntry, minutes: e.target.value })} min="0" max="59" />
+          </div>
+        </div>
+        <div>
+          <Label>{t('time_tracking.date')}</Label>
+          <DatePicker date={currentEntry.date} setDate={date => setCurrentEntry({ ...currentEntry, date })} />
+        </div>
+      </div>
+      <DialogFooter>
+        <DialogClose asChild><Button variant="outline" onClick={onCancel}>{t('dialog_cancel')}</Button></DialogClose>
+        <Button onClick={handleSave}>{t('dialog_save')}</Button>
+      </DialogFooter>
+    </DialogContent>
+  );
+};
 
 const TimeTracking = () => {
-  const {
-    toast
-  } = useToast();
-  const {
-    user
-  } = useAuth();
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const { t } = useTranslation();
+  const [entries, setEntries] = useState([]);
   const [projects, setProjects] = useState([]);
-  const [employees, setEmployees] = useState([]);
-  const [timeEntries, setTimeEntries] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isEntryDialogOpen, setIsEntryDialogOpen] = useState(false);
-  const [isEmployeeDialogOpen, setIsEmployeeDialogOpen] = useState(false);
-  const [newEntry, setNewEntry] = useState({
-    project_id: '',
-    employee_id: '',
-    description: '',
-    duration_hours: '',
-    duration_minutes: '',
-    entry_date: new Date().toISOString().split('T')[0]
-  });
-  const [newEmployee, setNewEmployee] = useState({ name: '', position: '', gross_salary: '', hire_date: new Date().toISOString().split('T')[0] });
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingEntry, setEditingEntry] = useState(null);
 
-  const fetchData = useCallback(async () => {
+  const fetchEntries = useCallback(async () => {
     if (!user) return;
     setLoading(true);
-    const [projectsRes, entriesRes, employeesRes] = await Promise.all([supabase.from('projects').select('id, name, hourly_rate').eq('user_id', user.id), supabase.from('time_entries').select('*, project:projects(name), employee:employees(name)').eq('user_id', user.id).order('start_time', {
-      ascending: false
-    }), supabase.from('employees').select('id, name').eq('user_id', user.id)]);
-    if (projectsRes.error || entriesRes.error || employeesRes.error) {
-      toast({
-        variant: 'destructive',
-        title: 'Erreur',
-        description: 'Impossible de charger les données.'
-      });
+    const [entriesRes, projectsRes] = await Promise.all([
+      supabase.from('time_entries').select('*, projects(name)').eq('user_id', user.id).order('start_time', { ascending: false }),
+      supabase.from('projects').select('id, name').eq('user_id', user.id)
+    ]);
+
+    if (entriesRes.error || projectsRes.error) {
+      toast({ variant: 'destructive', title: t('toast_error_title'), description: t('time_tracking.load_error') });
     } else {
+      setEntries(entriesRes.data.map(e => ({
+        ...e,
+        date: e.start_time,
+        duration: e.end_time ? (new Date(e.end_time) - new Date(e.start_time)) / 60000 : 0
+      })));
       setProjects(projectsRes.data);
-      setTimeEntries(entriesRes.data);
-      setEmployees(employeesRes.data);
     }
     setLoading(false);
-  }, [user, toast]);
+  }, [user, toast, t]);
+
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-  const formatDuration = seconds => {
-    if (seconds === null || isNaN(seconds)) return '00:00';
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor(seconds % 3600 / 60);
-    return `${h.toString().padStart(2, '0')}h ${m.toString().padStart(2, '0')}m`;
-  };
-  const getDurationFromEntry = entry => {
-    if (!entry.start_time || !entry.end_time) return 'N/A';
-    const start = new Date(entry.start_time);
-    const end = new Date(entry.end_time);
-    const diffSeconds = Math.floor((end - start) / 1000);
-    return formatDuration(diffSeconds);
-  };
-  const handleAddManualEntry = async () => {
-    const {
-      project_id,
-      employee_id,
-      description,
-      duration_hours,
-      duration_minutes,
-      entry_date
-    } = newEntry;
-    if (!project_id || !employee_id || !duration_hours && !duration_minutes || !entry_date) {
-      toast({
-        variant: 'destructive',
-        title: 'Champs requis',
-        description: 'Projet, employé, durée et date sont obligatoires.'
-      });
-      return;
-    }
-    const totalSeconds = (parseInt(duration_hours, 10) || 0) * 3600 + (parseInt(duration_minutes, 10) || 0) * 60;
-    const entryDate = new Date(entry_date);
-    const startTime = new Date(entryDate.setHours(0, 0, 0, 0));
-    const endTime = new Date(startTime.getTime() + totalSeconds * 1000);
-    const {
-      error
-    } = await supabase.from('time_entries').insert({
+    fetchEntries();
+  }, [fetchEntries]);
+
+  const handleSaveEntry = async (entryData) => {
+    const payload = {
       user_id: user.id,
-      project_id,
-      employee_id,
-      start_time: startTime.toISOString(),
-      end_time: endTime.toISOString(),
-      description
-    });
-    if (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Erreur',
-        description: "L'entrée de temps n'a pas pu être enregistrée."
-      });
+      project_id: entryData.project_id,
+      description: entryData.description,
+      start_time: entryData.date,
+      end_time: new Date(new Date(entryData.date).getTime() + entryData.duration * 60000),
+      invoiced: entryData.invoiced || false
+    };
+
+    let error;
+    if (entryData.id) {
+      ({ error } = await supabase.from('time_entries').update(payload).eq('id', entryData.id));
     } else {
-      toast({
-        title: 'Succès',
-        description: 'Entrée manuelle ajoutée.'
-      });
-      setIsEntryDialogOpen(false);
-      setNewEntry({
-        project_id: '',
-        employee_id: '',
-        description: '',
-        duration_hours: '',
-        duration_minutes: '',
-        entry_date: new Date().toISOString().split('T')[0]
-      });
-      fetchData();
+      ({ error } = await supabase.from('time_entries').insert(payload));
+    }
+    if (error) {
+      toast({ variant: 'destructive', title: t('toast_error_title'), description: t('time_tracking.save_error') });
+    } else {
+      toast({ title: t('toast_success_title'), description: t('time_tracking.save_success') });
+      setIsDialogOpen(false);
+      setEditingEntry(null);
+      fetchEntries();
     }
   };
 
-  const handleAddEmployee = async () => {
-    if (!newEmployee.name) {
-      toast({ variant: 'destructive', title: 'Nom requis' });
-      return;
-    }
-    const { data, error } = await supabase.from('employees').insert({ ...newEmployee, user_id: user.id, gross_salary: Number(newEmployee.gross_salary) || null }).select().single();
+  const handleDeleteEntry = async (id) => {
+    const { error } = await supabase.from('time_entries').delete().eq('id', id);
     if (error) {
-      toast({ variant: 'destructive', title: 'Erreur', description: "L'employé n'a pas pu être ajouté." });
+      toast({ variant: 'destructive', title: t('toast_error_title'), description: t('time_tracking.delete_error') });
     } else {
-      toast({ title: 'Succès', description: 'Employé ajouté.' });
-      setEmployees(prev => [...prev, data]);
-      setNewEntry(prev => ({ ...prev, employee_id: data.id }));
-      setIsEmployeeDialogOpen(false);
-      setNewEmployee({ name: '', position: '', gross_salary: '', hire_date: new Date().toISOString().split('T')[0] });
+      toast({ title: t('toast_success_title'), description: t('time_tracking.delete_success') });
+      fetchEntries();
     }
   };
 
-  const handleDeleteEntry = async entryId => {
-    const {
-      error
-    } = await supabase.from('time_entries').delete().eq('id', entryId);
-    if (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Erreur',
-        description: "L'entrée n'a pas pu être supprimée."
-      });
-    } else {
-      toast({
-        title: 'Succès',
-        description: 'Entrée supprimée.'
-      });
-      fetchData();
-    }
+  const formatDuration = (minutes) => {
+    const h = Math.floor(minutes / 60);
+    const m = Math.round(minutes % 60);
+    return `${h}h ${m}m`;
   };
-  return <div className="space-y-8">
-      <Helmet>
-        <title>Gestion des heures - YourBizFlow</title>
-        <meta name="description" content="Suivez le temps passé par vos employés sur les projets pour une facturation précise et une meilleure gestion des ressources." />
-      </Helmet>
-      <motion.div initial={{
-      opacity: 0,
-      y: 20
-    }} animate={{
-      opacity: 1,
-      y: 0
-    }} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Gestion des heures
-        </h1>
-          <p className="text-muted-foreground">Suivez le temps passé sur vos projets pour la facturation.</p>
-        </div>
-        <Button onClick={() => setIsEntryDialogOpen(true)}>
-          <Plus className="w-4 h-4 mr-2" />
-          Ajouter une entrée
-        </Button>
-      </motion.div>
-
-      <motion.div initial={{
-      opacity: 0,
-      y: 20
-    }} animate={{
-      opacity: 1,
-      y: 0
-    }} transition={{
-      delay: 0.2
-    }}>
-        <div className="hidden md:block bg-card/50 backdrop-blur-sm border rounded-xl overflow-hidden">
-          <div className="p-6 border-b"><h2 className="text-xl font-bold text-foreground">Entrées de temps</h2></div>
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[640px]">
-              <thead>
-                <tr className="border-b border-white/10">
-                  <th className="text-left p-4 font-semibold text-muted-foreground">Projet</th>
-                  <th className="text-left p-4 font-semibold text-muted-foreground">Employé</th>
-                  <th className="text-left p-4 font-semibold text-muted-foreground">Description</th>
-                  <th className="text-left p-4 font-semibold text-muted-foreground">Date</th>
-                  <th className="text-left p-4 font-semibold text-muted-foreground">Durée</th>
-                  <th className="text-right p-4 font-semibold text-muted-foreground">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {loading ? [...Array(5)].map((_, i) => <tr key={i} className="border-b border-white/5"><td colSpan="6" className="p-4"><div className="h-8 bg-muted/50 rounded animate-pulse"></div></td></tr>) : timeEntries.map((entry, index) => <motion.tr key={entry.id} initial={{
-                opacity: 0,
-                y: 10
-              }} animate={{
-                opacity: 1,
-                y: 0
-              }} transition={{
-                delay: index * 0.05
-              }} className="border-b border-white/5 hover:bg-white/5">
-                    <td className="p-4 font-medium">{entry.project?.name || 'Projet supprimé'}</td>
-                    <td className="p-4 text-muted-foreground">{entry.employee?.name || 'Employé supprimé'}</td>
-                    <td className="p-4 text-muted-foreground">{entry.description}</td>
-                    <td className="p-4 text-muted-foreground">{new Date(entry.start_time).toLocaleDateString('fr-FR')}</td>
-                    <td className="p-4 font-semibold">{getDurationFromEntry(entry)}</td>
-                    <td className="p-4 text-right">
-                      <Button size="icon" variant="ghost" onClick={() => handleDeleteEntry(entry.id)}><Trash2 className="w-4 h-4 text-red-500" /></Button>
-                    </td>
-                  </motion.tr>)}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div className="md:hidden space-y-4">
-          {loading ? [...Array(3)].map((_, i) => <Card key={i} className="bg-card/50 animate-pulse h-32" />) :
-            timeEntries.map(entry => (
-              <Card key={entry.id} className="bg-card/50">
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle>{entry.project?.name || 'Projet supprimé'}</CardTitle>
-                      <CardDescription>{entry.employee?.name || 'Employé supprimé'}</CardDescription>
-                    </div>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="-mt-2 -mr-2"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuItem onClick={() => handleDeleteEntry(entry.id)} className="text-red-500 focus:text-red-500"><Trash2 className="mr-2 h-4 w-4" /> Supprimer</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground mb-2">{entry.description}</p>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="font-semibold">{getDurationFromEntry(entry)}</span>
-                    <span className="text-muted-foreground">{new Date(entry.start_time).toLocaleDateString('fr-FR')}</span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))
-          }
-        </div>
-      </motion.div>
-
-      <Dialog open={isEntryDialogOpen} onOpenChange={setIsEntryDialogOpen}>
-        <DialogContent>
-          <DialogHeader><DialogTitle>Ajouter une entrée manuelle</DialogTitle></DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="project">Projet</Label>
-              <select id="project" value={newEntry.project_id} onChange={e => setNewEntry({
-              ...newEntry,
-              project_id: e.target.value
-            })} className="w-full mt-1 border rounded-md p-2 bg-background text-foreground">
-                <option value="">Sélectionner un projet</option>
-                {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
-              </select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="employee">Employé</Label>
-              <div className="flex items-center gap-2">
-                <select id="employee" value={newEntry.employee_id} onChange={e => setNewEntry({
-                ...newEntry,
-                employee_id: e.target.value
-              })} className="w-full mt-1 border rounded-md p-2 bg-background text-foreground">
-                  <option value="">Sélectionner un employé</option>
-                  {employees.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
-                </select>
-                <Button variant="outline" size="icon" onClick={() => setIsEmployeeDialogOpen(true)}><Plus /></Button>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="entry_date">Date</Label>
-              <Input id="entry_date" type="date" value={newEntry.entry_date} onChange={e => setNewEntry({
-              ...newEntry,
-              entry_date: e.target.value
-            })} />
-            </div>
-            <div className="space-y-2">
-              <Label>Durée</Label>
-              <div className="flex items-center gap-2">
-                <Input type="number" placeholder="Heures" value={newEntry.duration_hours} onChange={e => setNewEntry({
-                ...newEntry,
-                duration_hours: e.target.value
-              })} />
-                <Input type="number" placeholder="Minutes" value={newEntry.duration_minutes} onChange={e => setNewEntry({
-                ...newEntry,
-                duration_minutes: e.target.value
-              })} />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="description">Description (optionnel)</Label>
-              <Textarea id="description" value={newEntry.description} onChange={e => setNewEntry({
-              ...newEntry,
-              description: e.target.value
-            })} />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsEntryDialogOpen(false)}>Annuler</Button>
-            <Button onClick={handleAddManualEntry}>Ajouter</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={isEmployeeDialogOpen} onOpenChange={setIsEmployeeDialogOpen}>
-        <DialogContent>
-          <DialogHeader><DialogTitle>Ajouter un employé</DialogTitle></DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="employee-name">Nom</Label>
-              <Input id="employee-name" value={newEmployee.name} onChange={e => setNewEmployee({...newEmployee, name: e.target.value})} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="employee-position">Poste</Label>
-              <Input id="employee-position" value={newEmployee.position} onChange={e => setNewEmployee({...newEmployee, position: e.target.value})} />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsEmployeeDialogOpen(false)}>Annuler</Button>
-            <Button onClick={handleAddEmployee}>Ajouter</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </div>;
-};
-export default TimeTracking;
   
+  const openDialog = (entry = null) => {
+    setEditingEntry(entry);
+    setIsDialogOpen(true);
+  };
+  
+  const totalHours = useMemo(() => entries.reduce((sum, e) => sum + e.duration, 0) / 60, [entries]);
+
+  return (
+    <div className="space-y-8">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{t('sidebar_module_time_tracking')}</h1>
+          <p className="text-muted-foreground">{t('module_time_tracking_desc')}</p>
+        </div>
+        <Button onClick={() => openDialog()} className="w-full sm:w-auto"><PlusCircle className="mr-2 h-4 w-4" />{t('time_tracking.add_manual_entry')}</Button>
+      </motion.div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>{t('time_tracking.duration')} ({t('analytics.last_30_days')})</CardTitle>
+          <CardDescription className="text-4xl font-bold text-primary">{totalHours.toFixed(2)}h</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t('sidebar_module_projects')}</TableHead>
+                  <TableHead>{t('task_manager.task_desc')}</TableHead>
+                  <TableHead className="text-center">{t('time_tracking.duration')}</TableHead>
+                  <TableHead className="text-center">{t('time_tracking.date')}</TableHead>
+                  <TableHead className="text-right">{t('crm.table_actions')}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {loading ? (
+                  <TableRow><TableCell colSpan={5} className="text-center h-24"><Loader2 className="mx-auto h-6 w-6 animate-spin text-primary" /></TableCell></TableRow>
+                ) : entries.length > 0 ? entries.map(entry => (
+                  <TableRow key={entry.id}>
+                    <TableCell className="font-medium">{entry.projects?.name || t('time_tracking.unnamed_entry')}</TableCell>
+                    <TableCell>{entry.description}</TableCell>
+                    <TableCell className="text-center">{formatDuration(entry.duration)}</TableCell>
+                    <TableCell className="text-center">{format(new Date(entry.date), 'dd/MM/yyyy')}</TableCell>
+                    <TableCell className="text-right">
+                      <Button variant="ghost" size="icon" onClick={() => openDialog(entry)}><Edit className="h-4 w-4" /></Button>
+                      <Button variant="ghost" size="icon" onClick={() => handleDeleteEntry(entry.id)}><Trash2 className="h-4 w-4 text-red-500" /></Button>
+                    </TableCell>
+                  </TableRow>
+                )) : <TableRow><TableCell colSpan={5} className="text-center h-24">{t('time_tracking.no_entries')}</TableCell></TableRow>}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <TimeEntryDialog entry={editingEntry} onSave={handleSaveEntry} onCancel={() => setIsDialogOpen(false)} projects={projects} t={t} />
+      </Dialog>
+    </div>
+  );
+};
+
+export default TimeTracking;

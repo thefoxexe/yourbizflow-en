@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -11,262 +11,171 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Plus } from 'lucide-react';
-import { useTheme } from '@/contexts/ThemeContext';
-import { format } from 'date-fns-tz';
+import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-
-const eventCategories = {
-  business: { label: 'Business', color: 'hsl(var(--primary))' },
-  personal: { label: 'Personnel', color: 'hsl(var(--green-500, 142 76% 36%))' },
-  important: { label: 'Important', color: 'hsl(var(--destructive))' },
-  other: { label: 'Autre', color: 'hsl(var(--muted-foreground))' },
-};
+import { DatePicker } from '@/components/DatePicker';
+import { PlusCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Card, CardContent } from '@/components/ui/card';
+import frLocale from '@fullcalendar/core/locales/fr';
+import enLocale from '@fullcalendar/core/locales/en-gb';
 
 const CalendarPage = () => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const { theme } = useTheme();
+  const { t, i18n } = useTranslation();
   const [events, setEvents] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newEvent, setNewEvent] = useState({ title: '', start: '', end: '', category: 'business', allDay: true });
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [newEvent, setNewEvent] = useState({ title: '', start: null, end: null, description: '', category: 'appointment' });
+
+  const calendarLocale = useMemo(() => {
+    return i18n.language === 'fr' ? frLocale : enLocale;
+  }, [i18n.language]);
 
   const fetchEvents = useCallback(async () => {
     if (!user) return;
-
-    const { data: calendarEvents, error: calendarError } = await supabase
-      .from('calendar_events')
-      .select('*')
-      .eq('user_id', user.id);
-
-    if (calendarError) {
-      toast({ variant: 'destructive', title: 'Erreur', description: 'Impossible de charger les événements.' });
-      return;
+    const { data, error } = await supabase.from('calendar_events').select('*').eq('user_id', user.id);
+    if (error) {
+      toast({ variant: 'destructive', title: t('toast_error_title'), description: t('calendar.load_error') });
+    } else {
+      setEvents(data.map(e => ({
+        id: e.id,
+        title: e.title,
+        start: e.start_time,
+        end: e.end_time,
+        extendedProps: { description: e.description, category: e.category }
+      })));
     }
-
-    const { data: invoices, error: invoiceError } = await supabase
-      .from('invoices')
-      .select('id, invoice_number, due_date, amount, clients(name)')
-      .eq('user_id', user.id)
-      .in('status', ['pending', 'overdue']);
-
-    if (invoiceError) {
-      toast({ variant: 'destructive', title: 'Erreur', description: 'Impossible de charger les factures.' });
-    }
-
-    const invoiceEvents = invoices?.map(inv => {
-      const isOverdue = new Date(inv.due_date) < new Date();
-      return {
-        title: `Facture #${inv.invoice_number}`,
-        start: inv.due_date,
-        allDay: true,
-        color: isOverdue ? 'hsl(var(--destructive))' : 'hsl(var(--orange-500, 35 92% 53%))',
-        borderColor: isOverdue ? 'hsl(var(--destructive))' : 'hsl(var(--orange-500, 35 92% 53%))',
-        extendedProps: { type: 'invoice', amount: inv.amount, client: inv.clients?.name }
-      };
-    }) || [];
-
-    const formattedCalendarEvents = calendarEvents.map(e => ({
-      id: e.id,
-      title: e.title,
-      start: e.start_time,
-      end: e.end_time,
-      allDay: !e.start_time?.includes('T'),
-      color: eventCategories[e.category]?.color || eventCategories.other.color,
-      borderColor: eventCategories[e.category]?.color || eventCategories.other.color,
-      extendedProps: { type: 'event', description: e.description, category: e.category }
-    }));
-
-    setEvents([...formattedCalendarEvents, ...invoiceEvents]);
-  }, [user, toast]);
+  }, [user, toast, t]);
 
   useEffect(() => {
     fetchEvents();
   }, [fetchEvents]);
 
-  const handleDateSelect = (selectInfo) => {
-    setIsModalOpen(true);
-
-    const isAllDay = selectInfo.allDay || (!selectInfo.startStr.includes('T') && !selectInfo.endStr.includes('T'));
-    
-    let localStart, localEnd;
-
-    if (isAllDay) {
-        localStart = format(selectInfo.start, "yyyy-MM-dd");
-        localEnd = selectInfo.end ? format(new Date(selectInfo.end.getTime() - 1), "yyyy-MM-dd") : localStart;
-    } else {
-        localStart = format(selectInfo.start, "yyyy-MM-dd'T'HH:mm");
-        localEnd = format(selectInfo.end, "yyyy-MM-dd'T'HH:mm");
-    }
-
-    setNewEvent({
-      title: '',
-      start: localStart,
-      end: localEnd,
-      category: 'business',
-      allDay: isAllDay
-    });
+  const handleDateClick = (arg) => {
+    setNewEvent({ title: '', start: arg.date, end: null, description: '', category: 'appointment' });
+    setSelectedEvent(null);
+    setIsDialogOpen(true);
   };
 
   const handleEventClick = (clickInfo) => {
-    const { extendedProps, title, start, allDay } = clickInfo.event;
-    let description = '';
-    if (extendedProps.type === 'invoice') {
-      description = `Facture pour ${extendedProps.client || 'N/A'} d'un montant de ${extendedProps.amount}€.`;
-    } else {
-      description = extendedProps.description || 'Aucune description.';
-    }
-    
-    const displayDate = allDay 
-      ? new Date(start).toLocaleDateString('fr-FR', { timeZone: 'UTC' }) 
-      : new Date(start).toLocaleString();
-
-    toast({
-      title: title,
-      description: `Date: ${displayDate}. ${description}`,
-    });
+    const { id, title, start, end, extendedProps } = clickInfo.event;
+    setSelectedEvent({ id, title, start, end, description: extendedProps.description, category: extendedProps.category });
+    setNewEvent({ title, start, end, description: extendedProps.description, category: extendedProps.category });
+    setIsDialogOpen(true);
   };
 
-  const handleAddEvent = async () => {
-    if (!newEvent.title || !newEvent.start) {
-      toast({ variant: 'destructive', title: 'Champs requis', description: 'Le titre et la date de début sont obligatoires.' });
+  const handleSaveEvent = async () => {
+    if (!newEvent.title) {
+      toast({ variant: 'destructive', title: t('toast_error_title'), description: t('calendar.title_required') });
       return;
     }
-    
-    const startValue = newEvent.allDay ? newEvent.start : new Date(newEvent.start).toISOString();
-    const endValue = (newEvent.end && newEvent.end !== newEvent.start) 
-      ? (newEvent.allDay ? newEvent.end : new Date(newEvent.end).toISOString()) 
-      : (newEvent.allDay ? startValue : null);
 
-    const { error } = await supabase
-      .from('calendar_events')
-      .insert({
-        user_id: user.id,
-        title: newEvent.title,
-        start_time: startValue,
-        end_time: endValue,
-        category: newEvent.category,
-        type: 'event'
-      });
+    const eventData = {
+      user_id: user.id,
+      title: newEvent.title,
+      start_time: newEvent.start,
+      end_time: newEvent.end,
+      description: newEvent.description,
+      category: newEvent.category,
+    };
+
+    let error;
+    if (selectedEvent) {
+      ({ error } = await supabase.from('calendar_events').update(eventData).eq('id', selectedEvent.id));
+      toast({ title: t('toast_success_title'), description: t('calendar.update_success') });
+    } else {
+      ({ error } = await supabase.from('calendar_events').insert(eventData));
+      toast({ title: t('toast_success_title'), description: t('calendar.create_success') });
+    }
 
     if (error) {
-      console.error(error);
-      toast({ variant: 'destructive', title: 'Erreur', description: "Impossible d'ajouter l'événement." });
+      toast({ variant: 'destructive', title: t('toast_error_title'), description: selectedEvent ? t('calendar.update_error') : t('calendar.create_error') });
     } else {
-      toast({ title: 'Succès', description: 'Événement ajouté.' });
-      setIsModalOpen(false);
+      setIsDialogOpen(false);
       fetchEvents();
     }
   };
 
-  const handleAllDayChange = (checked) => {
-    if (checked) {
-      setNewEvent({ 
-        ...newEvent, 
-        allDay: true,
-        start: newEvent.start ? format(new Date(newEvent.start), 'yyyy-MM-dd') : '',
-        end: newEvent.end ? format(new Date(newEvent.end), 'yyyy-MM-dd') : '',
-      });
+  const handleDeleteEvent = async () => {
+    if (!selectedEvent) return;
+    const { error } = await supabase.from('calendar_events').delete().eq('id', selectedEvent.id);
+    if (error) {
+      toast({ variant: 'destructive', title: t('toast_error_title'), description: t('calendar.delete_error') });
     } else {
-      setNewEvent({ 
-        ...newEvent, 
-        allDay: false,
-        start: newEvent.start ? format(new Date(newEvent.start), "yyyy-MM-dd'T'09:00") : '',
-        end: newEvent.end ? format(new Date(newEvent.end), "yyyy-MM-dd'T'10:00") : '',
-      });
+      toast({ title: t('toast_success_title'), description: t('calendar.delete_success') });
+      setIsDialogOpen(false);
+      fetchEvents();
     }
   };
 
   return (
     <div className="space-y-8">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Calendrier</h1>
-          <p className="text-muted-foreground">Organisez votre temps, ne manquez aucune échéance.</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{t('calendar.title')}</h1>
+          <p className="text-muted-foreground">{t('calendar.subtitle')}</p>
         </div>
-        <Button onClick={() => handleDateSelect({ start: new Date(), end: new Date(), allDay: true, startStr: new Date().toISOString().split('T')[0], endStr: new Date().toISOString().split('T')[0] })}><Plus className="w-4 h-4 mr-2" />Ajouter un événement</Button>
+        <Button onClick={() => { setSelectedEvent(null); setNewEvent({ title: '', start: new Date(), end: null, description: '', category: 'appointment' }); setIsDialogOpen(true); }}>
+          <PlusCircle className="mr-2 h-4 w-4" /> {t('calendar.new_event')}
+        </Button>
       </motion.div>
+      <Card>
+        <CardContent className="p-4">
+          <FullCalendar
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            headerToolbar={{ left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay' }}
+            initialView="dayGridMonth"
+            events={events}
+            editable={true}
+            selectable={true}
+            selectMirror={true}
+            dayMaxEvents={true}
+            dateClick={handleDateClick}
+            eventClick={handleEventClick}
+            locale={calendarLocale}
+            buttonText={{
+              today: t('calendar.today_button'),
+              month: t('calendar.month_button'),
+              week: t('calendar.week_button'),
+              day: t('calendar.day_button'),
+            }}
+          />
+        </CardContent>
+      </Card>
 
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ delay: 0.1 }} 
-        className="bg-card/50 backdrop-blur-sm border rounded-xl p-2 sm:p-4 shadow-sm calendar-container"
-      >
-        <FullCalendar
-          key={theme}
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          headerToolbar={{
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
-          }}
-          initialView="dayGridMonth"
-          weekends={true}
-          events={events}
-          selectable={true}
-          selectMirror={true}
-          dayMaxEvents={true}
-          select={handleDateSelect}
-          eventClick={handleEventClick}
-          locale="fr"
-          buttonText={{
-            today: "Aujourd'hui",
-            month: 'Mois',
-            week: 'Semaine',
-            day: 'Jour',
-          }}
-          height="auto"
-          contentHeight="auto"
-          aspectRatio={1.75}
-          eventTimeFormat={{
-            hour: '2-digit',
-            minute: '2-digit',
-            meridiem: false,
-          }}
-          displayEventTime={true}
-          displayEventEnd={true}
-        />
-      </motion.div>
-
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader><DialogTitle>Ajouter un nouvel événement</DialogTitle></DialogHeader>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{selectedEvent ? t('calendar.edit_event') : t('calendar.new_event')}</DialogTitle>
+          </DialogHeader>
           <div className="py-4 space-y-4">
-            <div>
-              <Label htmlFor="event-title">Titre</Label>
-              <Input id="event-title" value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
+            <div><Label htmlFor="title">{t('calendar.event_title_label')}</Label><Input id="title" value={newEvent.title} onChange={e => setNewEvent({ ...newEvent, title: e.target.value })} /></div>
+            <div className="grid grid-cols-2 gap-4">
+              <div><Label>{t('calendar.start_date_label')}</Label><DatePicker date={newEvent.start} setDate={date => setNewEvent({ ...newEvent, start: date })} /></div>
+              <div><Label>{t('calendar.end_date_label')}</Label><DatePicker date={newEvent.end} setDate={date => setNewEvent({ ...newEvent, end: date })} /></div>
             </div>
+            <div><Label htmlFor="description">{t('calendar.description_label')}</Label><Textarea id="description" value={newEvent.description} onChange={e => setNewEvent({ ...newEvent, description: e.target.value })} /></div>
             <div>
-              <Label htmlFor="event-category">Catégorie</Label>
-              <Select value={newEvent.category} onValueChange={(value) => setNewEvent({ ...newEvent, category: value })}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Choisir une catégorie" />
-                </SelectTrigger>
+              <Label>{t('calendar.category_label')}</Label>
+              <Select value={newEvent.category} onValueChange={category => setNewEvent({ ...newEvent, category })}>
+                <SelectTrigger><SelectValue placeholder={t('calendar.select_category')} /></SelectTrigger>
                 <SelectContent>
-                  {Object.entries(eventCategories).map(([key, { label }]) => (
-                    <SelectItem key={key} value={key}>{label}</SelectItem>
-                  ))}
+                  <SelectItem value="appointment">{t('calendar.category_appointment')}</SelectItem>
+                  <SelectItem value="deadline">{t('calendar.category_deadline')}</SelectItem>
+                  <SelectItem value="meeting">{t('calendar.category_meeting')}</SelectItem>
+                  <SelectItem value="personal">{t('calendar.category_personal')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox id="all-day" checked={newEvent.allDay} onCheckedChange={handleAllDayChange} />
-              <Label htmlFor="all-day">Journée entière</Label>
-            </div>
-            <div>
-              <Label htmlFor="event-start">Date de début</Label>
-              <Input id="event-start" type={newEvent.allDay ? 'date' : 'datetime-local'} value={newEvent.start} onChange={(e) => setNewEvent({ ...newEvent, start: e.target.value })} />
-            </div>
-            <div>
-              <Label htmlFor="event-end">Date de fin (optionnel)</Label>
-              <Input id="event-end" type={newEvent.allDay ? 'date' : 'datetime-local'} value={newEvent.end} onChange={(e) => setNewEvent({ ...newEvent, end: e.target.value })} />
-            </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsModalOpen(false)}>Annuler</Button>
-            <Button onClick={handleAddEvent}>Ajouter</Button>
+          <DialogFooter className="flex justify-between w-full">
+            {selectedEvent ? <Button variant="destructive" onClick={handleDeleteEvent}>{t('calendar.delete_event')}</Button> : <div></div>}
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>{t('dialog_cancel')}</Button>
+              <Button onClick={handleSaveEvent}>{t('dialog_save')}</Button>
+            </div>
           </DialogFooter>
         </DialogContent>
       </Dialog>

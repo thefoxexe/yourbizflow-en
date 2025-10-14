@@ -10,27 +10,24 @@ import { cn } from '@/lib/utils';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Helmet } from 'react-helmet';
+import { useTranslation } from 'react-i18next';
 
-const freePlanFeatures = ["Facturation & Devis (limité, avec filigrane)", "CRM (jusqu'à 5 clients)", "Module Notes & Documents (2 max)", "Module Calendrier", "Support par email"];
-const proPlanFeatures = ["Toutes les fonctionnalités du plan Free", "Clients illimités", "Facturation & Devis illimités", "Module Achat/Revente (Inventaire)", "Module Suivi des Dépenses", "Module Notes & Documents (20 max)", "Support prioritaire par email"];
-const businessPlanFeatures = [...proPlanFeatures, "Module Suivi de Projets (Kanban)", "Module Gestion du Temps", "Module Rapport Financier", "Module Paiements Récurrents", "Module Relances Automatisées", "Module AI Business Strategist", "Module RH & Paie", "Module Automatisation de Workflow", "Module Notes & Documents (illimité)", "Accès API", "Support dédié (téléphone & visio)"];
-
-const PlanDetailsDialog = ({ isOpen, onOpenChange, plan }) => {
+const PlanDetailsDialog = ({ isOpen, onOpenChange, plan, t }) => {
   if (!plan) return null;
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md md:max-w-lg lg:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Détails du plan {plan.name}</DialogTitle>
+          <DialogTitle>{t('plan_details_title', { planName: plan.name })}</DialogTitle>
           <DialogDescription>
-            Toutes les fonctionnalités incluses dans le plan {plan.name}.
+            {t('plan_details_description', { planName: plan.name })}
           </DialogDescription>
         </DialogHeader>
         <ul className="space-y-3 py-4 max-h-96 overflow-y-auto pr-4">
-          {Array.isArray(plan.fullFeatures) && plan.fullFeatures.map((feature, i) => (
+          {Array.isArray(plan.fullFeatures) && plan.fullFeatures.map((featureKey, i) => (
             <li key={i} className="flex items-start gap-3">
               <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-              <span className="text-muted-foreground">{feature}</span>
+              <span className="text-muted-foreground">{t(featureKey)}</span>
             </li>
           ))}
         </ul>
@@ -55,6 +52,7 @@ const Subscription = () => {
   const [isPlanDetailsOpen, setIsPlanDetailsOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [billingCycle, setBillingCycle] = useState('monthly');
+  const { t } = useTranslation();
 
   const currency = useMemo(() => profile?.currency || 'eur', [profile]);
 
@@ -88,9 +86,9 @@ const Subscription = () => {
       } else {
         const formattedPlans = data.map(plan => {
             let fullFeatures = [];
-            if (plan.name === 'Free') fullFeatures = freePlanFeatures;
-            else if (plan.name === 'Pro') fullFeatures = proPlanFeatures;
-            else if (plan.name === 'Business') fullFeatures = businessPlanFeatures;
+            if (plan.name === 'Free') fullFeatures = ['plan_free_full_feature1', 'plan_free_full_feature2', 'plan_free_full_feature3', 'plan_free_full_feature4', 'plan_free_full_feature5'];
+            else if (plan.name === 'Pro') fullFeatures = ['plan_pro_full_feature1', 'plan_pro_full_feature2', 'plan_pro_full_feature3', 'plan_pro_full_feature4', 'plan_pro_full_feature5', 'plan_pro_full_feature6', 'plan_pro_full_feature7'];
+            else if (plan.name === 'Business') fullFeatures = ['plan_business_full_feature1', 'plan_business_full_feature2', 'plan_business_full_feature3', 'plan_business_full_feature4', 'plan_business_full_feature5', 'plan_business_full_feature6', 'plan_business_full_feature7', 'plan_business_full_feature8', 'plan_business_full_feature9', 'plan_business_full_feature10'];
             
             return {
                 ...plan,
@@ -134,7 +132,6 @@ const Subscription = () => {
     if (!paymentLink) {
       if (plan.name === 'Free') {
         toast({ title: 'Plan Gratuit Activé', description: 'Vous pouvez commencer à utiliser YourBizFlow !' });
-        // Potentially navigate to dashboard or refresh profile
         setIsProcessing(null);
         return;
       }
@@ -172,28 +169,27 @@ const Subscription = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background">
       <Helmet>
-        <title>Choisissez votre abonnement - YourBizFlow</title>
+        <title>{t('subscription_page_title')} - {t('app_name')}</title>
         <meta name="description" content="Découvrez les plans d'abonnement de YourBizFlow. Choisissez le plan qui correspond le mieux à vos besoins et commencez à simplifier la gestion de votre entreprise." />
-        <meta name="keywords" content="abonnement, tarif, prix, YourBizFlow, plan, SaaS" />
       </Helmet>
-      <PlanDetailsDialog isOpen={isPlanDetailsOpen} onOpenChange={setIsPlanDetailsOpen} plan={selectedPlan} />
+      <PlanDetailsDialog isOpen={isPlanDetailsOpen} onOpenChange={setIsPlanDetailsOpen} plan={selectedPlan} t={t} />
       
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="text-center mb-12 w-full max-w-6xl px-4"
       >
-        <h1 className="text-4xl md:text-5xl font-bold text-foreground text-center mb-4">Choisissez votre plan</h1>
+        <h1 className="text-4xl md:text-5xl font-bold text-foreground text-center mb-4">{t('subscription_page_title')}</h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Commencez gratuitement, puis faites évoluer votre abonnement en fonction de vos besoins.
+          {t('subscription_page_subtitle')}
         </p>
         <div className="flex items-center justify-center gap-4 mt-8">
-          <Label htmlFor="billing-cycle-sub" className={cn("text-muted-foreground", billingCycle === 'monthly' && 'text-foreground font-semibold')}>Mensuel</Label>
+          <Label htmlFor="billing-cycle-sub" className={cn("text-muted-foreground", billingCycle === 'monthly' && 'text-foreground font-semibold')}>{t('monthly')}</Label>
           <Switch id="billing-cycle-sub" checked={billingCycle === 'yearly'} onCheckedChange={(checked) => setBillingCycle(checked ? 'yearly' : 'monthly')} />
-          <Label htmlFor="billing-cycle-sub" className={cn("text-muted-foreground", billingCycle === 'yearly' && 'text-foreground font-semibold')}>Annuel</Label>
+          <Label htmlFor="billing-cycle-sub" className={cn("text-muted-foreground", billingCycle === 'yearly' && 'text-foreground font-semibold')}>{t('yearly')}</Label>
           <div className="bg-rose-500/20 text-rose-400 text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1">
             <BadgePercent className="w-3 h-3" />
-            -20%
+            {t('discount_badge')}
           </div>
         </div>
       </motion.div>
@@ -202,10 +198,10 @@ const Subscription = () => {
         {plans.map((plan, index) => {
           const price = getPrice(plan, billingCycle, currency);
           
-          let features = [];
-          if (plan.name === 'Free') features = freePlanFeatures;
-          else if (plan.name === 'Pro') features = proPlanFeatures;
-          else if (plan.name === 'Business') features = businessPlanFeatures;
+          let featureKeys = [];
+          if (plan.name === 'Free') featureKeys = ['plan_free_feature1', 'plan_free_feature2', 'plan_free_feature3'];
+          else if (plan.name === 'Pro') featureKeys = ['plan_pro_feature1', 'plan_pro_feature2', 'plan_pro_feature3'];
+          else if (plan.name === 'Business') featureKeys = ['plan_business_feature1', 'plan_business_feature2', 'plan_business_feature3'];
           
           return (
             <motion.div
@@ -217,25 +213,25 @@ const Subscription = () => {
             >
               {plan.name === 'Business' && (
                 <div className="absolute -top-4 right-6 bg-primary text-primary-foreground text-sm font-bold px-4 py-1 rounded-full shadow-lg">
-                  Best-Seller
+                  {t('bestseller')}
                 </div>
               )}
-              <h2 className="text-2xl font-bold text-foreground mb-2">{plan.name}</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-2">{t(`plan_${plan.name.toLowerCase()}`)}</h2>
               <div className="text-4xl font-extrabold text-foreground mb-6">
                 {price}{currencySymbol}
-                {plan.name !== 'Free' && <span className="text-lg font-medium text-muted-foreground">/{billingCycle === 'monthly' ? 'mois' : 'an'}</span>}
+                {plan.name !== 'Free' && <span className="text-lg font-medium text-muted-foreground">/{billingCycle === 'monthly' ? t('monthly').toLowerCase() : t('yearly').toLowerCase()}</span>}
               </div>
               <ul className="space-y-3 mb-4 flex-grow">
-                {features.slice(0, 3).map((feature, i) => (
+                {featureKeys.map((featureKey, i) => (
                   <li key={i} className="flex items-center gap-3">
                     <Check className="w-5 h-5 text-green-500" />
-                    <span className="text-muted-foreground">{feature.split('(')[0]}</span>
+                    <span className="text-muted-foreground">{t(featureKey)}</span>
                   </li>
                 ))}
               </ul>
               <Button variant="link" size="sm" className="mb-4 text-primary" onClick={() => openPlanDetails(plan)}>
                 <Info className="w-4 h-4 mr-2" />
-                Voir toutes les fonctionnalités
+                {t('see_all_features')}
               </Button>
               <Button
                 onClick={() => handleSelectPlan(plan)}
@@ -243,7 +239,7 @@ const Subscription = () => {
                 className="w-full py-3 text-base font-bold rounded-lg"
                 disabled={isProcessing === (plan.name + billingCycle)}
               >
-                {isProcessing === (plan.name + billingCycle) ? <Loader2 className="w-5 h-5 animate-spin" /> : (plan.name === 'Free' ? "Commencer maintenant" : "Choisir ce plan")}
+                {isProcessing === (plan.name + billingCycle) ? <Loader2 className="w-5 h-5 animate-spin" /> : (plan.name === 'Free' ? t('start_free') : t('choose_plan'))}
               </Button>
             </motion.div>
           )

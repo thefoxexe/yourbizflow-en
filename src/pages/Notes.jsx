@@ -10,11 +10,13 @@ import { Input } from '@/components/ui/input';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { useTranslation } from 'react-i18next';
 
 const Notes = () => {
   const { toast } = useToast();
   const { user, getPlan } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -42,7 +44,7 @@ const Notes = () => {
       .eq('user_id', user.id);
 
     if (allItemsError) {
-      toast({ variant: 'destructive', title: 'Erreur', description: 'Impossible de charger les données.' });
+      toast({ variant: 'destructive', title: t('password_reset_error_title'), description: t('notes.load_error') });
       setLoading(false);
       return;
     }
@@ -68,7 +70,7 @@ const Notes = () => {
     }
 
     setLoading(false);
-  }, [user, toast, currentFolderId]);
+  }, [user, toast, currentFolderId, t]);
 
   useEffect(() => {
     fetchData();
@@ -78,18 +80,18 @@ const Notes = () => {
 
   const handleCreateNote = async () => {
     if (!canCreateNote) {
-      toast({ variant: 'destructive', title: 'Limite atteinte', description: `Passez à un plan supérieur pour créer plus de ${maxNotesForPlan} notes.` });
+      toast({ variant: 'destructive', title: t('notes.limit_reached_title'), description: t('notes.limit_reached_desc', { max: maxNotesForPlan }) });
       navigate('/subscription');
       return;
     }
     const { data, error } = await supabase
       .from('storage_items')
-      .insert({ user_id: user.id, name: 'Nouvelle note', is_folder: false, parent_id: currentFolderId })
+      .insert({ user_id: user.id, name: t('notes.new_note'), is_folder: false, parent_id: currentFolderId })
       .select()
       .single();
 
     if (error) {
-      toast({ variant: 'destructive', title: 'Erreur', description: "La note n'a pas pu être créée." });
+      toast({ variant: 'destructive', title: t('password_reset_error_title'), description: t('notes.create_error') });
     } else {
       navigate(`/notes/${data.id}`);
     }
@@ -102,9 +104,9 @@ const Notes = () => {
       .insert({ user_id: user.id, name: newFolderName, is_folder: true, parent_id: currentFolderId });
 
     if (error) {
-      toast({ variant: 'destructive', title: 'Erreur', description: "Le dossier n'a pas pu être créé." });
+      toast({ variant: 'destructive', title: t('password_reset_error_title'), description: t('notes.folder_create_error') });
     } else {
-      toast({ title: 'Succès', description: 'Dossier créé.' });
+      toast({ title: t('password_reset_success_title'), description: t('notes.folder_create_success') });
       setIsFolderDialogOpen(false);
       setNewFolderName('');
       fetchData();
@@ -114,9 +116,9 @@ const Notes = () => {
   const handleDelete = async (id) => {
     const { error } = await supabase.from('storage_items').delete().eq('id', id);
     if (error) {
-      toast({ variant: 'destructive', title: 'Erreur', description: "L'élément n'a pas pu être supprimé." });
+      toast({ variant: 'destructive', title: t('password_reset_error_title'), description: t('notes.delete_error') });
     } else {
-      toast({ title: 'Succès', description: 'Élément supprimé.' });
+      toast({ title: t('password_reset_success_title'), description: t('notes.delete_success') });
       fetchData();
     }
   };
@@ -137,17 +139,17 @@ const Notes = () => {
     <div className="space-y-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Notes</h1>
-          <p className="text-muted-foreground">Votre espace de travail pour vos idées et documents.</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{t('notes.title')}</h1>
+          <p className="text-muted-foreground">{t('notes.subtitle')}</p>
           {plan !== 'Business' && (
             <p className="text-sm text-muted-foreground mt-1">
-              {noteCount}/{maxNotesForPlan} notes utilisées.
+              {t('notes.usage_info', { count: noteCount, max: maxNotesForPlan })}
             </p>
           )}
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={() => setIsFolderDialogOpen(true)}><FolderPlus className="w-4 h-4 mr-2" /> Nouveau Dossier</Button>
-          <Button onClick={handleCreateNote}><Plus className="w-4 h-4 mr-2" /> Nouvelle Note</Button>
+          <Button variant="outline" onClick={() => setIsFolderDialogOpen(true)}><FolderPlus className="w-4 h-4 mr-2" /> {t('notes.new_folder_button')}</Button>
+          <Button onClick={handleCreateNote}><Plus className="w-4 h-4 mr-2" /> {t('notes.new_note_button')}</Button>
         </div>
       </motion.div>
 
@@ -159,12 +161,12 @@ const Notes = () => {
         )}
         <div className="relative flex-grow">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-          <Input placeholder="Rechercher..." className="pl-10 w-full" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+          <Input placeholder={t('notes.search_placeholder')} className="pl-10 w-full" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
         </div>
       </div>
       
       <div className="text-sm text-muted-foreground">
-        <span className="cursor-pointer hover:underline" onClick={() => setCurrentFolderId(null)}>Notes</span>
+        <span className="cursor-pointer hover:underline" onClick={() => setCurrentFolderId(null)}>{t('notes.breadcrumb_root')}</span>
         {folderPath.map(folder => (
           <span key={folder.id}> / <span className="cursor-pointer hover:underline" onClick={() => setCurrentFolderId(folder.id)}>{folder.name}</span></span>
         ))}
@@ -191,8 +193,8 @@ const Notes = () => {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild><Button size="icon" variant="ghost" className="opacity-0 group-hover:opacity-100" onClick={(e) => e.stopPropagation()}><MoreVertical className="w-4 h-4" /></Button></DropdownMenuTrigger>
                   <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
-                    <DropdownMenuItem onClick={() => handleItemClick(item)}><Edit className="w-4 h-4 mr-2" /> Ouvrir</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleDelete(item.id)} className="text-red-500 focus:text-red-500"><Trash2 className="w-4 h-4 mr-2" /> Supprimer</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleItemClick(item)}><Edit className="w-4 h-4 mr-2" /> {t('notes.open')}</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleDelete(item.id)} className="text-red-500 focus:text-red-500"><Trash2 className="w-4 h-4 mr-2" /> {t('page_billing_action_delete')}</DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
@@ -201,18 +203,18 @@ const Notes = () => {
         </div>
         {!loading && filteredItems.length === 0 && (
           <div className="text-center py-16 text-muted-foreground">
-            <p>{searchTerm ? "Aucun élément ne correspond à votre recherche." : "Ce dossier est vide."}</p>
+            <p>{searchTerm ? t('notes.no_search_results') : t('notes.empty_folder')}</p>
           </div>
         )}
       </motion.div>
 
       <Dialog open={isFolderDialogOpen} onOpenChange={setIsFolderDialogOpen}>
         <DialogContent className="sm:max-w-lg">
-          <DialogHeader><DialogTitle>Nouveau dossier</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{t('notes.new_folder_title')}</DialogTitle></DialogHeader>
           <div className="grid gap-4 py-4">
-            <div className="space-y-2"><Label htmlFor="folder-name">Nom du dossier</Label><Input id="folder-name" value={newFolderName} onChange={(e) => setNewFolderName(e.target.value)} /></div>
+            <div className="space-y-2"><Label htmlFor="folder-name">{t('notes.folder_name_label')}</Label><Input id="folder-name" value={newFolderName} onChange={(e) => setNewFolderName(e.target.value)} /></div>
           </div>
-          <DialogFooter><Button variant="outline" onClick={() => setIsFolderDialogOpen(false)}>Annuler</Button><Button onClick={handleCreateFolder}>Créer</Button></DialogFooter>
+          <DialogFooter><Button variant="outline" onClick={() => setIsFolderDialogOpen(false)}>{t('page_billing_dialog_cancel')}</Button><Button onClick={handleCreateFolder}>{t('page_billing_dialog_create')}</Button></DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

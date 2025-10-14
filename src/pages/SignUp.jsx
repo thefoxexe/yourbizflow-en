@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { useToast } from '@/components/ui/use-toast';
 import { Helmet } from 'react-helmet';
 import { FcGoogle } from 'react-icons/fc';
+import { useTranslation } from 'react-i18next';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -15,6 +16,7 @@ const SignUp = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { signUp, signInWithGoogle } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -41,9 +43,8 @@ const SignUp = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-[#030303]">
       <Helmet>
-        <title>Inscription - YourBizFlow</title>
+        <title>{t('signup')} - {t('app_name')}</title>
         <meta name="description" content="Créez votre compte YourBizFlow et commencez à gérer votre entreprise plus efficacement. Inscription rapide et facile." />
-        <meta name="keywords" content="inscription, signup, YourBizFlow, créer un compte, SaaS" />
       </Helmet>
       <motion.div
         initial={{ opacity: 0, y: -50, scale: 0.9 }}
@@ -54,9 +55,9 @@ const SignUp = () => {
         <div className="text-center mb-8">
           <Link to="/welcome" className="inline-flex items-center gap-3 mb-4">
             <img src="https://horizons-cdn.hostinger.com/58cbc4ed-cb6f-4ebd-abaf-62892e9ae2c6/6b69cc214c03819301dd8cb8579b78dc.png" alt="YourBizFlow Logo" className="w-12 h-12" />
-            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">YourBizFlow</h1>
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">{t('app_name')}</h1>
           </Link>
-          <p className="text-white/60">Créez votre compte pour commencer</p>
+          <p className="text-white/60">{t('signup_title')}</p>
         </div>
 
         <form onSubmit={handleSignUp} className="space-y-6">
@@ -64,7 +65,7 @@ const SignUp = () => {
             <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
             <input
               type="text"
-              placeholder="Nom complet"
+              placeholder={t('signup_fullname_placeholder')}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               required
@@ -75,7 +76,7 @@ const SignUp = () => {
             <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
             <input
               type="email"
-              placeholder="Email"
+              placeholder={t('login_email_placeholder')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -86,7 +87,7 @@ const SignUp = () => {
             <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
             <input
               type="password"
-              placeholder="Mot de passe"
+              placeholder={t('login_password_placeholder')}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -106,7 +107,7 @@ const SignUp = () => {
               {isSubmitting ? 'Création du compte...' : (
                 <>
                   <LogIn className="w-5 h-5 mr-2" />
-                  S'inscrire
+                  {t('signup_button')}
                 </>
               )}
             </Button>
@@ -118,7 +119,7 @@ const SignUp = () => {
             <span className="w-full border-t border-white/20"></span>
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-[#0e0e10] px-2 text-white/60">Ou continuer avec</span>
+            <span className="bg-[#0e0e10] px-2 text-white/60">{t('login_or_continue_with')}</span>
           </div>
         </div>
 
@@ -132,18 +133,18 @@ const SignUp = () => {
             className="w-full py-3 text-base bg-transparent border-white/20 hover:bg-white/5 text-white"
           >
             <FcGoogle className="w-5 h-5 mr-2" />
-            S'inscrire avec Google
+            {t('signup_with_google')}
           </Button>
         </motion.div>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-white/60">
-            Déjà un compte ?{' '}
+            {t('signup_has_account')}{' '}
             <Link
               to="/login"
               className="font-medium text-primary hover:underline"
             >
-              Connectez-vous
+              {t('login')}
             </Link>
           </p>
         </div>

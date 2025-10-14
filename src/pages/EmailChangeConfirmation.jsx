@@ -1,14 +1,15 @@
-
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { CheckCircle, XCircle } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { Helmet } from 'react-helmet';
+import { useTranslation } from 'react-i18next';
 
 const EmailChangeConfirmation = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -18,13 +19,13 @@ const EmailChangeConfirmation = () => {
     if (errorDescription) {
       toast({
         variant: "destructive",
-        title: "Erreur de confirmation",
-        description: "Le lien de confirmation est invalide ou a expiré.",
+        title: t('email_change_fail_title'),
+        description: t('email_change_fail_desc'),
       });
     } else {
       toast({
-        title: "Email mis à jour !",
-        description: "Votre adresse email a été mise à jour avec succès.",
+        title: t('email_change_confirm_title'),
+        description: t('email_change_confirm_desc'),
       });
     }
 
@@ -33,7 +34,7 @@ const EmailChangeConfirmation = () => {
     }, 5000);
 
     return () => clearTimeout(timer);
-  }, [toast, navigate]);
+  }, [toast, navigate, t]);
 
   const hash = window.location.hash;
   const params = new URLSearchParams(hash.substring(1));
@@ -42,7 +43,7 @@ const EmailChangeConfirmation = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-[#030303]">
       <Helmet>
-        <title>Confirmation de changement d'email - YourBizFlow</title>
+        <title>Confirmation de changement d'email - {t('app_name')}</title>
       </Helmet>
       <motion.div
         initial={{ opacity: 0, y: -50, scale: 0.9 }}
@@ -57,18 +58,18 @@ const EmailChangeConfirmation = () => {
         )}
         
         <h1 className="text-3xl font-bold mt-6 mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-          {errorDescription ? "Échec de la confirmation" : "Email confirmé !"}
+          {errorDescription ? t('email_change_fail_title') : t('email_change_confirm_title')}
         </h1>
         <p className="text-white/60 mb-8">
           {errorDescription 
-            ? "Le lien que vous avez utilisé est invalide ou a expiré. Veuillez réessayer depuis vos paramètres."
-            : "Votre adresse email a été mise à jour avec succès. Vous allez être redirigé vers la page de connexion."
+            ? t('email_change_fail_desc')
+            : t('email_change_confirm_desc')
           }
         </p>
         
         <Link to="/login">
           <button className="text-primary hover:underline">
-            Retourner à la page de connexion
+            {t('back_to_login')}
           </button>
         </Link>
       </motion.div>

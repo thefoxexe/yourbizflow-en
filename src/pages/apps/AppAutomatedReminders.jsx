@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -64,7 +63,7 @@ const AppAutomatedReminders = () => {
     }
   ];
 
-  const pageUrl = "https://yourbizflow.frapps/automated-reminders";
+  const pageUrl = "https://yourbizflow.com/apps/automated-reminders";
   const title = "Relances Automatisées | YourBizFlow";
   const description = "Ne perdez plus de temps à relancer vos clients pour les factures impayées. Configurez des rappels automatiques et améliorez votre trésorerie avec YourBizFlow.";
   const imageUrl = "https://images.unsplash.com/photo-1558522195-e1a911962d29?q=80&w=1200";
