@@ -1,5 +1,4 @@
-
-    import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '@/lib/customSupabaseClient';
 import { useToast } from '@/components/ui/use-toast';
@@ -251,4 +250,3 @@ const Subscription = () => {
 };
 
 export default Subscription;
-  

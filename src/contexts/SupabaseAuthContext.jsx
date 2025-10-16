@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/customSupabaseClient';
 import { useToast } from '@/components/ui/use-toast';
@@ -18,7 +17,8 @@ export const AuthProvider = ({ children }) => {
         setProfile(null);
     };
 
-    const refreshProfile = useCallback(async (currentUser) => {
+    const refreshProfile = useCallback(async () => {
+        const { data: { user: currentUser } } = await supabase.auth.getUser();
         if (!currentUser) {
             setProfile(null);
             return;
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
             const currentUser = session?.user ?? null;
             setUser(currentUser);
             if (currentUser) {
-                await refreshProfile(currentUser);
+                await refreshProfile();
             }
             setLoading(false);
         };
@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
             setUser(currentUser);
             if (event === 'SIGNED_IN' && currentUser) {
                 setLoading(true);
-                await refreshProfile(currentUser);
+                await refreshProfile();
                 setLoading(false);
             } else if (event === 'SIGNED_OUT') {
                 setProfile(null);

@@ -200,7 +200,8 @@ const Quotes = () => {
     setIsGeneratingPdf(quote.id);
     const doc = new jsPDF();
     const currencySymbol = profile?.currency === 'usd' ? '$' : profile?.currency === 'chf' ? 'CHF' : '€';
-    
+    const client = clients.find(c => c.id === quote.client_id) || quote.client;
+
     const addContent = () => {
       doc.setFontSize(20);
       doc.setFont('helvetica', 'bold');
@@ -214,9 +215,9 @@ const Quotes = () => {
       doc.text(profile?.company_phone || '', 140, 35);
 
       doc.text('Adressé à :', 14, 70);
-      doc.text(quote.client?.name || 'N/A', 14, 76);
-      doc.text(quote.client?.address || '', 14, 81);
-      doc.text(quote.client?.email || 'N/A', 14, 86);
+      doc.text(client?.name || 'N/A', 14, 76);
+      doc.text(client?.address || '', 14, 81);
+      doc.text(client?.email || 'N/A', 14, 86);
 
       doc.text(`Numéro de devis : ${quote.quote_number}`, 140, 70);
       doc.text(`Date d'émission : ${new Date(quote.issue_date).toLocaleDateString('fr-FR')}`, 140, 75);
@@ -243,43 +244,68 @@ const Quotes = () => {
       const subtotal = (quote.items || []).reduce((acc, item) => acc + item.quantity * item.unit_price, 0);
       const tax = subtotal * ((quote.tax_rate || 0) / 100);
       const total = subtotal + tax;
+      const rightAlignX = doc.internal.pageSize.width - 20;
 
       doc.setFontSize(10);
-      doc.text('Sous-total HT :', 140, finalY + 10);
-      doc.text(`${subtotal.toFixed(2)} ${currencySymbol}`, 180, finalY + 10, { align: 'right' });
-      doc.text(`TVA (${quote.tax_rate || 0}%) :`, 140, finalY + 15);
-      doc.text(`${tax.toFixed(2)} ${currencySymbol}`, 180, finalY + 15, { align: 'right' });
+      doc.text('Sous-total HT :', 140, finalY + 10, { align: 'left' });
+      doc.text(`${subtotal.toFixed(2)} ${currencySymbol}`, rightAlignX, finalY + 10, { align: 'right' });
+      doc.text(`TVA (${quote.tax_rate || 0}%) :`, 140, finalY + 17, { align: 'left' });
+      doc.text(`${tax.toFixed(2)} ${currencySymbol}`, rightAlignX, finalY + 17, { align: 'right' });
       doc.setFontSize(12);
       doc.setFont('helvetica', 'bold');
-      doc.text('Total TTC :', 140, finalY + 22);
-      doc.text(`${total.toFixed(2)} ${currencySymbol}`, 180, finalY + 22, { align: 'right' });
+      doc.text('Total TTC :', 140, finalY + 24, { align: 'left' });
+      doc.text(`${total.toFixed(2)} ${currencySymbol}`, rightAlignX, finalY + 24, { align: 'right' });
 
       doc.save(`devis-${quote.quote_number}.pdf`);
       setIsGeneratingPdf(null);
     };
 
     if (profile?.company_logo_url) {
-        try {
-            const response = await fetch(profile.company_logo_url);
-            const blob = await response.blob();
-            const reader = new FileReader();
-            reader.onload = () => {
-                try {
-                    doc.addImage(reader.result, 'PNG', 14, 10, 30, 15);
-                } catch (e) {
-                    console.error("Error adding image to PDF", e);
-                }
-                addContent();
-            };
-            reader.onerror = (e) => {
-                console.error("FileReader error:", e);
-                addContent();
-            };
-            reader.readAsDataURL(blob);
-        } catch (e) {
-            console.error("Error loading company logo:", e);
+      try {
+        const response = await fetch(profile.company_logo_url);
+        const blob = await response.blob();
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const img = new Image();
+          img.src = event.target.result;
+          img.onload = function() {
+            try {
+              const maxWidth = 40;
+              const maxHeight = 20;
+              let imgWidth = this.width;
+              let imgHeight = this.height;
+
+              if (imgWidth > maxWidth) {
+                  const ratio = maxWidth / imgWidth;
+                  imgWidth = maxWidth;
+                  imgHeight *= ratio;
+              }
+              if (imgHeight > maxHeight) {
+                  const ratio = maxHeight / imgHeight;
+                  imgHeight = maxHeight;
+                  imgWidth *= ratio;
+              }
+              doc.addImage(this.src, 'PNG', 14, 10, imgWidth, imgHeight);
+            } catch (e) {
+              console.error("Error adding image to PDF", e);
+            } finally {
+              addContent();
+            }
+          };
+          img.onerror = function(e) {
+            console.error("Image loading error in onload", e);
             addContent();
-        }
+          };
+        };
+        reader.onerror = function(e) {
+          console.error("FileReader error:", e);
+          addContent();
+        };
+        reader.readAsDataURL(blob);
+      } catch (e) {
+        console.error("Error fetching company logo:", e);
+        addContent();
+      }
     } else {
       addContent();
     }
