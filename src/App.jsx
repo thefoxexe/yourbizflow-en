@@ -79,6 +79,8 @@ import AppRentalManagement from "@/pages/apps/AppRentalManagement";
 import AppOrderManagement from "@/pages/apps/AppOrderManagement";
 import PasswordReset from "@/pages/PasswordReset";
 import EmailChangeConfirmation from "@/pages/EmailChangeConfirmation";
+import PrivacyPolicy from '@/pages/PrivacyPolicy';
+import TermsOfService from '@/pages/TermsOfService';
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
