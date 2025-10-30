@@ -2,6 +2,7 @@ import React from 'react';
 import { Mail } from 'lucide-react';
 import { FaTiktok, FaInstagram, FaYoutube, FaLinkedin } from 'react-icons/fa';
 import { useToast } from '@/components/ui/use-toast';
+import { Link } from 'react-router-dom';
 
 const SocialLink = ({ href, icon: Icon, label }) => {
   const { toast } = useToast();
@@ -50,8 +51,8 @@ export function MinimalFooter({ onPrivacyClick, onTermsClick }) {
                         <SocialLink href="mailto:contact@yourbizflow.com" icon={Mail} label="Email" />
                     </div>
                     <div className="flex gap-4 mt-4 md:mt-0">
-                        <button onClick={onPrivacyClick} className="text-sm text-white/60 hover:text-white transition-colors">Confidentialité</button>
-                        <button onClick={onTermsClick} className="text-sm text-white/60 hover:text-white transition-colors">Termes</button>
+                        <Link to="/privacy-policy" className="text-sm text-white/60 hover:text-white transition-colors">Confidentialité</Link>
+                        <Link to="/terms-of-service" className="text-sm text-white/60 hover:text-white transition-colors">Termes</Link>
                     </div>
                 </div>
 				<p className="text-white/60 text-sm mt-6 md:mt-0 md:order-2">
