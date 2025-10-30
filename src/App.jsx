@@ -228,6 +228,8 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/welcome" element={<LandingPage />} />
       <Route path="/about" element={<About />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/terms-of-service" element={<TermsOfService />} />
       <Route path="/blog" element={<BlogPage />} />
       <Route
         path="/blog/5-astuces-pour-optimiser-votre-facturation"
