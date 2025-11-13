@@ -1,0 +1,52 @@
+.ql-toolbar {
+  border-radius: 0.5rem 0.5rem 0 0 !important;
+  border-color: hsl(var(--border)) !important;
+  background-color: hsl(var(--card));
+}
+
+.ql-container {
+  border-radius: 0 0 0.5rem 0.5rem !important;
+  border-color: hsl(var(--border)) !important;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+}
+
+.ql-editor {
+  padding: 2rem !important;
+  line-height: 1.75;
+}
+
+.ql-editor.ql-blank::before {
+  color: hsl(var(--muted-foreground)) !important;
+  font-style: normal !important;
+  left: 2rem !important;
+  right: 2rem !important;
+}
+
+.dark .ql-snow .ql-stroke {
+  stroke: hsl(var(--muted-foreground));
+}
+
+.dark .ql-snow .ql-picker-label {
+  color: hsl(var(--foreground));
+}
+
+.dark .ql-snow .ql-picker-options {
+  background-color: hsl(var(--popover));
+  border-color: hsl(var(--border));
+}
+
+.dark .ql-snow .ql-picker-item:hover,
+.dark .ql-snow .ql-picker-item.ql-selected {
+  color: hsl(var(--primary));
+}
+
+.dark .ql-snow .ql-picker-item:hover {
+  background-color: hsl(var(--accent));
+}
+
+.dark .ql-snow .ql-active .ql-stroke {
+  stroke: hsl(var(--primary));
+}

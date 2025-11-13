@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 224 71.4% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 224 71.4% 4.1%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 224 71.4% 4.1%;
+  --primary: 274 65% 65%;
+  --primary-foreground: 210 20% 98%;
+  --secondary: 220 14.3% 95.9%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 220 14.3% 95.9%;
+  --muted-foreground: 220 8.9% 46.1%;
+  --accent: 220 14.3% 95.9%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 20% 98%;
+  --border: 220 13% 91%;
+  --input: 220 13% 91%;
+  --ring: 274 65% 65%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 210 20% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 210 20% 98%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 210 20% 98%;
+  --primary: 274 65% 65%;
+  --primary-foreground: 210 20% 98%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 210 20% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 210 20% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 20% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --ring: 274 65% 65%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--secondary));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary));
+}
+
+/* FullCalendar styles */
+.fc {
+  --fc-bg-event-color: hsl(var(--primary));
+  --fc-border-color: hsl(var(--border));
+  --fc-daygrid-day-bg-color: transparent;
+  --fc-list-event-hover-bg-color: hsl(var(--accent));
+  --fc-button-bg-color: hsl(var(--primary));
+  --fc-button-border-color: hsl(var(--primary));
+  --fc-button-text-color: hsl(var(--primary-foreground));
+  --fc-button-hover-bg-color: hsl(var(--primary) / 0.9);
+  --fc-button-hover-border-color: hsl(var(--primary) / 0.9);
+  --fc-button-active-bg-color: hsl(var(--primary) / 0.8);
+  --fc-button-active-border-color: hsl(var(--primary) / 0.8);
+  --fc-today-bg-color: hsl(var(--accent) / 0.5);
+  --fc-event-border-color: hsl(var(--primary));
+  --fc-event-text-color: hsl(var(--primary-foreground));
+}
+
+.fc .fc-button {
+  background-color: var(--fc-button-bg-color) !important;
+  border-color: var(--fc-button-border-color) !important;
+  color: var(--fc-button-text-color) !important;
+  box-shadow: none !important;
+}
+.fc .fc-button:hover {
+  background-color: var(--fc-button-hover-bg-color) !important;
+  border-color: var(--fc-button-hover-border-color) !important;
+}
+.fc .fc-button:focus {
+  box-shadow: none !important;
+}
+
+.fc .fc-toolbar-title {
+  color: hsl(var(--foreground));
+  font-size: 1.25rem;
+}
+
+.fc .fc-col-header-cell {
+  background-color: hsl(var(--card)); /* Ensure header background matches card in dark mode */
+}
+
+.fc .fc-col-header-cell-cushion,
+.fc .fc-daygrid-day-number {
+  color: hsl(var(--muted-foreground));
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+  background-color: var(--fc-today-bg-color) !important;
+}
+
+.fc .fc-daygrid-day:hover {
+  background-color: hsl(var(--accent) / 0.2);
+}
+
+.fc-theme-standard td, .fc-theme-standard th {
+  border-color: var(--fc-border-color);
+}
+
+.fc-theme-standard .fc-scrollgrid {
+  border-color: var(--fc-border-color);
+}
+
+.fc-theme-standard .fc-popover {
+  background-color: hsl(var(--popover));
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+.fc-theme-standard .fc-popover-header {
+  background-color: hsl(var(--card));
+  border-color: hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+
+.fc-theme-standard .fc-popover-title {
+  color: hsl(var(--foreground));
+}
+
+.fc-theme-standard .fc-popover-close {
+  color: hsl(var(--muted-foreground));
+}
+
+.fc-theme-standard .fc-list-day-text {
+  color: hsl(var(--foreground));
+}
+
+.fc-theme-standard .fc-list-day-side-text {
+  color: hsl(var(--muted-foreground));
+}
+
+.fc-theme-standard .fc-list-event-title {
+  color: hsl(var(--foreground));
+}
+
+.fc-theme-standard .fc-list-event-time {
+  color: hsl(var(--muted-foreground));
+}
+
+.fc-theme-standard .fc-list-event:hover {
+  background-color: var(--fc-list-event-hover-bg-color);
+}

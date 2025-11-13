@@ -1,0 +1,96 @@
+{
+  "translation": {
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "marketplace": "Marktplatz",
+      "billing": "Rechnungen",
+      "quotes": "Angebote",
+      "crm": "CRM",
+      "inventory": "Inventar",
+      "analytics": "KI-Analytik",
+      "notes": "Notizen & Doks",
+      "settings": "Einstellungen",
+      "calendar": "Kalender",
+      "projects": "Projekte",
+      "time-tracking": "Zeiterfassung",
+      "expenses": "Ausgaben",
+      "financial-report": "Finanzbericht",
+      "recurring-payments": "Wiederkehrende Zahlungen",
+      "automated-reminders": "Automatisierte Mahnungen",
+      "ai-strategist": "KI-Geschäftsstratege",
+      "hr": "Personal & Lohn",
+      "automation": "Automatisierung"
+    },
+    "settings": {
+      "manageSubscription": "Abonnement verwalten"
+    },
+    "subscription": {
+      "title": "Wählen Sie Ihren Plan",
+      "subtitle": "Entfesseln Sie die Kraft von YourBizFlow mit einem auf Ihre Bedürfnisse zugeschnittenen Abonnement.",
+      "free": "Kostenlos",
+      "pro": "Pro",
+      "business": "Business",
+      "choosePlan": "Diesen Plan wählen",
+      "startNow": "Jetzt starten",
+      "freeFeaturesShort": [
+        "Basis-Rechnungsstellung & CRM",
+        "5 Kunden verwalten",
+        "Notizen & Kalender-Modul"
+      ],
+      "proFeaturesShort": [
+        "Alle Funktionen des Free-Plans",
+        "Unbegrenzte Kunden",
+        "Inventar-Modul"
+      ],
+      "businessFeaturesShort": [
+        "Alle Funktionen des Pro-Plans",
+        "Automatisierungs- & KI-Module",
+        "Bevorzugter Support"
+      ],
+      "freeFeatures": [
+        "Begrenzte Rechnungen & Angebote (mit Wasserzeichen)",
+        "CRM (bis zu 5 Kunden)",
+        "Notizen & Doks-Modul (max. 2)",
+        "Kalender-Modul",
+        "E-Mail-Support"
+      ],
+      "proFeatures": [
+        "Alle Funktionen des Free-Plans",
+        "Unbegrenzte Kunden",
+        "Unbegrenzte Rechnungen & Angebote",
+        "Inventar-Modul",
+        "Ausgaben-Modul",
+        "Notizen & Doks-Modul (max. 15)",
+        "Bevorzugter E-Mail-Support"
+      ],
+      "businessFeatures": [
+        "Alle Funktionen des Pro-Plans",
+        "Projekte-Modul (Kanban)",
+        "Zeiterfassungs-Modul",
+        "Finanzbericht-Modul",
+        "Wiederkehrende Zahlungen-Modul",
+        "Automatisierte Mahnungen-Modul",
+        "KI-Geschäftsstratege-Modul",
+        "Personal & Lohn-Modul",
+        "Workflow-Automatisierungs-Modul",
+        "Notizen & Doks-Modul (unbegrenzt)",
+        "API-Zugang",
+        "Dedizierter Support (Telefon & Video)"
+      ]
+    },
+    "landing": {
+      "login": "Anmelden",
+      "signup": "Registrieren",
+      "title": "Ihr Geschäft, vereinfacht.",
+      "subtitle": "Von der Rechnungsstellung über die Kundenverwaltung bis hin zur KI-Analyse ist YourBizFlow die einzige Plattform, die Sie zur Führung Ihres Unternehmens benötigen.",
+      "cta": "Kostenlos starten",
+      "featuresTitle": "Eine Plattform, alle Ihre Werkzeuge.",
+      "featuresSubtitle": "Aktivieren Sie die Module, die Sie benötigen, wenn Sie sie benötigen.",
+      "testimonialsTitle": "Sie vertrauen uns",
+      "testimonialsSubtitle": "Entdecken Sie, warum Tausende von Unternehmern YourBizFlow wählen.",
+      "pricingTitle": "Ein Preis, der mit Ihnen wächst",
+      "pricingSubtitle": "Einfach, transparent und ohne Verpflichtung.",
+      "footer": "© {{year}} YourBizFlow. Alle Rechte vorbehalten."
+    }
+  }
+}

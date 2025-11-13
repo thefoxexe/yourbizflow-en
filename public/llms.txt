@@ -1,0 +1,16 @@
+## Pages
+- [À Propos de YourBizFlow - Notre Mission](/about): Découvrez la mission de YourBizFlow : simplifier la gestion d
+- [AI Strategy Map - YourBizFlow](/aistrategymap): Générez des cartes stratégiques pour votre business avec l
+- [AI Writing Assistant - YourBizFlow](/aiwritingassistant): Générez du contenu professionnel avec l
+- [Choisissez votre abonnement - YourBizFlow](/subscription): Découvrez les plans d
+- [Connexion - YourBizFlow](/login): Connectez-vous à votre compte YourBizFlow pour accéder à votre tableau de bord et gérer votre entreprise.
+- [CRM - YourBizFlow](/crm): Gérez toutes vos relations clients et prospects depuis une interface simple et puissante. Suivez vos contacts, segmentez votre audience et ne manquez plus jamais une opportunité.
+- [Devis - YourBizFlow](/quotes): Créez et gérez vos devis et propositions commerciales. Convertissez facilement vos devis en factures et suivez leur statut.
+- [Gestion de Budget - YourBizFlow](/budget): Créez des budgets mensuels, suivez vos dépenses par catégorie et gardez le contrôle de vos finances.
+- [Gestion des Commandes - YourBizFlow](/ordermanagement): Gérez le cycle de traitement de vos commandes clients, de la préparation à la livraison.
+- [Gestion des heures - YourBizFlow](/timetracking): Suivez le temps passé par vos employés sur les projets pour une facturation précise et une meilleure gestion des ressources.
+- [Gestionnaire de Tâches - YourBizFlow](/taskmanager): Gérez vos missions, priorités et deadlines avec le gestionnaire de tâches de YourBizFlow.
+- [Inscription - YourBizFlow](/signup): Créez votre compte YourBizFlow et commencez à gérer votre entreprise plus efficacement. Inscription rapide et facile.
+- [Journal de Trading - YourBizFlow](/tradingjournal): Suivez et analysez vos performances de trading avec précision.
+- [Mail Intégré - Bientôt Disponible](/integratedmail): Le module de mail intégré est en cours de développement et sera bientôt disponible.
+- [Marketplace - YourBizFlow](/marketplace): Découvrez et activez des modules pour étendre les fonctionnalités de votre plateforme YourBizFlow.
