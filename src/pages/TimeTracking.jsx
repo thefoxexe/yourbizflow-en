@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { supabase } from '@/lib/customSupabaseClient';
 import { Clock, PlusCircle, Edit, Trash2, Save, Loader2 } from 'lucide-react';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -175,7 +175,8 @@ const TimeTracking = () => {
           <CardDescription className="text-4xl font-bold text-primary">{totalHours.toFixed(2)}h</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
+          {/* Desktop Table View */}
+          <div className="hidden md:block overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -203,6 +204,32 @@ const TimeTracking = () => {
                 )) : <TableRow><TableCell colSpan={5} className="text-center h-24">{t('time_tracking.no_entries')}</TableCell></TableRow>}
               </TableBody>
             </Table>
+          </div>
+
+          {/* Mobile Card View */}
+          <div className="md:hidden space-y-4">
+            {loading ? (
+              <div className="text-center p-8"><Loader2 className="mx-auto h-6 w-6 animate-spin text-primary" /></div>
+            ) : entries.length > 0 ? entries.map(entry => (
+              <div key={entry.id} className="bg-secondary/20 border rounded-lg p-4 space-y-3">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <h3 className="font-semibold">{entry.projects?.name || t('time_tracking.unnamed_entry')}</h3>
+                    <p className="text-sm text-muted-foreground mt-1">{entry.description}</p>
+                  </div>
+                  <div className="flex gap-1">
+                    <Button variant="ghost" size="icon" onClick={() => openDialog(entry)}><Edit className="h-4 w-4" /></Button>
+                    <Button variant="ghost" size="icon" onClick={() => handleDeleteEntry(entry.id)}><Trash2 className="h-4 w-4 text-red-500" /></Button>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center pt-2 border-t">
+                  <span className="text-lg font-bold text-primary">{formatDuration(entry.duration)}</span>
+                  <span className="text-sm text-muted-foreground">{format(new Date(entry.date), 'dd/MM/yyyy')}</span>
+                </div>
+              </div>
+            )) : (
+              <div className="text-center p-8 text-muted-foreground">{t('time_tracking.no_entries')}</div>
+            )}
           </div>
         </CardContent>
       </Card>

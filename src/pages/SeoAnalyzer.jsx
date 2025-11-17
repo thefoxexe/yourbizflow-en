@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Sparkles, Search, Loader2, CheckCircle, XCircle, Wrench, BrainCircuit, Smartphone, Monitor, TrendingUp, ShieldCheck, Zap, Star, Globe } from 'lucide-react';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/customSupabaseClient';
 import { Progress } from '@/components/ui/progress';
 import { useTranslation } from 'react-i18next';

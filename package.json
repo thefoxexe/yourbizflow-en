@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --host :: --port 3000",
     "build": "node tools/generate-llms.js || true && vite build",
+    "build:dev": "vite build --mode development",
     "preview": "vite preview --host :: --port 3000"
   },
   "dependencies": {
@@ -45,6 +46,7 @@
     "i18next-browser-languagedetector": "^8.0.2",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
+    "lovable-tagger": "^1.1.11",
     "lucide-react": "^0.292.0",
     "react": "^18.2.0",
     "react-day-picker": "^8.10.1",
@@ -59,7 +61,8 @@
     "recharts": "^2.12.7",
     "remark-gfm": "^4.0.0",
     "tailwind-merge": "^1.1.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@babel/generator": "^7.27.0",

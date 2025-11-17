@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
     import { motion } from 'framer-motion';
     import { supabase } from '@/lib/customSupabaseClient';
     import { useAuth } from '@/contexts/SupabaseAuthContext';
-    import { useToast } from '@/components/ui/use-toast';
+    import { useToast } from '@/hooks/use-toast';
     import { BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend, Pie, Cell, CartesianGrid, PieChart, Bar } from 'recharts';
     import { format, subDays, startOfDay } from 'date-fns';
     import { useTranslation } from 'react-i18next';

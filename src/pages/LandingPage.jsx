@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 import LanguageSelector from '@/components/LanguageCurrencySelector';
 import { allFeatures } from '@/components/MarketplaceCard';
 
-const AnimatedCounter = ({ value, isFloat = false }) => {
+const AnimatedCounter = ({ value, isFloat = false, useComma = true }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const springValue = useSpring(0, { damping: 50, stiffness: 200 });
@@ -33,14 +33,15 @@ const AnimatedCounter = ({ value, isFloat = false }) => {
     const unsubscribe = springValue.on("change", (latest) => {
       if (ref.current) {
         if (isFloat) {
-          ref.current.textContent = latest.toFixed(1).replace('.', ',');
+          const formatted = latest.toFixed(1);
+          ref.current.textContent = useComma ? formatted.replace('.', ',') : formatted;
         } else {
           ref.current.textContent = Math.round(latest);
         }
       }
     });
     return () => unsubscribe();
-  }, [springValue, isFloat]);
+  }, [springValue, isFloat, useComma]);
 
   if (isFloat) {
     return <span ref={ref}>0,0</span>;
@@ -65,7 +66,13 @@ const SocialProofSection = () => {
                     <div className="relative bg-gradient-to-br from-white/[0.05] to-white/[0.02] border border-white/[0.1] rounded-2xl p-8 backdrop-blur-sm w-full sm:w-auto text-center">
                         <div className="absolute inset-0 bg-grid-white/[0.05] [mask-image:linear-gradient(to_bottom,white_10%,transparent_90%)]"></div>
                         <div className="relative flex flex-col items-center">
-                            <User className="w-8 h-8 text-white/60 mb-3" />
+                            <div className="relative">
+                                <User className="w-8 h-8 text-white/60 mb-3" />
+                                <span className="absolute -top-1 -right-1 flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)]"></span>
+                                </span>
+                            </div>
                             <p className="text-4xl md:text-5xl font-bold text-white tracking-tighter">
                                 <AnimatedCounter value={100} />+
                             </p>
@@ -77,7 +84,7 @@ const SocialProofSection = () => {
                         <div className="relative flex flex-col items-center">
                             <Award className="w-8 h-8 text-white/60 mb-3" />
                             <div className="text-4xl md:text-5xl font-bold text-white tracking-tighter flex items-center">
-                                <AnimatedCounter value={4.9} isFloat={true} />
+                                <AnimatedCounter value={4.9} isFloat={true} useComma={false} />
                                 <span className="text-white/60 text-2xl md:text-3xl">/5</span>
                             </div>
                             <p className="text-white/60 mt-2 font-medium">{t('average_rating')}</p>
@@ -759,6 +766,104 @@ const LandingPage = () => {
                   </Link>
                 </motion.div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="py-20">
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
+                {t('comparison_title')}
+              </h2>
+              <p className="text-white/60 max-w-2xl mx-auto">{t('comparison_subtitle')}</p>
+            </div>
+            
+            <div className="overflow-x-auto">
+              <div className="inline-block min-w-full align-middle">
+                <div className="overflow-hidden border border-white/10 rounded-2xl backdrop-blur-sm bg-white/[0.02]">
+                  <table className="min-w-full divide-y divide-white/10">
+                    <thead className="bg-white/[0.05]">
+                      <tr>
+                        <th scope="col" className="py-4 px-6 text-left text-sm font-semibold text-white/90">
+                          {t('comparison_feature')}
+                        </th>
+                        <th scope="col" className="py-4 px-6 text-center text-sm font-semibold text-white/90">
+                          YourBizFlow
+                        </th>
+                        <th scope="col" className="py-4 px-6 text-center text-sm font-semibold text-white/70">
+                          Odoo
+                        </th>
+                        <th scope="col" className="py-4 px-6 text-center text-sm font-semibold text-white/70">
+                          Zoho
+                        </th>
+                        <th scope="col" className="py-4 px-6 text-center text-sm font-semibold text-white/70">
+                          Striven
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/10">
+                      <tr className="hover:bg-white/[0.02] transition-colors bg-white/[0.03]">
+                        <td className="py-4 px-6 text-sm font-semibold text-white/90">{t('comparison_price')}</td>
+                        <td className="py-4 px-6 text-center text-sm font-bold text-green-400">0€</td>
+                        <td className="py-4 px-6 text-center text-sm text-white/70">~20€/mois</td>
+                        <td className="py-4 px-6 text-center text-sm text-white/70">~30€/mois</td>
+                        <td className="py-4 px-6 text-center text-sm text-white/70">~90€/mois</td>
+                      </tr>
+                      <tr className="hover:bg-white/[0.02] transition-colors">
+                        <td className="py-4 px-6 text-sm text-white/80">{t('comparison_hr')}</td>
+                        <td className="py-4 px-6 text-center text-2xl">🟩</td>
+                        <td className="py-4 px-6 text-center text-2xl">🟧</td>
+                        <td className="py-4 px-6 text-center text-2xl">⛔</td>
+                        <td className="py-4 px-6 text-center text-2xl">🟧</td>
+                      </tr>
+                      <tr className="hover:bg-white/[0.02] transition-colors">
+                        <td className="py-4 px-6 text-sm text-white/80">{t('comparison_finance')}</td>
+                        <td className="py-4 px-6 text-center text-2xl">🟩</td>
+                        <td className="py-4 px-6 text-center text-2xl">🟧</td>
+                        <td className="py-4 px-6 text-center text-2xl">🟧</td>
+                        <td className="py-4 px-6 text-center text-2xl">🟧</td>
+                      </tr>
+                      <tr className="hover:bg-white/[0.02] transition-colors">
+                        <td className="py-4 px-6 text-sm text-white/80">{t('comparison_recurring')}</td>
+                        <td className="py-4 px-6 text-center text-2xl">🟩</td>
+                        <td className="py-4 px-6 text-center text-2xl">🟧</td>
+                        <td className="py-4 px-6 text-center text-2xl">🟧</td>
+                        <td className="py-4 px-6 text-center text-2xl">🟧</td>
+                      </tr>
+                      <tr className="hover:bg-white/[0.02] transition-colors">
+                        <td className="py-4 px-6 text-sm text-white/80">{t('comparison_rental')}</td>
+                        <td className="py-4 px-6 text-center text-2xl">🟩</td>
+                        <td className="py-4 px-6 text-center text-2xl">🟧</td>
+                        <td className="py-4 px-6 text-center text-2xl">⛔</td>
+                        <td className="py-4 px-6 text-center text-2xl">⛔</td>
+                      </tr>
+                      <tr className="hover:bg-white/[0.02] transition-colors">
+                        <td className="py-4 px-6 text-sm text-white/80">{t('comparison_stock')}</td>
+                        <td className="py-4 px-6 text-center text-2xl">🟩</td>
+                        <td className="py-4 px-6 text-center text-2xl">🟩</td>
+                        <td className="py-4 px-6 text-center text-2xl">🟩</td>
+                        <td className="py-4 px-6 text-center text-2xl">🟩</td>
+                      </tr>
+                      <tr className="hover:bg-white/[0.02] transition-colors">
+                        <td className="py-4 px-6 text-sm text-white/80">{t('comparison_trading')}</td>
+                        <td className="py-4 px-6 text-center text-2xl">🟩</td>
+                        <td className="py-4 px-6 text-center text-2xl">⛔</td>
+                        <td className="py-4 px-6 text-center text-2xl">⛔</td>
+                        <td className="py-4 px-6 text-center text-2xl">⛔</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div className="mt-6 text-center space-y-2">
+                  <p className="text-sm text-white/60">{t('comparison_legend')}</p>
+                  <div className="flex justify-center gap-6 text-sm">
+                    <span className="text-white/70">🟩 {t('comparison_yes')}</span>
+                    <span className="text-white/70">🟧 {t('comparison_partial')}</span>
+                    <span className="text-white/70">⛔ {t('comparison_no')}</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>

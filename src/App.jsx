@@ -39,7 +39,7 @@ import LandingPage from "@/pages/LandingPage";
 import About from "@/pages/About";
 import { useAuth } from "@/contexts/SupabaseAuthContext";
 import { motion } from "framer-motion";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import CompanyDataDialog from "@/components/CompanyDataDialog";
 import StockManagement from "@/pages/StockManagement";
 import BlogPage from "@/pages/BlogPage";
@@ -81,6 +81,8 @@ import PasswordReset from "@/pages/PasswordReset";
 import EmailChangeConfirmation from "@/pages/EmailChangeConfirmation";
 import PrivacyPolicy from '@/pages/PrivacyPolicy';
 import TermsOfService from '@/pages/TermsOfService';
+import AdminLogin from '@/pages/AdminLogin';
+import AdminPanel from '@/pages/AdminPanel';
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -147,13 +149,14 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/welcome" state={{ from: location }} replace />;
   }
 
-  const hasSubscription = !!profile?.subscription_plan_id;
-
-  if (!hasSubscription && location.pathname !== "/subscription") {
+  // Allow users with a profile to access the app (including Free plan users)
+  // Free plan is the default, so if they have a profile, they have access
+  if (!profile) {
     return <Navigate to="/subscription" replace />;
   }
 
-  if (hasSubscription && location.pathname === "/subscription") {
+  // If they're on subscription page and already have a paid plan, redirect to dashboard
+  if (profile?.subscription_plan_id && location.pathname === "/subscription") {
     return <Navigate to="/dashboard" replace />;
   }
 
@@ -230,6 +233,8 @@ const AppRoutes = () => {
       <Route path="/about" element={<About />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/terms-of-service" element={<TermsOfService />} />
+      <Route path="/admin-login" element={<AdminLogin />} />
+      <Route path="/admin-panel" element={<AdminPanel />} />
       <Route path="/blog" element={<BlogPage />} />
       <Route
         path="/blog/5-astuces-pour-optimiser-votre-facturation"

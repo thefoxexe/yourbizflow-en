@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
     import { motion } from 'framer-motion';
     import { Plus, Eye, Download, Trash2, MoreVertical, Edit, Building, Upload, X, Sparkles, Loader2, Clock } from 'lucide-react';
     import { Button } from '@/components/ui/button';
-    import { useToast } from '@/components/ui/use-toast';
+    import { useToast } from '@/hooks/use-toast';
     import { supabase } from '@/lib/customSupabaseClient';
     import { useAuth } from '@/contexts/SupabaseAuthContext';
     import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
@@ -461,16 +461,15 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
                                   {isGeneratingPdf === invoice.id ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
                                   {t('billing.action_download')}
                                 </DropdownMenuItem>
-                                <DropdownMenuSub>
-                                  <DropdownMenuSubTrigger>{t('billing.action_change_status')}</DropdownMenuSubTrigger>
-                                  <DropdownMenuPortal>
-                                    <DropdownMenuSubContent>
-                                      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleUpdateStatus(invoice.id, 'paid'); }}>{t('billing.status_paid')}</DropdownMenuItem>
-                                      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleUpdateStatus(invoice.id, 'pending'); }}>{t('billing.status_pending')}</DropdownMenuItem>
-                                      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleUpdateStatus(invoice.id, 'overdue'); }}>{t('billing.status_overdue')}</DropdownMenuItem>
-                                    </DropdownMenuSubContent>
-                                  </DropdownMenuPortal>
-                                </DropdownMenuSub>
+                                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleUpdateStatus(invoice.id, 'paid'); }} className="pl-8">
+                                  <span className="text-xs text-muted-foreground mr-2">Statut:</span> {t('billing.status_paid')}
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleUpdateStatus(invoice.id, 'pending'); }} className="pl-8">
+                                  <span className="text-xs text-muted-foreground mr-2">Statut:</span> {t('billing.status_pending')}
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleUpdateStatus(invoice.id, 'overdue'); }} className="pl-8">
+                                  <span className="text-xs text-muted-foreground mr-2">Statut:</span> {t('billing.status_overdue')}
+                                </DropdownMenuItem>
                                 <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleDeleteInvoice(invoice.id); }} className="text-red-500 focus:text-red-500"><Trash2 className="w-4 h-4 mr-2" />{t('billing.action_delete')}</DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
@@ -496,20 +495,19 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
                             <DropdownMenuTrigger asChild><Button size="icon" variant="ghost" onClick={e => e.stopPropagation()}><MoreVertical className="w-4 h-4" /></Button></DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                               <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setSelectedInvoice(invoice); }}><Eye className="w-4 h-4 mr-2" />{t('billing.action_view')}</DropdownMenuItem>
-                              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); generatePDF(invoice); }} disabled={isGeneratingPdf === invoice.id}>
+                               <DropdownMenuItem onClick={(e) => { e.stopPropagation(); generatePDF(invoice); }} disabled={isGeneratingPdf === invoice.id}>
                                 {isGeneratingPdf === invoice.id ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
                                 {t('billing.action_download')}
                               </DropdownMenuItem>
-                              <DropdownMenuSub>
-                                <DropdownMenuSubTrigger>{t('billing.action_change_status')}</DropdownMenuSubTrigger>
-                                <DropdownMenuPortal>
-                                  <DropdownMenuSubContent>
-                                    <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleUpdateStatus(invoice.id, 'paid'); }}>{t('billing.status_paid')}</DropdownMenuItem>
-                                    <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleUpdateStatus(invoice.id, 'pending'); }}>{t('billing.status_pending')}</DropdownMenuItem>
-                                    <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleUpdateStatus(invoice.id, 'overdue'); }}>{t('billing.status_overdue')}</DropdownMenuItem>
-                                  </DropdownMenuSubContent>
-                                </DropdownMenuPortal>
-                              </DropdownMenuSub>
+                              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleUpdateStatus(invoice.id, 'paid'); }} className="pl-8">
+                                <span className="text-xs text-muted-foreground mr-2">Statut:</span> {t('billing.status_paid')}
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleUpdateStatus(invoice.id, 'pending'); }} className="pl-8">
+                                <span className="text-xs text-muted-foreground mr-2">Statut:</span> {t('billing.status_pending')}
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleUpdateStatus(invoice.id, 'overdue'); }} className="pl-8">
+                                <span className="text-xs text-muted-foreground mr-2">Statut:</span> {t('billing.status_overdue')}
+                              </DropdownMenuItem>
                               <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleDeleteInvoice(invoice.id); }} className="text-red-500 focus:text-red-500"><Trash2 className="w-4 h-4 mr-2" />{t('billing.action_delete')}</DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Globe, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,17 +11,7 @@ const languages = [
 
 const LanguageSelector = ({ inHeader = false }) => {
   const { i18n } = useTranslation();
-  const [selectedLang, setSelectedLang] = useState(i18n.language.split('-')[0]);
-
-  useEffect(() => {
-    const handleLanguageChange = (lng) => {
-      setSelectedLang(lng.split('-')[0]);
-    };
-    i18n.on('languageChanged', handleLanguageChange);
-    return () => {
-      i18n.off('languageChanged', handleLanguageChange);
-    };
-  }, [i18n]);
+  const selectedLang = (i18n.language || 'en').split('-')[0];
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);

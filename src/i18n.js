@@ -23,6 +23,11 @@ i18n
       order: ["localStorage", "navigator"],
       caches: ["localStorage"],
     },
+    react: {
+      useSuspense: false
+    },
+    load: 'languageOnly',
+    debug: false
   });
 
 export default i18n;

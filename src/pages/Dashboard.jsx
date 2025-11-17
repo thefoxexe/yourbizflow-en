@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import NotificationBell from '@/components/NotificationBell';
 
 
 const Dashboard = () => {
@@ -48,7 +49,7 @@ const Dashboard = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [isPrivacyMode, setIsPrivacyMode] = useState(false);
 
-  const dateLocale = i18n.language.startsWith('fr') ? fr : enUS;
+  const dateLocale = (i18n.language || 'en').startsWith('fr') ? fr : enUS;
 
   const currencySymbol = useMemo(() => {
     if (!profile) return '€';
@@ -250,12 +251,13 @@ const Dashboard = () => {
         <title>{t('dashboard_title')} - {t('app_name')}</title>
         <meta name="description" content={t('dashboard_subtitle')} />
       </Helmet>
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <div className="flex justify-between items-center mb-2">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">{t('dashboard_title')}</h1>
-            <p className="text-muted-foreground">{t('dashboard_subtitle')}</p>
-          </div>
+      <div className="flex justify-between items-center mb-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <h1 className="text-3xl font-bold text-foreground">{t('dashboard_title')}</h1>
+          <p className="text-muted-foreground">{t('dashboard_subtitle')}</p>
+        </motion.div>
+        <div className="flex items-center gap-2">
+          <NotificationBell />
           <TooltipProvider>
             <ShadTooltip>
               <TooltipTrigger asChild>
@@ -269,7 +271,7 @@ const Dashboard = () => {
             </ShadTooltip>
           </TooltipProvider>
         </div>
-      </motion.div>
+      </div>
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className={cn("grid grid-cols-1 sm:grid-cols-2 gap-6", gridColsClass)}>
         {displayStats.map((stat, index) => (

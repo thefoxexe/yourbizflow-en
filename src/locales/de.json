@@ -90,6 +90,20 @@
       "testimonialsSubtitle": "Entdecken Sie, warum Tausende von Unternehmern YourBizFlow wählen.",
       "pricingTitle": "Ein Preis, der mit Ihnen wächst",
       "pricingSubtitle": "Einfach, transparent und ohne Verpflichtung.",
+      "comparisonTitle": "Vergleich mit anderen Lösungen",
+      "comparisonSubtitle": "Entdecken Sie, was YourBizFlow auszeichnet.",
+      "comparisonFeature": "Funktion",
+      "comparisonPrice": "Ab",
+      "comparisonTrading": "Trading Journal",
+      "comparisonRental": "Mietverwaltung",
+      "comparisonHR": "HR + Lohn + Buchhaltung vereint",
+      "comparisonFinance": "Budget + Finanzen + Rechnungen + Angebote zusammen",
+      "comparisonRecurring": "Wiederkehrende Zahlungen",
+      "comparisonStock": "Lager + Produkte + Ausgaben",
+      "comparisonLegend": "Legende:",
+      "comparisonYes": "Ja",
+      "comparisonPartial": "Teilweise / Externes Modul",
+      "comparisonNo": "Nein",
       "footer": "© {{year}} YourBizFlow. Alle Rechte vorbehalten."
     }
   }

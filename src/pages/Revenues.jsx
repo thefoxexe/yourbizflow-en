@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
     import { motion } from 'framer-motion';
     import { Plus, Edit, Trash2, MoreVertical, Loader2 } from 'lucide-react';
     import { Button } from '@/components/ui/button';
-    import { useToast } from '@/components/ui/use-toast';
+    import { useToast } from '@/hooks/use-toast';
     import { supabase } from '@/lib/customSupabaseClient';
     import { useAuth } from '@/contexts/SupabaseAuthContext';
     import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
@@ -110,7 +110,8 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
           </motion.div>
 
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-            <div className="bg-card/50 backdrop-blur-sm border rounded-xl overflow-hidden">
+            {/* Desktop Table View */}
+            <div className="hidden md:block bg-card/50 backdrop-blur-sm border rounded-xl overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
@@ -151,6 +152,41 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
                   </tbody>
                 </table>
               </div>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-4">
+              {loading ? (
+                <div className="text-center p-8"><Loader2 className="mx-auto animate-spin" /></div>
+              ) : revenues.length > 0 ? revenues.map(revenue => (
+                <div key={revenue.id} className="bg-card/50 backdrop-blur-sm border rounded-xl p-4 space-y-3">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <span className={cn('px-2 py-1 rounded-full text-xs font-medium border inline-block mb-2', {
+                        'bg-blue-500/10 text-blue-400 border-blue-500/20': revenue.source_type === 'invoice',
+                        'bg-purple-500/10 text-purple-400 border-purple-500/20': revenue.source_type === 'subscription',
+                        'bg-orange-500/10 text-orange-400 border-orange-500/20': revenue.source_type === 'order',
+                        'bg-gray-500/10 text-gray-400 border-gray-500/20': !revenue.source_type,
+                      })}>{getSourceTypeDisplay(revenue.source_type)}</span>
+                      <h3 className="font-semibold">{revenue.description}</h3>
+                    </div>
+                    <div className="flex gap-1">
+                      <Button size="icon" variant="ghost" onClick={() => handleOpenDialog(revenue)} disabled={!!revenue.source_id}>
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button size="icon" variant="ghost" onClick={() => handleDelete(revenue.id)} disabled={!!revenue.source_id} className="text-red-500 hover:text-red-400">
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center pt-2 border-t">
+                    <span className="text-green-400 font-bold text-lg">{revenue.amount.toFixed(2)}{currencySymbol}</span>
+                    <span className="text-sm text-muted-foreground">{format(new Date(revenue.revenue_date), 'dd/MM/yyyy')}</span>
+                  </div>
+                </div>
+              )) : (
+                <div className="text-center p-8 text-muted-foreground border-2 border-dashed rounded-xl">{t('revenues.no_revenues')}</div>
+              )}
             </div>
           </motion.div>
 

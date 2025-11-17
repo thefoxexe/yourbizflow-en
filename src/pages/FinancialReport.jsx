@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
     import { supabase } from '@/lib/customSupabaseClient';
     import { TrendingUp, TrendingDown, DollarSign, FileWarning, Users, Download, Calendar, Loader2, BarChart2 } from 'lucide-react';
     import { useAuth } from '@/contexts/SupabaseAuthContext';
-    import { useToast } from '@/components/ui/use-toast';
+    import { useToast } from '@/hooks/use-toast';
     import { format, isSameMonth, startOfToday } from 'date-fns';
     import { fr, enUS } from 'date-fns/locale';
     import { useTranslation } from 'react-i18next';

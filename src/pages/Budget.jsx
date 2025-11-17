@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/DatePicker';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { format, parseISO } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 
@@ -201,7 +201,7 @@ const Budget = () => {
       user_id: user.id,
       name: newBudgetName,
       amount: parseFloat(newBudgetAmount),
-      start_date: newBudgetName,
+      start_date: newBudgetStart,
       end_date: newBudgetEnd,
     });
     if (error) {

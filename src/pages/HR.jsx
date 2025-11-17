@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '@/lib/customSupabaseClient';
-import { Users, PlusCircle, MoreVertical, Edit, Trash2, PlayCircle } from 'lucide-react';
+import { Users, PlusCircle, MoreVertical, Edit, Trash2, PlayCircle, Loader2 } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DatePicker } from '@/components/DatePicker';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { format, getMonth, getYear } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 
@@ -179,7 +179,8 @@ const HR = () => {
       </motion.div>
 
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-        <div className="border rounded-lg">
+        {/* Desktop Table View */}
+        <div className="hidden md:block border rounded-lg">
           <Table>
             <TableHeader>
               <TableRow>
@@ -218,6 +219,38 @@ const HR = () => {
               )}
             </TableBody>
           </Table>
+        </div>
+
+        {/* Mobile Card View */}
+        <div className="md:hidden space-y-4">
+          {loading ? (
+            <div className="text-center p-8"><Loader2 className="mx-auto animate-spin" /></div>
+          ) : employees.length > 0 ? employees.map(employee => (
+            <div key={employee.id} className="bg-card border rounded-lg p-4 space-y-3">
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  <h3 className="font-semibold text-lg">{employee.name}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">{employee.position}</p>
+                  <div className="mt-3 space-y-1">
+                    <p className="text-sm"><span className="text-muted-foreground">{t('hr.table_salary')}:</span> <span className="font-semibold">{employee.gross_salary}{currency}</span></p>
+                    <p className="text-sm"><span className="text-muted-foreground">{t('hr.table_hire_date')}:</span> <span className="font-semibold">{format(new Date(employee.hire_date), 'dd/MM/yyyy')}</span></p>
+                    <div className="pt-1">
+                      <Badge variant={statusVariant[employee.status] || 'default'}>{t(`hr.status_${employee.status}`)}</Badge>
+                    </div>
+                  </div>
+                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild><Button variant="ghost" size="icon"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => { setEditingEmployee(employee); setIsDialogOpen(true); }}><Edit className="mr-2 h-4 w-4" /> {t('crm.edit_client')}</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleDeleteEmployee(employee.id)} className="text-red-500 focus:text-red-500"><Trash2 className="mr-2 h-4 w-4" /> {t('page_billing_action_delete')}</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          )) : (
+            <div className="text-center p-8 text-muted-foreground border-2 border-dashed rounded-lg">{t('hr.no_employees')}</div>
+          )}
         </div>
       </motion.div>
 

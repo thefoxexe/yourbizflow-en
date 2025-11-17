@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '@/lib/customSupabaseClient';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Check, Loader2, Info, CheckCircle, BadgePercent, X } from 'lucide-react';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
@@ -167,7 +167,7 @@ const Subscription = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[#030712]">
       <Helmet>
         <title>{t('subscription_page_title')} - {t('app_name')}</title>
         <meta name="description" content="Découvrez les plans d'abonnement de YourBizFlow. Choisissez le plan qui correspond le mieux à vos besoins et commencez à simplifier la gestion de votre entreprise." />
@@ -179,14 +179,14 @@ const Subscription = () => {
         animate={{ opacity: 1, y: 0 }}
         className="text-center mb-12 w-full max-w-6xl px-4"
       >
-        <h1 className="text-4xl md:text-5xl font-bold text-foreground text-center mb-4">{t('subscription_page_title')}</h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+        <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 text-center mb-4">{t('subscription_page_title')}</h1>
+        <p className="text-lg text-white/70 max-w-2xl mx-auto">
           {t('subscription_page_subtitle')}
         </p>
         <div className="flex items-center justify-center gap-4 mt-8">
-          <Label htmlFor="billing-cycle-sub" className={cn("text-muted-foreground", billingCycle === 'monthly' && 'text-foreground font-semibold')}>{t('monthly')}</Label>
+          <Label htmlFor="billing-cycle-sub" className={cn("text-white/60", billingCycle === 'monthly' && 'text-white font-semibold')}>{t('monthly')}</Label>
           <Switch id="billing-cycle-sub" checked={billingCycle === 'yearly'} onCheckedChange={(checked) => setBillingCycle(checked ? 'yearly' : 'monthly')} />
-          <Label htmlFor="billing-cycle-sub" className={cn("text-muted-foreground", billingCycle === 'yearly' && 'text-foreground font-semibold')}>{t('yearly')}</Label>
+          <Label htmlFor="billing-cycle-sub" className={cn("text-white/60", billingCycle === 'yearly' && 'text-white font-semibold')}>{t('yearly')}</Label>
           <div className="bg-rose-500/20 text-rose-400 text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1">
             <BadgePercent className="w-3 h-3" />
             {t('discount_badge')}
@@ -209,34 +209,34 @@ const Subscription = () => {
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 * index, type: 'spring' }}
-              className={cn("bg-card border rounded-2xl p-8 flex flex-col shadow-lg relative", plan.name === 'Business' && 'border-primary ring-2 ring-primary')}
+              className={cn("bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-8 flex flex-col shadow-lg relative hover:bg-white/[0.05] transition-all", plan.name === 'Business' && 'border-primary/50 ring-2 ring-primary/30 bg-white/[0.05]')}
             >
               {plan.name === 'Business' && (
                 <div className="absolute -top-4 right-6 bg-primary text-primary-foreground text-sm font-bold px-4 py-1 rounded-full shadow-lg">
                   {t('bestseller')}
                 </div>
               )}
-              <h2 className="text-2xl font-bold text-foreground mb-2">{t(`plan_${plan.name.toLowerCase()}`)}</h2>
-              <div className="text-4xl font-extrabold text-foreground mb-6">
+              <h2 className="text-2xl font-bold text-white mb-2">{t(`plan_${plan.name.toLowerCase()}`)}</h2>
+              <div className="text-4xl font-extrabold text-white mb-6">
                 {price}{currencySymbol}
-                {plan.name !== 'Free' && <span className="text-lg font-medium text-muted-foreground">/{billingCycle === 'monthly' ? t('monthly_short') : t('yearly_short')}</span>}
+                {plan.name !== 'Free' && <span className="text-lg font-medium text-white/60">/{billingCycle === 'monthly' ? t('monthly_short') : t('yearly_short')}</span>}
               </div>
               <ul className="space-y-3 mb-4 flex-grow">
                 {featureKeys.map((featureKey, i) => (
                   <li key={i} className="flex items-center gap-3">
                     <Check className="w-5 h-5 text-green-500" />
-                    <span className="text-muted-foreground">{t(featureKey)}</span>
+                    <span className="text-white/70">{t(featureKey)}</span>
                   </li>
                 ))}
               </ul>
-              <Button variant="link" size="sm" className="mb-4 text-primary" onClick={() => openPlanDetails(plan)}>
+              <Button variant="link" size="sm" className="mb-4 text-primary hover:text-primary/80" onClick={() => openPlanDetails(plan)}>
                 <Info className="w-4 h-4 mr-2" />
                 {t('see_all_features')}
               </Button>
               <Button
                 onClick={() => handleSelectPlan(plan)}
                 variant={plan.name === 'Business' ? 'default' : 'outline'}
-                className="w-full py-3 text-base font-bold rounded-lg"
+                className={cn("w-full py-3 text-base font-bold rounded-lg", plan.name !== 'Business' && 'border-white/20 text-white hover:bg-white/10')}
                 disabled={isProcessing === (plan.name + billingCycle)}
               >
                 {isProcessing === (plan.name + billingCycle) ? <Loader2 className="w-5 h-5 animate-spin" /> : (plan.name === 'Free' ? t('start_free') : t('choose_plan'))}

@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef } from 'react';
     import { Textarea } from '@/components/ui/textarea';
     import { Button } from '@/components/ui/button';
     import { Upload, Loader2, Crop } from 'lucide-react';
-    import { useToast } from '@/components/ui/use-toast';
+    import { useToast } from '@/hooks/use-toast';
     import { supabase } from '@/lib/customSupabaseClient';
     import { useAuth } from '@/contexts/SupabaseAuthContext';
     import ReactCrop, { centerCrop, makeAspectCrop } from 'react-image-crop';

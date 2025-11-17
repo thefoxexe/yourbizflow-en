@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '@/lib/customSupabaseClient';
-import { Package, PlusCircle, MoreVertical, Edit, Trash2 } from 'lucide-react';
+import { Package, PlusCircle, MoreVertical, Edit, Trash2, Loader2 } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogC
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
 
 const ProductDialog = ({ isOpen, onOpenChange, onSave, product, t }) => {
@@ -130,7 +130,8 @@ const ProductManagement = () => {
       </motion.div>
 
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-        <div className="border rounded-lg">
+        {/* Desktop Table View */}
+        <div className="hidden md:block border rounded-lg">
           <Table>
             <TableHeader>
               <TableRow>
@@ -169,6 +170,36 @@ const ProductManagement = () => {
               )}
             </TableBody>
           </Table>
+        </div>
+
+        {/* Mobile Card View */}
+        <div className="md:hidden space-y-4">
+          {loading ? (
+            <div className="text-center p-8"><Loader2 className="mx-auto animate-spin" /></div>
+          ) : products.length > 0 ? products.map(product => (
+            <div key={product.id} className="bg-card border rounded-lg p-4 space-y-3">
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  <h3 className="font-semibold text-lg">{product.name}</h3>
+                  <div className="mt-2 space-y-1">
+                    <p className="text-sm"><span className="text-muted-foreground">{t('product_management.table_price')}:</span> <span className="font-semibold">{product.sale_price?.toFixed(2)}{currency}</span></p>
+                    <p className="text-sm"><span className="text-muted-foreground">{t('product_management.table_cost')}:</span> <span className="font-semibold">{product.cost_of_goods?.toFixed(2)}{currency}</span></p>
+                    <p className="text-sm"><span className="text-muted-foreground">{t('product_management.table_margin')}:</span> <span className="font-semibold">{calculateMargin(product.sale_price, product.cost_of_goods)}</span></p>
+                    <p className="text-sm"><span className="text-muted-foreground">{t('product_management.table_stock')}:</span> <span className="font-semibold">{product.stock === null || product.stock === undefined ? 'N/A' : product.stock}</span></p>
+                  </div>
+                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild><Button variant="ghost" size="icon"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => { setEditingProduct(product); setIsDialogOpen(true); }}><Edit className="mr-2 h-4 w-4" /> {t('recurring_payments_edit')}</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleDeleteProduct(product.id)} className="text-red-500 focus:text-red-500"><Trash2 className="mr-2 h-4 w-4" /> {t('recurring_payments_delete')}</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          )) : (
+            <div className="text-center p-8 text-muted-foreground border-2 border-dashed rounded-lg">{t('product_management.no_products')}</div>
+          )}
         </div>
       </motion.div>
 

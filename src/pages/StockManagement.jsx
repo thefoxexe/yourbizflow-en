@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '@/lib/customSupabaseClient';
-import { Package, Search, Plus, Minus } from 'lucide-react';
+import { Package, Search, Plus, Minus, Loader2 } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
 
 const StockActionDialog = ({ isOpen, onOpenChange, onSave, product, actionType, t }) => {
@@ -131,7 +131,8 @@ const StockManagement = () => {
       </div>
 
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-        <div className="border rounded-lg">
+        {/* Desktop Table View */}
+        <div className="hidden md:block border rounded-lg">
           <Table>
             <TableHeader>
               <TableRow>
@@ -168,6 +169,38 @@ const StockManagement = () => {
               )}
             </TableBody>
           </Table>
+        </div>
+
+        {/* Mobile Card View */}
+        <div className="md:hidden space-y-4">
+          {loading ? (
+            <div className="text-center p-8"><Loader2 className="mx-auto animate-spin" /></div>
+          ) : filteredProducts.length > 0 ? filteredProducts.map(product => {
+            const status = getStatus(product.stock);
+            return (
+              <div key={product.id} className="bg-card border rounded-lg p-4 space-y-3">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
+                    <div className="flex items-center gap-3">
+                      <p className="text-2xl font-bold">{product.stock}</p>
+                      <Badge variant={status.variant}>{status.label}</Badge>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex gap-2 pt-3 border-t">
+                  <Button variant="outline" size="sm" className="flex-1" onClick={() => { setSelectedProduct(product); setStockActionType('add'); setIsStockDialogOpen(true); }}>
+                    <Plus className="h-4 w-4 mr-1" /> {t('stock_management.add_stock')}
+                  </Button>
+                  <Button variant="outline" size="sm" className="flex-1" onClick={() => { setSelectedProduct(product); setStockActionType('sell'); setIsStockDialogOpen(true); }}>
+                    <Minus className="h-4 w-4 mr-1" /> {t('stock_management.record_sale')}
+                  </Button>
+                </div>
+              </div>
+            );
+          }) : (
+            <div className="text-center p-8 text-muted-foreground border-2 border-dashed rounded-lg">{t('stock_management.no_products')}</div>
+          )}
         </div>
       </motion.div>
       

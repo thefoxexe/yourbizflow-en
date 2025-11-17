@@ -6,7 +6,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { supabase } from '@/lib/customSupabaseClient';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -122,7 +122,7 @@ const CalendarPage = () => {
         </Button>
       </motion.div>
       <Card>
-        <CardContent className="p-4">
+        <CardContent className="p-2 md:p-4">
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             headerToolbar={{ left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay' }}
@@ -141,6 +141,8 @@ const CalendarPage = () => {
               week: t('calendar.week_button'),
               day: t('calendar.day_button'),
             }}
+            height="auto"
+            contentHeight="auto"
           />
         </CardContent>
       </Card>
