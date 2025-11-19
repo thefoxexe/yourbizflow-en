@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }) => {
             password,
             options: {
                 data: metadata,
-                emailRedirectTo: `${window.location.origin}/dashboard`,
+                emailRedirectTo: `${window.location.origin}/subscription`,
             },
         });
         return { user: data.user, error };

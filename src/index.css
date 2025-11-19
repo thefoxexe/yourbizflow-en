@@ -182,3 +182,79 @@ body {
 .fc-theme-standard .fc-list-event:hover {
   background-color: var(--fc-list-event-hover-bg-color);
 }
+
+/* Mobile responsive styles for FullCalendar */
+@media (max-width: 640px) {
+  .fc .fc-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .fc .fc-toolbar-chunk {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .fc .fc-button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .fc .fc-button-group {
+    display: flex;
+  }
+
+  .fc .fc-col-header-cell-cushion {
+    font-size: 0.75rem;
+    padding: 0.25rem;
+  }
+
+  .fc .fc-daygrid-day-number {
+    font-size: 0.75rem;
+    padding: 0.25rem;
+  }
+
+  .fc .fc-daygrid-day-frame {
+    min-height: 2.5rem;
+  }
+
+  .fc .fc-event {
+    font-size: 0.7rem;
+    padding: 1px 2px;
+    margin: 1px 0;
+  }
+
+  .fc .fc-event-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .fc .fc-daygrid-event-harness {
+    margin-top: 1px;
+  }
+
+  .fc .fc-more-link {
+    font-size: 0.7rem;
+  }
+
+  .fc-popover {
+    max-width: 90vw;
+  }
+
+  .fc .fc-timegrid-slot {
+    height: 2rem;
+  }
+
+  .fc .fc-timegrid-slot-label {
+    font-size: 0.7rem;
+  }
+}

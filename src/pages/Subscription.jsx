@@ -11,6 +11,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 const PlanDetailsDialog = ({ isOpen, onOpenChange, plan, t }) => {
   if (!plan) return null;
@@ -48,11 +49,26 @@ const Subscription = () => {
   const [loading, setLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(null);
   const { toast } = useToast();
-  const { user, profile } = useAuth();
+  const { user, profile, loading: authLoading } = useAuth();
   const [isPlanDetailsOpen, setIsPlanDetailsOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [billingCycle, setBillingCycle] = useState('monthly');
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  // Redirect to welcome if not logged in
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate('/welcome', { replace: true });
+    }
+  }, [user, authLoading, navigate]);
+
+  // Redirect to dashboard if user already has a subscription
+  useEffect(() => {
+    if (!authLoading && user && profile?.subscription_plan_id) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [user, profile, authLoading, navigate]);
 
   const currency = useMemo(() => profile?.currency || 'eur', [profile]);
 
@@ -133,6 +149,10 @@ const Subscription = () => {
       if (plan.name === 'Free') {
         toast({ title: 'Plan Gratuit Activé', description: 'Vous pouvez commencer à utiliser YourBizFlow !' });
         setIsProcessing(null);
+        // Redirect to dashboard after selecting Free plan
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 1500);
         return;
       }
       toast({ variant: 'destructive', title: 'Erreur de configuration', description: `Le lien de paiement pour cette sélection est manquant.` });
@@ -167,7 +187,7 @@ const Subscription = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[#030712]">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background">
       <Helmet>
         <title>{t('subscription_page_title')} - {t('app_name')}</title>
         <meta name="description" content="Découvrez les plans d'abonnement de YourBizFlow. Choisissez le plan qui correspond le mieux à vos besoins et commencez à simplifier la gestion de votre entreprise." />

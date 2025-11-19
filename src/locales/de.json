@@ -104,7 +104,9 @@
       "comparisonYes": "Ja",
       "comparisonPartial": "Teilweise / Externes Modul",
       "comparisonNo": "Nein",
-      "footer": "© {{year}} YourBizFlow. Alle Rechte vorbehalten."
+      "footer": "© {{year}} YourBizFlow. Alle Rechte vorbehalten.",
+      "upgrade": "Upgrade",
+      "blackfriday_banner": "🎉 Black Friday Angebot: 1 Monat gratis auf alle monatlichen Pläne mit Code"
     }
   }
 }

@@ -3,6 +3,8 @@
   "login": "Login",
   "signup": "Sign Up",
   "logout": "Logout",
+  "upgrade": "Upgrade",
+  "blackfriday_banner": "🎉 Black Friday Offer: Get 1 free month on all monthly plans with code",
   "dashboard_welcome": "Welcome back, {{name}}!",
   "dashboard_description": "Here's a quick overview of your activity.",
   "dashboard_title": "Dashboard",

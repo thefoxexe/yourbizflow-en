@@ -204,8 +204,8 @@ const FaqSection = () => {
         <Accordion type="single" collapsible className="w-full">
           {faqs.map((faq, index) => (
             <AccordionItem value={`item-${index}`} key={index}>
-              <AccordionTrigger className="text-lg">{t(faq.qKey)}</AccordionTrigger>
-              <AccordionContent className="text-base leading-relaxed">
+              <AccordionTrigger className="text-lg text-left">{t(faq.qKey)}</AccordionTrigger>
+              <AccordionContent className="text-base leading-relaxed text-left">
                 {t(faq.aKey)}
               </AccordionContent>
             </AccordionItem>
@@ -524,6 +524,7 @@ const LandingPage = () => {
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   const [billingCycle, setBillingCycle] = useState('monthly');
+  const [isBlackFridayVisible, setIsBlackFridayVisible] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -643,6 +644,33 @@ const LandingPage = () => {
 
       <PublicHeader onNavClick={handleNavClick} />
 
+      {/* Black Friday Banner */}
+      {isBlackFridayVisible && (
+        <motion.div
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -100, opacity: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="relative z-40 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 py-3 mt-[65px]"
+        >
+          <div className="container mx-auto px-6">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 text-center relative pr-8 sm:pr-0">
+              <BadgePercent className="w-5 h-5 text-white animate-pulse" />
+              <p className="text-white font-semibold text-sm sm:text-base">
+                {t('blackfriday_banner')} <span className="font-bold bg-white text-purple-600 px-2 py-0.5 rounded">BLACKFRIDAY</span>
+              </p>
+              <button
+                onClick={() => setIsBlackFridayVisible(false)}
+                className="absolute right-0 top-1/2 -translate-y-1/2 sm:relative sm:top-auto sm:translate-y-0 text-white hover:text-white/80 transition-colors p-1"
+                aria-label="Close banner"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
       <main>
         <HeroGeometric 
             badge={t('landing_hero_badge')}
@@ -685,9 +713,9 @@ const LandingPage = () => {
               <p className="text-white/60 max-w-2xl mx-auto">{t('landing_download_subtitle')}</p>
             </div>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-8">
-              <a href="#" target="_blank" rel="noopener noreferrer" className="block w-48 h-auto">
+              <div className="w-48 h-auto opacity-50 cursor-not-allowed">
                 <img alt={t('landing_download_google_alt')} className="w-full h-auto" src="https://i.ibb.co/bjyL5dzW/1.png" />
-              </a>
+              </div>
               <div className="w-48 h-auto opacity-50 cursor-not-allowed">
                 <img alt={t('landing_download_apple_alt')} className="w-full h-auto" src="https://i.ibb.co/fzJB0DHr/2.png" />
               </div>
@@ -812,55 +840,55 @@ const LandingPage = () => {
                       </tr>
                       <tr className="hover:bg-white/[0.02] transition-colors">
                         <td className="py-4 px-6 text-sm text-white/80">{t('comparison_hr')}</td>
-                        <td className="py-4 px-6 text-center text-2xl">🟩</td>
-                        <td className="py-4 px-6 text-center text-2xl">🟧</td>
-                        <td className="py-4 px-6 text-center text-2xl">⛔</td>
-                        <td className="py-4 px-6 text-center text-2xl">🟧</td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-green-500"></span></td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-orange-500"></span></td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-red-500"></span></td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-orange-500"></span></td>
                       </tr>
                       <tr className="hover:bg-white/[0.02] transition-colors">
                         <td className="py-4 px-6 text-sm text-white/80">{t('comparison_finance')}</td>
-                        <td className="py-4 px-6 text-center text-2xl">🟩</td>
-                        <td className="py-4 px-6 text-center text-2xl">🟧</td>
-                        <td className="py-4 px-6 text-center text-2xl">🟧</td>
-                        <td className="py-4 px-6 text-center text-2xl">🟧</td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-green-500"></span></td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-orange-500"></span></td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-orange-500"></span></td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-orange-500"></span></td>
                       </tr>
                       <tr className="hover:bg-white/[0.02] transition-colors">
                         <td className="py-4 px-6 text-sm text-white/80">{t('comparison_recurring')}</td>
-                        <td className="py-4 px-6 text-center text-2xl">🟩</td>
-                        <td className="py-4 px-6 text-center text-2xl">🟧</td>
-                        <td className="py-4 px-6 text-center text-2xl">🟧</td>
-                        <td className="py-4 px-6 text-center text-2xl">🟧</td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-green-500"></span></td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-orange-500"></span></td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-orange-500"></span></td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-orange-500"></span></td>
                       </tr>
                       <tr className="hover:bg-white/[0.02] transition-colors">
                         <td className="py-4 px-6 text-sm text-white/80">{t('comparison_rental')}</td>
-                        <td className="py-4 px-6 text-center text-2xl">🟩</td>
-                        <td className="py-4 px-6 text-center text-2xl">🟧</td>
-                        <td className="py-4 px-6 text-center text-2xl">⛔</td>
-                        <td className="py-4 px-6 text-center text-2xl">⛔</td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-green-500"></span></td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-orange-500"></span></td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-red-500"></span></td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-red-500"></span></td>
                       </tr>
                       <tr className="hover:bg-white/[0.02] transition-colors">
                         <td className="py-4 px-6 text-sm text-white/80">{t('comparison_stock')}</td>
-                        <td className="py-4 px-6 text-center text-2xl">🟩</td>
-                        <td className="py-4 px-6 text-center text-2xl">🟩</td>
-                        <td className="py-4 px-6 text-center text-2xl">🟩</td>
-                        <td className="py-4 px-6 text-center text-2xl">🟩</td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-green-500"></span></td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-orange-500"></span></td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-orange-500"></span></td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-orange-500"></span></td>
                       </tr>
                       <tr className="hover:bg-white/[0.02] transition-colors">
                         <td className="py-4 px-6 text-sm text-white/80">{t('comparison_trading')}</td>
-                        <td className="py-4 px-6 text-center text-2xl">🟩</td>
-                        <td className="py-4 px-6 text-center text-2xl">⛔</td>
-                        <td className="py-4 px-6 text-center text-2xl">⛔</td>
-                        <td className="py-4 px-6 text-center text-2xl">⛔</td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-green-500"></span></td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-red-500"></span></td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-red-500"></span></td>
+                        <td className="py-4 px-6 text-center"><span className="inline-block w-4 h-4 rounded-full bg-red-500"></span></td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
                 <div className="mt-6 text-center space-y-2">
                   <p className="text-sm text-white/60">{t('comparison_legend')}</p>
-                  <div className="flex justify-center gap-6 text-sm">
-                    <span className="text-white/70">🟩 {t('comparison_yes')}</span>
-                    <span className="text-white/70">🟧 {t('comparison_partial')}</span>
-                    <span className="text-white/70">⛔ {t('comparison_no')}</span>
+                  <div className="flex flex-wrap gap-4 justify-center text-sm">
+                    <span className="text-white/70 flex items-center gap-2"><span className="inline-block w-4 h-4 rounded-full bg-green-500"></span> {t('comparison_yes')}</span>
+                    <span className="text-white/70 flex items-center gap-2"><span className="inline-block w-4 h-4 rounded-full bg-orange-500"></span> {t('comparison_partial')}</span>
+                    <span className="text-white/70 flex items-center gap-2"><span className="inline-block w-4 h-4 rounded-full bg-red-500"></span> {t('comparison_no')}</span>
                   </div>
                 </div>
               </div>

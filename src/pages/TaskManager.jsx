@@ -71,7 +71,7 @@ const TaskForm = ({ task, onSave, onCancel, statuses }) => {
   };
 
   return (
-    <DialogContent>
+    <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[90vh] overflow-y-auto">
       <DialogHeader><DialogTitle>{task?.id ? t('task_manager.edit_task') : t('task_manager.new_task')}</DialogTitle></DialogHeader>
       <div className="py-4 space-y-4">
         <div><Label htmlFor="title">{t('task_manager.task_title')}</Label><Input id="title" value={currentTask.title} onChange={e => setCurrentTask({ ...currentTask, title: e.target.value })} placeholder={t('task_manager.task_title_placeholder')} /></div>
@@ -90,9 +90,9 @@ const TaskForm = ({ task, onSave, onCancel, statuses }) => {
           </div>
         </div>
       </div>
-      <DialogFooter>
-        <DialogClose asChild><Button variant="outline" onClick={onCancel} disabled={isSaving}>{t('dialog_cancel')}</Button></DialogClose>
-        <Button onClick={handleSave} disabled={isSaving}>
+      <DialogFooter className="flex-col sm:flex-row gap-2">
+        <DialogClose asChild><Button variant="outline" onClick={onCancel} disabled={isSaving} className="w-full sm:w-auto">{t('dialog_cancel')}</Button></DialogClose>
+        <Button onClick={handleSave} disabled={isSaving} className="w-full sm:w-auto">
           {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
           {t('dialog_save')}
         </Button>
@@ -259,46 +259,105 @@ const TaskManager = () => {
       {loading ? (
         <div className="flex justify-center items-center flex-grow"><Loader2 className="w-12 h-12 animate-spin text-primary" /></div>
       ) : (
-        <div className="flex-grow overflow-x-auto overflow-y-hidden pb-4">
+        <>
+          {/* Desktop Kanban View */}
+          <div className="hidden md:block flex-grow overflow-x-auto overflow-y-hidden pb-4">
             <div className="flex gap-6 h-full min-w-max">
-            {statuses.length > 0 ? statuses.map(status => (
-              <div key={status.id} onDrop={(e) => onDrop(e, status.id)} onDragOver={onDragOver} className="w-80 flex-shrink-0 h-full">
-                <div className="flex flex-col max-h-full bg-card/50 backdrop-blur-sm rounded-xl">
-                  <div className="p-4 flex justify-between items-center border-b">
-                    <h3 className="font-semibold text-foreground">{status.name}</h3>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="h-6 w-6"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild><DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-red-500 focus:text-red-500"><Trash2 className="mr-2 h-4 w-4" />{t('task_manager.delete_status')}</DropdownMenuItem></AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader><AlertDialogTitle>{t('task_manager.delete_status_confirm_title')}</AlertDialogTitle><AlertDialogDescription>{t('task_manager.delete_status_confirm_desc')}</AlertDialogDescription></AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>{t('dialog_cancel')}</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => handleDeleteStatus(status.id)}>{t('billing.action_delete')}</AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+              {statuses.length > 0 ? statuses.map(status => (
+                <div key={status.id} onDrop={(e) => onDrop(e, status.id)} onDragOver={onDragOver} className="w-80 flex-shrink-0 h-full">
+                  <div className="flex flex-col max-h-full bg-card/50 backdrop-blur-sm rounded-xl">
+                    <div className="p-4 flex justify-between items-center border-b">
+                      <h3 className="font-semibold text-foreground">{status.name}</h3>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="h-6 w-6"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild><DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-red-500 focus:text-red-500"><Trash2 className="mr-2 h-4 w-4" />{t('task_manager.delete_status')}</DropdownMenuItem></AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader><AlertDialogTitle>{t('task_manager.delete_status_confirm_title')}</AlertDialogTitle><AlertDialogDescription>{t('task_manager.delete_status_confirm_desc')}</AlertDialogDescription></AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>{t('dialog_cancel')}</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => handleDeleteStatus(status.id)}>{t('billing.action_delete')}</AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                    <div className="p-4 space-y-4 overflow-y-auto flex-grow">
+                      {tasks.filter(t => t.status === status.id).map(task => (
+                        <TaskCard key={task.id} task={task} onDragStart={onDragStart} onUpdate={() => handleOpenTaskForm(task)} onDelete={() => handleDeleteTask(task.id)} />
+                      ))}
+                      <Button variant="outline" className="w-full" onClick={() => handleOpenTaskForm(null, status.id)}><PlusCircle className="mr-2 h-4 w-4" />{t('task_manager.new_task')}</Button>
+                    </div>
                   </div>
-                  <div className="p-4 space-y-4 overflow-y-auto flex-grow">
-                    {tasks.filter(t => t.status === status.id).map(task => (
-                      <TaskCard key={task.id} task={task} onDragStart={onDragStart} onUpdate={() => handleOpenTaskForm(task)} onDelete={() => handleDeleteTask(task.id)} />
-                    ))}
-                    <Button variant="outline" className="w-full" onClick={() => handleOpenTaskForm(null, status.id)}><PlusCircle className="mr-2 h-4 w-4" />{t('task_manager.new_task')}</Button>
-                  </div>
+                </div>
+              )) : <p className="text-muted-foreground w-full text-center mt-10">{t('task_manager.empty_board')}</p>}
+              <div className="w-80 flex-shrink-0">
+                <div className="p-4 bg-card/30 rounded-xl space-y-2">
+                  <Input placeholder={t('task_manager.new_status')} value={newStatusName} onChange={(e) => setNewStatusName(e.target.value)} />
+                  <Button className="w-full" onClick={handleAddStatus}>{t('task_manager.new_status')}</Button>
                 </div>
               </div>
-            )) : <p className="text-muted-foreground w-full text-center mt-10">{t('task_manager.empty_board')}</p>}
-            <div className="w-80 flex-shrink-0">
-                <div className="p-4 bg-card/30 rounded-xl space-y-2">
-                    <Input placeholder={t('task_manager.new_status')} value={newStatusName} onChange={(e) => setNewStatusName(e.target.value)} />
-                    <Button className="w-full" onClick={handleAddStatus}>{t('task_manager.new_status')}</Button>
+            </div>
+          </div>
+
+          {/* Mobile List View */}
+          <div className="md:hidden flex-grow overflow-y-auto pb-4 space-y-6">
+            {statuses.length > 0 ? statuses.map(status => (
+              <div key={status.id} className="space-y-3">
+                <div className="flex justify-between items-center px-2">
+                  <h3 className="font-bold text-lg text-foreground">{status.name} ({tasks.filter(t => t.status === status.id).length})</h3>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="h-8 w-8"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild><DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-red-500 focus:text-red-500"><Trash2 className="mr-2 h-4 w-4" />{t('task_manager.delete_status')}</DropdownMenuItem></AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader><AlertDialogTitle>{t('task_manager.delete_status_confirm_title')}</AlertDialogTitle><AlertDialogDescription>{t('task_manager.delete_status_confirm_desc')}</AlertDialogDescription></AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>{t('dialog_cancel')}</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDeleteStatus(status.id)}>{t('billing.action_delete')}</AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
+                <div className="space-y-3">
+                  {tasks.filter(t => t.status === status.id).map(task => (
+                    <div key={task.id} className="bg-card p-4 rounded-xl shadow-sm">
+                      <div className="flex justify-between items-start mb-2">
+                        <h4 className="font-semibold flex-1">{task.title}</h4>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="h-8 w-8 -mt-2 -mr-2"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
+                          <DropdownMenuContent>
+                            <DropdownMenuItem onClick={() => handleOpenTaskForm(task)}><Edit className="mr-2 h-4 w-4" /> {t('task_manager.edit_task')}</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleDeleteTask(task.id)} className="text-red-500 focus:text-red-500"><Trash2 className="mr-2 h-4 w-4" /> {t('task_manager.delete_task')}</DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">{task.description}</p>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className={`px-2 py-1 rounded-full ${
+                          task.priority === 'Haute' || task.priority === 'High' ? 'bg-red-500/20' :
+                          task.priority === 'Moyenne' || task.priority === 'Medium' ? 'bg-yellow-500/20' :
+                          'bg-blue-500/20'
+                        }`}>{t(`task_manager.priority_${task.priority?.toLowerCase()}`, task.priority)}</span>
+                        {task.due_date && <span className="text-muted-foreground">{new Date(task.due_date).toLocaleDateString()}</span>}
+                      </div>
+                    </div>
+                  ))}
+                  <Button variant="outline" className="w-full" onClick={() => handleOpenTaskForm(null, status.id)}><PlusCircle className="mr-2 h-4 w-4" />{t('task_manager.new_task')}</Button>
+                </div>
+              </div>
+            )) : <p className="text-muted-foreground text-center mt-10">{t('task_manager.empty_board')}</p>}
+            <div className="p-4 bg-card/50 rounded-xl space-y-2">
+              <Input placeholder={t('task_manager.new_status')} value={newStatusName} onChange={(e) => setNewStatusName(e.target.value)} />
+              <Button className="w-full" onClick={handleAddStatus}>{t('task_manager.new_status')}</Button>
             </div>
-            </div>
-        </div>
+          </div>
+        </>
       )}
 
       <Dialog open={isTaskFormOpen} onOpenChange={setIsTaskFormOpen}>

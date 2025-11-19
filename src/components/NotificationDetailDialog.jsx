@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
+import defaultLogo from '@/assets/logo-default-notification.jpg';
 
 const NotificationDetailDialog = ({ notification, isOpen, onClose }) => {
   if (!notification) return null;
@@ -54,33 +55,18 @@ const NotificationDetailDialog = ({ notification, isOpen, onClose }) => {
         </DialogHeader>
         
         <div className="space-y-4 mt-4">
-          {notification.image_url && (
-            <div className="rounded-lg overflow-hidden border">
-              <img 
-                src={notification.image_url} 
-                alt="Notification" 
-                className="w-full h-auto object-cover max-h-[300px] sm:max-h-[400px]"
-              />
-            </div>
-          )}
-          
-          <div className="prose prose-sm max-w-none dark:prose-invert">
-            <p className="text-foreground whitespace-pre-wrap text-sm sm:text-base">{notification.message}</p>
+          <div className="rounded-lg overflow-hidden border">
+            <img 
+              src={notification.image_url || defaultLogo} 
+              alt="Notification" 
+              className="w-full h-auto object-cover max-h-[300px] sm:max-h-[400px]"
+            />
           </div>
-
-          {notification.content_images && notification.content_images.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
-              {notification.content_images.map((img, index) => (
-                <div key={index} className="rounded-lg overflow-hidden border">
-                  <img 
-                    src={img} 
-                    alt={`Image ${index + 1}`} 
-                    className="w-full h-auto object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
+          
+          <div 
+            className="prose prose-sm max-w-none dark:prose-invert text-foreground"
+            dangerouslySetInnerHTML={{ __html: notification.message }}
+          />
         </div>
       </DialogContent>
     </Dialog>

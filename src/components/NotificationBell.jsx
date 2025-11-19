@@ -13,6 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import NotificationDetailDialog from './NotificationDetailDialog';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import defaultLogo from '@/assets/logo-default-notification.jpg';
 
 const NotificationBell = () => {
   const [notifications, setNotifications] = useState([]);
@@ -110,6 +111,17 @@ const NotificationBell = () => {
     }
   };
 
+  // Helper function to extract plain text from HTML
+  const getPlainTextPreview = (htmlString) => {
+    if (!htmlString) return '';
+    // Create a temporary div to parse HTML
+    const temp = document.createElement('div');
+    temp.innerHTML = htmlString;
+    // Get text content and limit to ~100 characters
+    const text = temp.textContent || temp.innerText || '';
+    return text.length > 100 ? text.substring(0, 100) + '...' : text;
+  };
+
   return (
     <>
       <Popover>
@@ -161,26 +173,19 @@ const NotificationBell = () => {
                         onClick={() => handleNotificationClick(notification)}
                       >
                         <div className="flex items-start gap-3">
-                          {notification.image_url && (
-                            <div className="w-12 h-12 rounded overflow-hidden flex-shrink-0">
-                              <img 
-                                src={notification.image_url} 
-                                alt="" 
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                          )}
+                          <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 border border-border">
+                            <img 
+                              src={notification.image_url || defaultLogo} 
+                              alt="" 
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-start justify-between gap-2">
-                              <h4 className="font-semibold text-sm mb-1 flex items-center gap-2">
-                                {notification.title}
-                                {notification.image_url && (
-                                  <Image className="h-3 w-3 text-muted-foreground" />
-                                )}
-                              </h4>
-                            </div>
+                            <h4 className="font-semibold text-sm mb-1">
+                              {notification.title}
+                            </h4>
                             <p className="text-sm text-muted-foreground line-clamp-2">
-                              {notification.message}
+                              {getPlainTextPreview(notification.message)}
                             </p>
                             <p className="text-xs text-muted-foreground mt-1">
                               {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true, locale: fr })}
@@ -206,28 +211,23 @@ const NotificationBell = () => {
                     .map((notification) => (
                       <div
                         key={notification.id}
-                        className="p-4 border-b hover:bg-accent/50 transition-colors cursor-pointer"
+                        className="p-4 border-b hover:bg-accent/50 transition-colors cursor-pointer opacity-70"
                         onClick={() => handleNotificationClick(notification)}
                       >
                         <div className="flex items-start gap-3">
-                          {notification.image_url && (
-                            <div className="w-12 h-12 rounded overflow-hidden flex-shrink-0">
-                              <img 
-                                src={notification.image_url} 
-                                alt="" 
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                          )}
+                          <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 border border-border">
+                            <img 
+                              src={notification.image_url || defaultLogo} 
+                              alt="" 
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className="font-semibold text-sm mb-1 flex items-center gap-2">
+                            <h4 className="font-semibold text-sm mb-1">
                               {notification.title}
-                              {notification.image_url && (
-                                <Image className="h-3 w-3 text-muted-foreground" />
-                              )}
                             </h4>
                             <p className="text-sm text-muted-foreground line-clamp-2">
-                              {notification.message}
+                              {getPlainTextPreview(notification.message)}
                             </p>
                             <p className="text-xs text-muted-foreground mt-1">
                               {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true, locale: fr })}

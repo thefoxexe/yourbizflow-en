@@ -84,18 +84,18 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
                     <h3 className="font-bold text-lg text-foreground">{prop.name}</h3>
                     <PropertyStatusBadge status={prop.status} t={t} />
                 </div>
-                <p className="text-sm text-muted-foreground mb-4 flex-grow">{prop.description}</p>
-                <div className="flex justify-around text-center text-sm border-t pt-2 mt-auto">
+                <p className="text-sm text-muted-foreground mb-4 flex-grow line-clamp-2">{prop.description}</p>
+                <div className="grid grid-cols-3 gap-2 text-center text-xs sm:text-sm border-t pt-3 mt-auto">
                     <div>
-                        <p className="text-muted-foreground">{t('rental.rate_day')}</p>
+                        <p className="text-muted-foreground text-xs">{t('rental.rate_day')}</p>
                         <p className="font-semibold">{prop.daily_rate || 'N/A'}{currencySymbol}</p>
                     </div>
                     <div>
-                        <p className="text-muted-foreground">{t('rental.rate_week')}</p>
+                        <p className="text-muted-foreground text-xs">{t('rental.rate_week')}</p>
                         <p className="font-semibold">{prop.weekly_rate || 'N/A'}{currencySymbol}</p>
                     </div>
                     <div>
-                        <p className="text-muted-foreground">{t('rental.rate_month')}</p>
+                        <p className="text-muted-foreground text-xs">{t('rental.rate_month')}</p>
                         <p className="font-semibold">{prop.monthly_rate || 'N/A'}{currencySymbol}</p>
                     </div>
                 </div>
@@ -107,46 +107,90 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
     );
     
     const BookingsList = ({ bookings, properties, clients, onEdit, onDelete, currencySymbol, t }) => (
-        <div className="bg-card/50 border rounded-xl overflow-hidden">
-            <div className="overflow-x-auto">
-                <table className="w-full">
-                    <thead>
-                        <tr className="border-b border-white/10">
-                            <th className="p-4 text-left font-semibold text-muted-foreground">{t('rental.table_header_property')}</th>
-                            <th className="p-4 text-left font-semibold text-muted-foreground">{t('rental.table_header_client')}</th>
-                            <th className="p-4 text-left font-semibold text-muted-foreground">{t('rental.table_header_period')}</th>
-                            <th className="p-4 text-left font-semibold text-muted-foreground">{t('rental.table_header_amount')}</th>
-                            <th className="p-4 text-left font-semibold text-muted-foreground">{t('rental.table_header_status')}</th>
-                            <th className="p-4 text-right font-semibold text-muted-foreground">{t('rental.table_header_actions')}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {bookings.map(booking => {
-                            const property = properties.find(p => p.id === booking.property_id);
-                            const client = clients.find(c => c.id === booking.client_id);
-                            return (
-                            <tr key={booking.id} className="border-b border-white/5 last:border-b-0 hover:bg-white/5">
-                                <td className="p-4 font-medium">{property?.name || t('rental.deleted_property')}</td>
-                                <td className="p-4 text-muted-foreground">{client?.name || t('rental.deleted_client')}</td>
-                                <td className="p-4 text-muted-foreground">{format(parseISO(booking.start_date), 'dd/MM/yy')} - {format(parseISO(booking.end_date), 'dd/MM/yy')}</td>
-                                <td className="p-4 font-semibold">{booking.amount}{currencySymbol}</td>
-                                <td className="p-4"><BookingStatusBadge status={booking.status} t={t} /></td>
-                                <td className="p-4 text-right">
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger asChild><Button size="icon" variant="ghost"><MoreVertical className="w-4 h-4" /></Button></DropdownMenuTrigger>
-                                        <DropdownMenuContent>
-                                            <DropdownMenuItem onClick={() => onEdit(booking)}><Edit className="w-4 h-4 mr-2" />{t('rental.edit')}</DropdownMenuItem>
-                                            <DropdownMenuItem onClick={() => onDelete(booking.id)} className="text-red-500"><Trash2 className="w-4 h-4 mr-2" />{t('rental.delete')}</DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </td>
+        <>
+            {/* Desktop Table View */}
+            <div className="hidden md:block bg-card/50 border rounded-xl overflow-hidden">
+                <div className="overflow-x-auto">
+                    <table className="w-full">
+                        <thead>
+                            <tr className="border-b border-white/10">
+                                <th className="p-4 text-left font-semibold text-muted-foreground">{t('rental.table_header_property')}</th>
+                                <th className="p-4 text-left font-semibold text-muted-foreground">{t('rental.table_header_client')}</th>
+                                <th className="p-4 text-left font-semibold text-muted-foreground">{t('rental.table_header_period')}</th>
+                                <th className="p-4 text-left font-semibold text-muted-foreground">{t('rental.table_header_amount')}</th>
+                                <th className="p-4 text-left font-semibold text-muted-foreground">{t('rental.table_header_status')}</th>
+                                <th className="p-4 text-right font-semibold text-muted-foreground">{t('rental.table_header_actions')}</th>
                             </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {bookings.map(booking => {
+                                const property = properties.find(p => p.id === booking.property_id);
+                                const client = clients.find(c => c.id === booking.client_id);
+                                return (
+                                <tr key={booking.id} className="border-b border-white/5 last:border-b-0 hover:bg-white/5">
+                                    <td className="p-4 font-medium">{property?.name || t('rental.deleted_property')}</td>
+                                    <td className="p-4 text-muted-foreground">{client?.name || t('rental.deleted_client')}</td>
+                                    <td className="p-4 text-muted-foreground">{format(parseISO(booking.start_date), 'dd/MM/yy')} - {format(parseISO(booking.end_date), 'dd/MM/yy')}</td>
+                                    <td className="p-4 font-semibold">{booking.amount}{currencySymbol}</td>
+                                    <td className="p-4"><BookingStatusBadge status={booking.status} t={t} /></td>
+                                    <td className="p-4 text-right">
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild><Button size="icon" variant="ghost"><MoreVertical className="w-4 h-4" /></Button></DropdownMenuTrigger>
+                                            <DropdownMenuContent>
+                                                <DropdownMenuItem onClick={() => onEdit(booking)}><Edit className="w-4 h-4 mr-2" />{t('rental.edit')}</DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => onDelete(booking.id)} className="text-red-500"><Trash2 className="w-4 h-4 mr-2" />{t('rental.delete')}</DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </td>
+                                </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+            
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-4">
+                {bookings.length > 0 ? bookings.map(booking => {
+                    const property = properties.find(p => p.id === booking.property_id);
+                    const client = clients.find(c => c.id === booking.client_id);
+                    return (
+                        <motion.div key={booking.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-card/50 border rounded-xl p-4">
+                            <div className="flex justify-between items-start mb-3">
+                                <div className="flex-1">
+                                    <h3 className="font-semibold text-lg">{property?.name || t('rental.deleted_property')}</h3>
+                                    <p className="text-sm text-muted-foreground">{client?.name || t('rental.deleted_client')}</p>
+                                </div>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild><Button size="icon" variant="ghost" className="-mt-2 -mr-2"><MoreVertical className="w-4 h-4" /></Button></DropdownMenuTrigger>
+                                    <DropdownMenuContent>
+                                        <DropdownMenuItem onClick={() => onEdit(booking)}><Edit className="w-4 h-4 mr-2" />{t('rental.edit')}</DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => onDelete(booking.id)} className="text-red-500"><Trash2 className="w-4 h-4 mr-2" />{t('rental.delete')}</DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </div>
+                            <div className="space-y-2">
+                                <div className="flex justify-between items-center">
+                                    <span className="text-sm text-muted-foreground">{t('rental.table_header_period')}</span>
+                                    <span className="text-sm font-medium">{format(parseISO(booking.start_date), 'dd/MM/yy')} - {format(parseISO(booking.end_date), 'dd/MM/yy')}</span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-sm text-muted-foreground">{t('rental.table_header_amount')}</span>
+                                    <span className="text-lg font-bold text-primary">{booking.amount}{currencySymbol}</span>
+                                </div>
+                                <div className="flex justify-between items-center pt-2">
+                                    <span className="text-sm text-muted-foreground">{t('rental.table_header_status')}</span>
+                                    <BookingStatusBadge status={booking.status} t={t} />
+                                </div>
+                            </div>
+                        </motion.div>
+                    );
+                }) : (
+                    <div className="text-center py-10 text-muted-foreground">{t('rental.no_bookings')}</div>
+                )}
+            </div>
+        </>
     );
     
     const RentalManagement = () => {
@@ -369,23 +413,23 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
         });
     
         return (
-            <div className="space-y-8">
+            <div className="space-y-6 sm:space-y-8">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-                    <h1 className="text-3xl font-bold text-foreground">{t('rental.title')}</h1>
-                    <p className="text-muted-foreground">{t('rental.subtitle')}</p>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-foreground">{t('rental.title')}</h1>
+                    <p className="text-sm sm:text-base text-muted-foreground">{t('rental.subtitle')}</p>
                 </motion.div>
     
                 <Tabs value={activeTab} onValueChange={setActiveTab}>
-                    <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-                        <TabsList className="w-full sm:w-auto">
-                            <TabsTrigger value="properties" className="flex-1 sm:flex-initial"><List className="w-4 h-4 mr-2"/>{t('rental.tab_properties')}</TabsTrigger>
-                            <TabsTrigger value="bookings" className="flex-1 sm:flex-initial"><BookOpen className="w-4 h-4 mr-2"/>{t('rental.tab_bookings')}</TabsTrigger>
-                            <TabsTrigger value="calendar" className="flex-1 sm:flex-initial"><Calendar className="w-4 h-4 mr-2"/>{t('rental.tab_calendar')}</TabsTrigger>
-                            <TabsTrigger value="settings" className="flex-1 sm:flex-initial"><Settings className="w-4 h-4 mr-2"/>{t('rental.tab_settings')}</TabsTrigger>
+                    <div className="flex flex-col gap-4">
+                        <TabsList className="w-full grid grid-cols-2 sm:grid-cols-4 h-auto">
+                            <TabsTrigger value="properties" className="text-xs sm:text-sm py-2"><List className="w-4 h-4 mr-1 sm:mr-2"/><span className="hidden xs:inline">{t('rental.tab_properties')}</span><span className="xs:hidden">Props</span></TabsTrigger>
+                            <TabsTrigger value="bookings" className="text-xs sm:text-sm py-2"><BookOpen className="w-4 h-4 mr-1 sm:mr-2"/><span className="hidden xs:inline">{t('rental.tab_bookings')}</span><span className="xs:hidden">Book</span></TabsTrigger>
+                            <TabsTrigger value="calendar" className="text-xs sm:text-sm py-2"><Calendar className="w-4 h-4 mr-1 sm:mr-2"/><span className="hidden xs:inline">{t('rental.tab_calendar')}</span><span className="xs:hidden">Cal</span></TabsTrigger>
+                            <TabsTrigger value="settings" className="text-xs sm:text-sm py-2"><Settings className="w-4 h-4 mr-1 sm:mr-2"/><span className="hidden xs:inline">{t('rental.tab_settings')}</span><span className="xs:hidden">Set</span></TabsTrigger>
                         </TabsList>
-                        <div className="w-full sm:w-auto">
-                            {activeTab === 'properties' && <Button onClick={() => openPropertyDialog()} className="w-full"><Plus className="w-4 h-4 mr-2"/>{t('rental.add_property')}</Button>}
-                            {activeTab === 'bookings' && <Button onClick={() => openBookingDialog()} className="w-full"><Plus className="w-4 h-4 mr-2"/>{t('rental.add_booking')}</Button>}
+                        <div className="w-full">
+                            {activeTab === 'properties' && <Button onClick={() => openPropertyDialog()} className="w-full sm:w-auto"><Plus className="w-4 h-4 mr-2"/>{t('rental.add_property')}</Button>}
+                            {activeTab === 'bookings' && <Button onClick={() => openBookingDialog()} className="w-full sm:w-auto"><Plus className="w-4 h-4 mr-2"/>{t('rental.add_booking')}</Button>}
                         </div>
                     </div>
     
@@ -396,15 +440,20 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
                         <BookingsList bookings={bookings} properties={properties} clients={clients} onEdit={openBookingDialog} onDelete={handleDeleteBooking} currencySymbol={currencySymbol} t={t} />
                     </TabsContent>
                     <TabsContent value="calendar" className="mt-6">
-                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-card/50 backdrop-blur-sm border rounded-xl p-4">
+                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-card/50 backdrop-blur-sm border rounded-xl p-2 sm:p-4 overflow-hidden">
                             <FullCalendar
                                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                                headerToolbar={{ left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek' }}
+                                headerToolbar={{ 
+                                  left: 'prev,next', 
+                                  center: 'title', 
+                                  right: 'dayGridMonth' 
+                                }}
                                 initialView="dayGridMonth"
                                 events={calendarEvents}
                                 locale={i18n.language}
                                 buttonText={{ today: t('rental.calendar_today'), month: t('rental.calendar_month'), week: t('rental.calendar_week') }}
                                 height="auto"
+                                contentHeight="auto"
                             />
                         </motion.div>
                     </TabsContent>
@@ -414,27 +463,27 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
                 </Tabs>
                 
                 <Dialog open={isPropertyDialogOpen} onOpenChange={setIsPropertyDialogOpen}>
-                    <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col">
+                    <DialogContent className="max-w-[95vw] sm:max-w-2xl max-h-[90vh] flex flex-col">
                         <DialogHeader>
                             <DialogTitle>{editingProperty ? t('rental.dialog_edit_property_title') : t('rental.dialog_add_property_title')}</DialogTitle>
                         </DialogHeader>
                         <div className="flex-grow overflow-y-auto pr-4 -mr-4 grid gap-4 py-4">
                             <div><Label>{t('rental.dialog_property_name')}</Label><Input value={currentProperty.name || ''} onChange={e => setCurrentProperty({...currentProperty, name: e.target.value})} /></div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div><Label>{t('rental.dialog_property_category')}</Label><Input placeholder={t('rental.dialog_property_category_placeholder')} onChange={() => toast({title: t('rental.dialog_property_category_soon_toast')})} /></div>
-                                <div>
+                            <div className="flex flex-col sm:flex-row gap-4">
+                                <div className="flex-1"><Label>{t('rental.dialog_property_category')}</Label><Input placeholder={t('rental.dialog_property_category_placeholder')} onChange={() => toast({title: t('rental.dialog_property_category_soon_toast')})} /></div>
+                                <div className="flex-1">
                                     <Label>{t('rental.dialog_property_color')}</Label>
                                     <div className="flex items-center gap-2">
-                                        <Input type="color" value={currentProperty.color || '#6366f1'} onChange={e => setCurrentProperty({...currentProperty, color: e.target.value})} className="p-1 h-10 w-14" />
-                                        <Input type="text" value={currentProperty.color || '#6366f1'} onChange={e => setCurrentProperty({...currentProperty, color: e.target.value})} placeholder="#6366f1" />
+                                        <Input type="color" value={currentProperty.color || '#6366f1'} onChange={e => setCurrentProperty({...currentProperty, color: e.target.value})} className="p-1 h-10 w-14 flex-shrink-0" />
+                                        <Input type="text" value={currentProperty.color || '#6366f1'} onChange={e => setCurrentProperty({...currentProperty, color: e.target.value})} placeholder="#6366f1" className="flex-1" />
                                     </div>
                                 </div>
                             </div>
                             <div><Label>{t('rental.dialog_property_description')}</Label><Textarea value={currentProperty.description || ''} onChange={e => setCurrentProperty({...currentProperty, description: e.target.value})} /></div>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                              <div><Label>{t('rental.rate_day')} ({currencySymbol})</Label><Input type="number" value={currentProperty.daily_rate || ''} onChange={e => setCurrentProperty({...currentProperty, daily_rate: e.target.value})} /></div>
-                              <div><Label>{t('rental.rate_week')} ({currencySymbol})</Label><Input type="number" value={currentProperty.weekly_rate || ''} onChange={e => setCurrentProperty({...currentProperty, weekly_rate: e.target.value})} /></div>
-                              <div><Label>{t('rental.rate_month')} ({currencySymbol})</Label><Input type="number" value={currentProperty.monthly_rate || ''} onChange={e => setCurrentProperty({...currentProperty, monthly_rate: e.target.value})} /></div>
+                            <div className="grid grid-cols-1 xs:grid-cols-3 gap-2">
+                              <div><Label className="text-xs sm:text-sm">{t('rental.rate_day')} ({currencySymbol})</Label><Input type="number" value={currentProperty.daily_rate || ''} onChange={e => setCurrentProperty({...currentProperty, daily_rate: e.target.value})} /></div>
+                              <div><Label className="text-xs sm:text-sm">{t('rental.rate_week')} ({currencySymbol})</Label><Input type="number" value={currentProperty.weekly_rate || ''} onChange={e => setCurrentProperty({...currentProperty, weekly_rate: e.target.value})} /></div>
+                              <div><Label className="text-xs sm:text-sm">{t('rental.rate_month')} ({currencySymbol})</Label><Input type="number" value={currentProperty.monthly_rate || ''} onChange={e => setCurrentProperty({...currentProperty, monthly_rate: e.target.value})} /></div>
                             </div>
                             <div>
                                 <Label>{t('rental.dialog_property_photos')}</Label>
@@ -447,7 +496,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
                                         <Input id="photo-upload" type="file" multiple className="hidden" onChange={(e) => setPhotoFiles(Array.from(e.target.files))} />
                                     </label>
                                 </div>
-                                <div className="mt-2 grid grid-cols-3 gap-2">
+                                <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-2">
                                     {currentProperty.photos?.map((photo, index) => (
                                         <div key={index} className="relative"><img src={photo} className="w-full h-24 object-cover rounded-md" alt="" /><Button size="icon" variant="destructive" className="absolute top-1 right-1 h-6 w-6" onClick={() => setCurrentProperty(p => ({...p, photos: p.photos.filter((_, i) => i !== index)}))}><X className="h-4 w-4"/></Button></div>
                                     ))}
@@ -457,9 +506,9 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
                                 </div>
                             </div>
                         </div>
-                        <DialogFooter>
-                            <Button variant="outline" onClick={() => setIsPropertyDialogOpen(false)} disabled={isUploading}>{t('dialog_cancel')}</Button>
-                            <Button onClick={handleSaveProperty} disabled={isUploading}>
+                        <DialogFooter className="flex-col sm:flex-row gap-2">
+                            <Button variant="outline" onClick={() => setIsPropertyDialogOpen(false)} disabled={isUploading} className="w-full sm:w-auto">{t('dialog_cancel')}</Button>
+                            <Button onClick={handleSaveProperty} disabled={isUploading} className="w-full sm:w-auto">
                                 {isUploading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> {t('billing.saving')}</> : t('dialog_save')}
                             </Button>
                         </DialogFooter>
@@ -467,7 +516,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
                 </Dialog>
     
                 <Dialog open={isBookingDialogOpen} onOpenChange={setIsBookingDialogOpen}>
-                    <DialogContent>
+                    <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[90vh] overflow-y-auto">
                         <DialogHeader>
                             <DialogTitle>{editingBooking ? t('rental.dialog_edit_booking_title') : t('rental.dialog_new_booking_title')}</DialogTitle>
                         </DialogHeader>
@@ -483,14 +532,14 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
                             </div>
                             <div>
                                 <Label>{t('rental.dialog_booking_client')}</Label>
-                                <div className="flex gap-2">
+                                <div className="flex flex-col sm:flex-row gap-2">
                                     <Select value={currentBooking.client_id} onValueChange={value => setCurrentBooking({...currentBooking, client_id: value})}>
-                                        <SelectTrigger><SelectValue placeholder={t('rental.dialog_booking_select_client')} /></SelectTrigger>
+                                        <SelectTrigger className="flex-1"><SelectValue placeholder={t('rental.dialog_booking_select_client')} /></SelectTrigger>
                                         <SelectContent>
                                             {clients.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
                                         </SelectContent>
                                     </Select>
-                                    <Button variant="outline" size="icon" onClick={() => setIsClientDialogOpen(true)}><UserPlus className="h-4 w-4" /></Button>
+                                    <Button variant="outline" size="icon" onClick={() => setIsClientDialogOpen(true)} className="w-full sm:w-auto"><UserPlus className="h-4 w-4" /><span className="sm:hidden ml-2">{t('rental.add_client')}</span></Button>
                                 </div>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -499,9 +548,9 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
                             </div>
                             <div><Label>{t('rental.dialog_booking_amount')} ({currencySymbol})</Label><Input type="number" value={currentBooking.amount || ''} onChange={e => setCurrentBooking({...currentBooking, amount: e.target.value})} /></div>
                         </div>
-                        <DialogFooter>
-                            <Button variant="outline" onClick={() => setIsBookingDialogOpen(false)}>{t('dialog_cancel')}</Button>
-                            <Button onClick={handleSaveBooking}>{editingBooking ? t('dialog_save') : t('rental.dialog_booking_confirm_and_invoice')}</Button>
+                        <DialogFooter className="flex-col sm:flex-row gap-2">
+                            <Button variant="outline" onClick={() => setIsBookingDialogOpen(false)} className="w-full sm:w-auto">{t('dialog_cancel')}</Button>
+                            <Button onClick={handleSaveBooking} className="w-full sm:w-auto">{editingBooking ? t('dialog_save') : t('rental.dialog_booking_confirm_and_invoice')}</Button>
                         </DialogFooter>
                     </DialogContent>
                 </Dialog>

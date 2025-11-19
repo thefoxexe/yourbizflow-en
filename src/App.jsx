@@ -149,13 +149,12 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/welcome" state={{ from: location }} replace />;
   }
 
-  // Allow users with a profile to access the app (including Free plan users)
-  // Free plan is the default, so if they have a profile, they have access
+  // If user doesn't have a profile yet, wait for subscription
   if (!profile) {
     return <Navigate to="/subscription" replace />;
   }
 
-  // If they're on subscription page and already have a paid plan, redirect to dashboard
+  // If on subscription page and already has a subscription plan, redirect to dashboard
   if (profile?.subscription_plan_id && location.pathname === "/subscription") {
     return <Navigate to="/dashboard" replace />;
   }
@@ -219,12 +218,12 @@ const AppRoutes = () => {
     if (!user) {
       return <PageComponent />;
     }
-    const hasSubscription = !!profile?.subscription_plan_id;
-    return hasSubscription ? (
-      <Navigate to="/dashboard" />
-    ) : (
-      <Navigate to="/subscription" />
-    );
+    // If user is logged in and has a profile with subscription plan, go to dashboard
+    if (profile?.subscription_plan_id) {
+      return <Navigate to="/dashboard" replace />;
+    }
+    // If user is logged in but doesn't have subscription plan, go to subscription
+    return <Navigate to="/subscription" replace />;
   };
 
   return (
@@ -310,11 +309,7 @@ const AppRoutes = () => {
       />
       <Route
         path="/subscription"
-        element={
-          <ProtectedRoute>
-            <Subscription />
-          </ProtectedRoute>
-        }
+        element={<Subscription />}
       />
       <Route
         path="/dashboard"

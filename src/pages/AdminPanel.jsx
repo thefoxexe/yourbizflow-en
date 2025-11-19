@@ -4,7 +4,6 @@ import { supabase } from '@/lib/customSupabaseClient';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -39,6 +38,7 @@ import { format, subDays, subMonths, startOfWeek, endOfWeek, startOfMonth, endOf
 import { fr } from 'date-fns/locale';
 import logoYourBizFlow from '@/assets/logo-yourbizflow.png';
 import ImageUploadZone from '@/components/ImageUploadZone';
+import { Textarea } from '@/components/ui/textarea';
 
 const AdminPanel = () => {
   const [stats, setStats] = useState({ Free: 0, Pro: 0, Business: 0, total: 0 });
@@ -361,8 +361,6 @@ const AdminPanel = () => {
         title: notificationTitle,
         message: notificationMessage,
         type: 'info',
-        image_url: bannerImage || null,
-        content_images: contentImages.length > 0 ? contentImages : null,
         read: false,
         created_at: new Date().toISOString(),
       }));
@@ -757,12 +755,14 @@ const AdminPanel = () => {
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium mb-2 block">Message</label>
+                  <label className="text-sm font-medium mb-2 block">
+                    Message (HTML / CSS supporté)
+                  </label>
                   <Textarea
-                    placeholder="Contenu de la notification"
                     value={notificationMessage}
                     onChange={(e) => setNotificationMessage(e.target.value)}
-                    rows={4}
+                    placeholder="Collez votre code HTML/CSS ici. Il sera rendu avec les couleurs et le formatage dans les notifications..."
+                    className="min-h-[200px] font-mono text-sm"
                   />
                 </div>
 

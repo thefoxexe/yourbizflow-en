@@ -46,7 +46,7 @@ const ExpenseDialog = ({ isOpen, onOpenChange, onSave, expense, t }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader><DialogTitle>{expense ? t('expenses.edit_expense_title') : t('expenses.add_expense_title')}</DialogTitle></DialogHeader>
         <div className="py-4 space-y-4">
           <div><Label htmlFor="description">{t('expenses.table_description')}</Label><Input id="description" value={description} onChange={e => setDescription(e.target.value)} placeholder={t('expenses.description_placeholder')} /></div>
@@ -66,9 +66,9 @@ const ExpenseDialog = ({ isOpen, onOpenChange, onSave, expense, t }) => {
           </div>
           <div><Label>{t('expenses.table_date')}</Label><DatePicker date={expenseDate} setDate={setExpenseDate} /></div>
         </div>
-        <DialogFooter>
-          <DialogClose asChild><Button variant="outline">{t('dialog_cancel')}</Button></DialogClose>
-          <Button onClick={handleSave}>{t('dialog_save')}</Button>
+        <DialogFooter className="flex-col sm:flex-row gap-2">
+          <DialogClose asChild><Button variant="outline" className="w-full sm:w-auto">{t('dialog_cancel')}</Button></DialogClose>
+          <Button onClick={handleSave} className="w-full sm:w-auto">{t('dialog_save')}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -92,7 +92,7 @@ const RecurringExpenseDialog = ({ isOpen, onOpenChange, onSave, t }) => {
 
     return (
         <Dialog open={isOpen} onOpenChange={onOpenChange}>
-            <DialogContent>
+            <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[90vh] overflow-y-auto">
                 <DialogHeader><DialogTitle>{t('expenses.add_recurring_title')}</DialogTitle></DialogHeader>
                 <div className="py-4 space-y-4">
                     <div><Label htmlFor="name">{t('expenses.name_placeholder')}</Label><Input id="name" value={name} onChange={e => setName(e.target.value)} placeholder={t('expenses.name_placeholder')} /></div>
@@ -109,9 +109,9 @@ const RecurringExpenseDialog = ({ isOpen, onOpenChange, onSave, t }) => {
                     </div>
                     <div><Label>{t('expenses.start_date')}</Label><DatePicker date={startDate} setDate={setStartDate} /></div>
                 </div>
-                <DialogFooter>
-                    <DialogClose asChild><Button variant="outline">{t('dialog_cancel')}</Button></DialogClose>
-                    <Button onClick={handleSave}>{t('dialog_add')}</Button>
+                <DialogFooter className="flex-col sm:flex-row gap-2">
+                    <DialogClose asChild><Button variant="outline" className="w-full sm:w-auto">{t('dialog_cancel')}</Button></DialogClose>
+                    <Button onClick={handleSave} className="w-full sm:w-auto">{t('dialog_add')}</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
@@ -295,46 +295,87 @@ const Expenses = () => {
 
       {view === 'recurring' && (
         <>
-            <div className="flex gap-2">
-                <Button onClick={() => setIsRecurringDialogOpen(true)}><PlusCircle className="mr-2 h-4 w-4" /> {t('expenses.new_recurring_expense')}</Button>
-                <Button onClick={handleProcessRecurring} variant="outline"><Repeat className="mr-2 h-4 w-4" /> {t('expenses.process_now')}</Button>
+            <div className="flex flex-col sm:flex-row gap-2">
+                <Button onClick={() => setIsRecurringDialogOpen(true)} className="w-full sm:w-auto"><PlusCircle className="mr-2 h-4 w-4" /> {t('expenses.new_recurring_expense')}</Button>
+                <Button onClick={handleProcessRecurring} variant="outline" className="w-full sm:w-auto"><Repeat className="mr-2 h-4 w-4" /> {t('expenses.process_now')}</Button>
             </div>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-            <Card>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>{t('budget.budget_name_label')}</TableHead>
-                    <TableHead>{t('expenses.table_amount')}</TableHead>
-                    <TableHead>{t('expenses.table_frequency')}</TableHead>
-                    <TableHead>{t('expenses.table_next_date')}</TableHead>
-                    <TableHead>{t('expenses.last_processed')}</TableHead>
-                    <TableHead className="text-right">{t('expenses.table_actions')}</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {loading ? (
-                    <TableRow><TableCell colSpan="6" className="text-center h-24">{t('recurring_payments_loading')}</TableCell></TableRow>
-                  ) : recurringExpenses.length > 0 ? (
-                    recurringExpenses.map(expense => (
-                      <TableRow key={expense.id}>
-                        <TableCell className="font-medium">{expense.name}</TableCell>
-                        <TableCell>{expense.amount.toFixed(2)}{currency}</TableCell>
-                        <TableCell>{t(`expenses.frequency_${expense.frequency}`)}</TableCell>
-                        <TableCell>{expense.next_date ? format(new Date(expense.next_date), 'dd/MM/yyyy') : 'N/A'}</TableCell>
-                        <TableCell>{expense.last_processed_date ? format(new Date(expense.last_processed_date), 'dd/MM/yyyy') : 'N/A'}</TableCell>
-                        <TableCell className="text-right">
-                          <Button variant="ghost" size="icon" onClick={() => handleDeleteRecurring(expense.id)}><Trash2 className="h-4 w-4 text-red-500" /></Button>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow><TableCell colSpan="6" className="text-center h-24">{t('expenses.no_recurring_expenses')}</TableCell></TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </Card>
-          </motion.div>
+            
+            {/* Mobile view - Cards */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="md:hidden space-y-4">
+              {loading ? (
+                <div className="text-center py-10">{t('recurring_payments_loading')}</div>
+              ) : recurringExpenses.length > 0 ? (
+                recurringExpenses.map(expense => (
+                  <Card key={expense.id} className="w-full">
+                    <CardContent className="p-4 space-y-3">
+                      <div className="flex justify-between items-start">
+                        <div className="space-y-1 flex-1">
+                          <p className="font-semibold text-base">{expense.name}</p>
+                          <p className="text-lg font-bold text-primary">{expense.amount.toFixed(2)}{currency}</p>
+                        </div>
+                        <Button variant="ghost" size="icon" onClick={() => handleDeleteRecurring(expense.id)}>
+                          <Trash2 className="h-4 w-4 text-red-500" />
+                        </Button>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-sm">
+                        <div>
+                          <p className="text-muted-foreground">{t('expenses.table_frequency')}</p>
+                          <p className="font-medium">{t(`expenses.frequency_${expense.frequency}`)}</p>
+                        </div>
+                        <div>
+                          <p className="text-muted-foreground">{t('expenses.table_next_date')}</p>
+                          <p className="font-medium">{expense.next_date ? format(new Date(expense.next_date), 'dd/MM/yyyy') : 'N/A'}</p>
+                        </div>
+                        <div className="col-span-2">
+                          <p className="text-muted-foreground">{t('expenses.last_processed')}</p>
+                          <p className="font-medium">{expense.last_processed_date ? format(new Date(expense.last_processed_date), 'dd/MM/yyyy') : 'N/A'}</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <div className="text-center py-10 text-muted-foreground">{t('expenses.no_recurring_expenses')}</div>
+              )}
+            </motion.div>
+
+            {/* Desktop view - Table */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="hidden md:block">
+              <Card>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>{t('budget.budget_name_label')}</TableHead>
+                      <TableHead>{t('expenses.table_amount')}</TableHead>
+                      <TableHead>{t('expenses.table_frequency')}</TableHead>
+                      <TableHead>{t('expenses.table_next_date')}</TableHead>
+                      <TableHead>{t('expenses.last_processed')}</TableHead>
+                      <TableHead className="text-right">{t('expenses.table_actions')}</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {loading ? (
+                      <TableRow><TableCell colSpan="6" className="text-center h-24">{t('recurring_payments_loading')}</TableCell></TableRow>
+                    ) : recurringExpenses.length > 0 ? (
+                      recurringExpenses.map(expense => (
+                        <TableRow key={expense.id}>
+                          <TableCell className="font-medium">{expense.name}</TableCell>
+                          <TableCell>{expense.amount.toFixed(2)}{currency}</TableCell>
+                          <TableCell>{t(`expenses.frequency_${expense.frequency}`)}</TableCell>
+                          <TableCell>{expense.next_date ? format(new Date(expense.next_date), 'dd/MM/yyyy') : 'N/A'}</TableCell>
+                          <TableCell>{expense.last_processed_date ? format(new Date(expense.last_processed_date), 'dd/MM/yyyy') : 'N/A'}</TableCell>
+                          <TableCell className="text-right">
+                            <Button variant="ghost" size="icon" onClick={() => handleDeleteRecurring(expense.id)}><Trash2 className="h-4 w-4 text-red-500" /></Button>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow><TableCell colSpan="6" className="text-center h-24">{t('expenses.no_recurring_expenses')}</TableCell></TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </Card>
+            </motion.div>
         </>
       )}
 

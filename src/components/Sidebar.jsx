@@ -42,7 +42,7 @@ import React, { useState } from 'react';
 
     const SidebarContent = ({ onLinkClick }) => {
       const location = useLocation();
-      const { isModuleActive } = useAuth();
+      const { isModuleActive, profile } = useAuth();
       const [searchQuery, setSearchQuery] = useState('');
       const { t } = useTranslation();
 
@@ -137,7 +137,7 @@ import React, { useState } from 'react';
             </nav>
           </div>
 
-          <div className="mt-auto p-6 border-t border-white/10 flex-shrink-0">
+          <div className="mt-auto p-6 border-t border-white/10 flex-shrink-0 space-y-2">
             <Link
               to="/settings"
               onClick={onLinkClick}
@@ -151,6 +151,15 @@ import React, { useState } from 'react';
               <Settings className="w-5 h-5" />
               <span>{t('header_settings')}</span>
             </Link>
+            
+            {profile?.subscription_plan?.name && (profile.subscription_plan.name.toLowerCase() === 'free' || profile.subscription_plan.name.toLowerCase() === 'pro') && (
+              <Button
+                onClick={() => window.open('https://billing.stripe.com/p/login/3cIfZi3ML4OwflKciwawo00', '_blank')}
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold"
+              >
+                {t('upgrade')}
+              </Button>
+            )}
           </div>
         </div>
       );

@@ -67,17 +67,17 @@ const ItemDialog = ({ isOpen, onOpenChange, onSave, item, t }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader><DialogTitle>{item ? t('inventory.edit_item_title') : t('inventory.add_item_title')}</DialogTitle></DialogHeader>
-        <div className="py-4 grid grid-cols-2 gap-4">
-          <div className="col-span-2"><Label htmlFor="name">{t('inventory.table_item')}</Label><Input id="name" value={name} onChange={e => setName(e.target.value)} placeholder={t('inventory.item_name_placeholder')} /></div>
+        <div className="py-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="sm:col-span-2"><Label htmlFor="name">{t('inventory.table_item')}</Label><Input id="name" value={name} onChange={e => setName(e.target.value)} placeholder={t('inventory.item_name_placeholder')} /></div>
           <div><Label htmlFor="sku">{t('inventory.table_sku')}</Label><Input id="sku" value={sku} onChange={e => setSku(e.target.value)} placeholder={t('inventory.sku_placeholder')} /></div>
           <div><Label htmlFor="quantity">{t('inventory.table_quantity')}</Label><Input id="quantity" type="number" value={quantity} onChange={e => setQuantity(e.target.value)} /></div>
           <div><Label htmlFor="purchasePrice">{t('inventory.table_purchase_price')}</Label><Input id="purchasePrice" type="number" value={purchasePrice} onChange={e => setPurchasePrice(e.target.value)} /></div>
           <div><Label htmlFor="salePrice">{t('inventory.table_sale_price')}</Label><Input id="salePrice" type="number" value={salePrice} onChange={e => setSalePrice(e.target.value)} /></div>
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <Label>{t('inventory.photos')}</Label>
-            <div className="flex items-center gap-2 mt-2">
+            <div className="flex flex-wrap items-center gap-2 mt-2">
               {photos.map(p => <img key={p} src={p} alt="item" className="w-16 h-16 object-cover rounded" />)}
               <label htmlFor="photo-upload" className="cursor-pointer w-16 h-16 border-2 border-dashed rounded flex items-center justify-center text-muted-foreground hover:bg-secondary">
                 {uploading ? '...' : <ImagePlus />}
@@ -86,9 +86,9 @@ const ItemDialog = ({ isOpen, onOpenChange, onSave, item, t }) => {
             </div>
           </div>
         </div>
-        <DialogFooter>
-          <DialogClose asChild><Button variant="outline">{t('page_billing_dialog_cancel')}</Button></DialogClose>
-          <Button onClick={handleSave}>{t('ai_strategy_map.save_button')}</Button>
+        <DialogFooter className="flex-col sm:flex-row gap-2">
+          <DialogClose asChild><Button variant="outline" className="w-full sm:w-auto">{t('page_billing_dialog_cancel')}</Button></DialogClose>
+          <Button onClick={handleSave} className="w-full sm:w-auto">{t('ai_strategy_map.save_button')}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -112,16 +112,16 @@ const SellDialog = ({ isOpen, onOpenChange, onSell, item, t }) => {
 
     return (
         <Dialog open={isOpen} onOpenChange={onOpenChange}>
-            <DialogContent>
+            <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[90vh] overflow-y-auto">
                 <DialogHeader><DialogTitle>{t('inventory.sell_item_title')}: {item?.name}</DialogTitle></DialogHeader>
                 <div className="py-4 space-y-4">
                     <div><Label htmlFor="salePrice">{t('inventory.table_sale_price')}</Label><Input id="salePrice" type="number" value={salePrice} onChange={e => setSalePrice(e.target.value)} /></div>
                     <div><Label>{t('inventory.sell_date_label')}</Label><DatePicker date={sellDate} setDate={setSellDate} /></div>
                     <div><Label htmlFor="quantity">{t('inventory.quantity_to_sell_label')}</Label><Input id="quantity" type="number" value={quantity} onChange={e => setQuantity(e.target.value)} max={item?.quantity} min="1" /></div>
                 </div>
-                <DialogFooter>
-                    <DialogClose asChild><Button variant="outline">{t('page_billing_dialog_cancel')}</Button></DialogClose>
-                    <Button onClick={handleSell}>{t('inventory.confirm_sale')}</Button>
+                <DialogFooter className="flex-col sm:flex-row gap-2">
+                    <DialogClose asChild><Button variant="outline" className="w-full sm:w-auto">{t('page_billing_dialog_cancel')}</Button></DialogClose>
+                    <Button onClick={handleSell} className="w-full sm:w-auto">{t('inventory.confirm_sale')}</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
@@ -218,13 +218,13 @@ const Inventory = () => {
   };
 
   return (
-    <div className="space-y-8">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex justify-between items-center">
+    <div className="space-y-6 sm:space-y-8">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">{t('inventory.title')}</h1>
-          <p className="text-muted-foreground">{t('inventory.subtitle')}</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">{t('inventory.title')}</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">{t('inventory.subtitle')}</p>
         </div>
-        <Button onClick={() => { setEditingItem(null); setIsItemDialogOpen(true); }}><PlusCircle className="mr-2 h-4 w-4" /> {t('inventory.new_item')}</Button>
+        <Button onClick={() => { setEditingItem(null); setIsItemDialogOpen(true); }} className="w-full sm:w-auto"><PlusCircle className="mr-2 h-4 w-4" /> {t('inventory.new_item')}</Button>
       </motion.div>
 
       <div className="flex items-center gap-4">
@@ -235,7 +235,8 @@ const Inventory = () => {
       </div>
 
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-        <div className="border rounded-lg">
+        {/* Desktop Table View */}
+        <div className="hidden md:block border rounded-lg">
           <Table>
             <TableHeader>
               <TableRow>
@@ -277,6 +278,52 @@ const Inventory = () => {
               )}
             </TableBody>
           </Table>
+        </div>
+
+        {/* Mobile Card View */}
+        <div className="md:hidden space-y-4">
+          {loading ? (
+            <div className="text-center py-10">Loading...</div>
+          ) : filteredItems.length > 0 ? (
+            filteredItems.map(item => (
+              <motion.div key={item.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-card/50 border rounded-xl p-4">
+                <div className="flex justify-between items-start mb-3">
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-lg">{item.name}</h3>
+                    <p className="text-sm text-muted-foreground">{t('inventory.table_sku')}: {item.sku}</p>
+                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="-mt-2 -mr-2"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem onClick={() => { setSellingItem(item); setIsSellDialogOpen(true); }} disabled={item.quantity <= 0}><DollarSign className="mr-2 h-4 w-4" /> {t('inventory.sell_item')}</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => { setEditingItem(item); setIsItemDialogOpen(true); }}><Edit className="mr-2 h-4 w-4" /> {t('crm.edit_client')}</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleDeleteItem(item.id)} className="text-red-500 focus:text-red-500"><Trash2 className="mr-2 h-4 w-4" /> {t('page_billing_action_delete')}</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <p className="text-muted-foreground">{t('inventory.table_quantity')}</p>
+                    <p className="font-semibold text-lg">{item.quantity}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">{t('inventory.table_status')}</p>
+                    <Badge variant={statusVariant[item.status] || 'default'} className="mt-1">{t(`inventory.status_${item.status.toLowerCase().replace(' ', '_')}`)}</Badge>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">{t('inventory.table_purchase_price')}</p>
+                    <p className="font-semibold">{item.purchase_price}{currency}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">{t('inventory.table_sale_price')}</p>
+                    <p className="font-semibold text-primary">{item.sale_price}{currency}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))
+          ) : (
+            <div className="text-center py-10 text-muted-foreground">{t('inventory.no_items')}</div>
+          )}
         </div>
       </motion.div>
 

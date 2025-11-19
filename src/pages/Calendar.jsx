@@ -111,21 +111,25 @@ const CalendarPage = () => {
   };
 
   return (
-    <div className="space-y-8">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex justify-between items-center">
+    <div className="space-y-4 md:space-y-8 pb-4">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">{t('calendar.title')}</h1>
-          <p className="text-muted-foreground">{t('calendar.subtitle')}</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-1 md:mb-2">{t('calendar.title')}</h1>
+          <p className="text-sm md:text-base text-muted-foreground">{t('calendar.subtitle')}</p>
         </div>
-        <Button onClick={() => { setSelectedEvent(null); setNewEvent({ title: '', start: new Date(), end: null, description: '', category: 'appointment' }); setIsDialogOpen(true); }}>
+        <Button onClick={() => { setSelectedEvent(null); setNewEvent({ title: '', start: new Date(), end: null, description: '', category: 'appointment' }); setIsDialogOpen(true); }} className="w-full sm:w-auto">
           <PlusCircle className="mr-2 h-4 w-4" /> {t('calendar.new_event')}
         </Button>
       </motion.div>
       <Card>
-        <CardContent className="p-2 md:p-4">
+        <CardContent className="p-1 sm:p-2 md:p-4">
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-            headerToolbar={{ left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay' }}
+            headerToolbar={{ 
+              left: 'prev,next', 
+              center: 'title', 
+              right: 'today dayGridMonth,timeGridWeek' 
+            }}
             initialView="dayGridMonth"
             events={events}
             editable={true}
@@ -143,26 +147,32 @@ const CalendarPage = () => {
             }}
             height="auto"
             contentHeight="auto"
+            dayMaxEventRows={3}
+            views={{
+              dayGridMonth: {
+                dayMaxEventRows: 3
+              }
+            }}
           />
         </CardContent>
       </Card>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
+        <DialogContent className="max-w-[95vw] sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>{selectedEvent ? t('calendar.edit_event') : t('calendar.new_event')}</DialogTitle>
+            <DialogTitle className="text-lg md:text-xl">{selectedEvent ? t('calendar.edit_event') : t('calendar.new_event')}</DialogTitle>
           </DialogHeader>
-          <div className="py-4 space-y-4">
-            <div><Label htmlFor="title">{t('calendar.event_title_label')}</Label><Input id="title" value={newEvent.title} onChange={e => setNewEvent({ ...newEvent, title: e.target.value })} /></div>
-            <div className="grid grid-cols-2 gap-4">
-              <div><Label>{t('calendar.start_date_label')}</Label><DatePicker date={newEvent.start} setDate={date => setNewEvent({ ...newEvent, start: date })} /></div>
-              <div><Label>{t('calendar.end_date_label')}</Label><DatePicker date={newEvent.end} setDate={date => setNewEvent({ ...newEvent, end: date })} /></div>
+          <div className="py-2 md:py-4 space-y-3 md:space-y-4">
+            <div><Label htmlFor="title" className="text-sm">{t('calendar.event_title_label')}</Label><Input id="title" value={newEvent.title} onChange={e => setNewEvent({ ...newEvent, title: e.target.value })} className="mt-1" /></div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+              <div><Label className="text-sm">{t('calendar.start_date_label')}</Label><div className="mt-1"><DatePicker date={newEvent.start} setDate={date => setNewEvent({ ...newEvent, start: date })} /></div></div>
+              <div><Label className="text-sm">{t('calendar.end_date_label')}</Label><div className="mt-1"><DatePicker date={newEvent.end} setDate={date => setNewEvent({ ...newEvent, end: date })} /></div></div>
             </div>
-            <div><Label htmlFor="description">{t('calendar.description_label')}</Label><Textarea id="description" value={newEvent.description} onChange={e => setNewEvent({ ...newEvent, description: e.target.value })} /></div>
+            <div><Label htmlFor="description" className="text-sm">{t('calendar.description_label')}</Label><Textarea id="description" value={newEvent.description} onChange={e => setNewEvent({ ...newEvent, description: e.target.value })} className="mt-1 min-h-[80px]" /></div>
             <div>
-              <Label>{t('calendar.category_label')}</Label>
+              <Label className="text-sm">{t('calendar.category_label')}</Label>
               <Select value={newEvent.category} onValueChange={category => setNewEvent({ ...newEvent, category })}>
-                <SelectTrigger><SelectValue placeholder={t('calendar.select_category')} /></SelectTrigger>
+                <SelectTrigger className="mt-1"><SelectValue placeholder={t('calendar.select_category')} /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="appointment">{t('calendar.category_appointment')}</SelectItem>
                   <SelectItem value="deadline">{t('calendar.category_deadline')}</SelectItem>
@@ -172,11 +182,19 @@ const CalendarPage = () => {
               </Select>
             </div>
           </div>
-          <DialogFooter className="flex justify-between w-full">
-            {selectedEvent ? <Button variant="destructive" onClick={handleDeleteEvent}>{t('calendar.delete_event')}</Button> : <div></div>}
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>{t('dialog_cancel')}</Button>
-              <Button onClick={handleSaveEvent}>{t('dialog_save')}</Button>
+          <DialogFooter className="flex-col sm:flex-row gap-2 mt-2">
+            {selectedEvent && (
+              <Button variant="destructive" onClick={handleDeleteEvent} className="w-full sm:w-auto">
+                {t('calendar.delete_event')}
+              </Button>
+            )}
+            <div className="flex gap-2 w-full sm:w-auto sm:ml-auto">
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="flex-1 sm:flex-none">
+                {t('dialog_cancel')}
+              </Button>
+              <Button onClick={handleSaveEvent} className="flex-1 sm:flex-none">
+                {t('dialog_save')}
+              </Button>
             </div>
           </DialogFooter>
         </DialogContent>

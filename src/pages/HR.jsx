@@ -43,10 +43,10 @@ const EmployeeDialog = ({ isOpen, onOpenChange, onSave, employee, t }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-w-[95vw] sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader><DialogTitle>{employee ? t('hr.edit_employee_title') : t('hr.add_employee_title')}</DialogTitle></DialogHeader>
-        <div className="py-4 grid grid-cols-2 gap-4">
-          <div className="col-span-2"><Label htmlFor="name">{t('crm.full_name_label')}</Label><Input id="name" value={name} onChange={e => setName(e.target.value)} /></div>
+        <div className="py-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="sm:col-span-2"><Label htmlFor="name">{t('crm.full_name_label')}</Label><Input id="name" value={name} onChange={e => setName(e.target.value)} /></div>
           <div><Label htmlFor="position">{t('hr.table_position')}</Label><Input id="position" value={position} onChange={e => setPosition(e.target.value)} placeholder={t('hr.position_placeholder')} /></div>
           <div><Label htmlFor="salary">{t('hr.table_salary')}</Label><Input id="salary" type="number" value={salary} onChange={e => setSalary(e.target.value)} placeholder={t('hr.salary_placeholder')} /></div>
           <div><Label>{t('hr.table_hire_date')}</Label><DatePicker date={hireDate} setDate={setHireDate} /></div>
@@ -61,11 +61,11 @@ const EmployeeDialog = ({ isOpen, onOpenChange, onSave, employee, t }) => {
               </SelectContent>
             </Select>
           </div>
-          <div className="col-span-2"><Label htmlFor="iban">{t('hr.iban_label')}</Label><Input id="iban" value={iban} onChange={e => setIban(e.target.value)} /></div>
+          <div className="sm:col-span-2"><Label htmlFor="iban">{t('hr.iban_label')}</Label><Input id="iban" value={iban} onChange={e => setIban(e.target.value)} /></div>
         </div>
-        <DialogFooter>
-          <DialogClose asChild><Button variant="outline">{t('page_billing_dialog_cancel')}</Button></DialogClose>
-          <Button onClick={handleSave}>{t('ai_strategy_map.save_button')}</Button>
+        <DialogFooter className="flex-col sm:flex-row gap-2">
+          <DialogClose asChild><Button variant="outline" className="w-full sm:w-auto">{t('page_billing_dialog_cancel')}</Button></DialogClose>
+          <Button onClick={handleSave} className="w-full sm:w-auto">{t('ai_strategy_map.save_button')}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

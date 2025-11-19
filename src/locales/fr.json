@@ -3,6 +3,8 @@
   "login": "Connexion",
   "signup": "Inscription",
   "logout": "Déconnexion",
+  "upgrade": "Upgrade",
+  "blackfriday_banner": "🎉 Offre Black Friday : 1 mois gratuit sur tous les plans mensuels avec le code",
   "dashboard_welcome": "Bon retour, {{name}} !",
   "dashboard_description": "Voici un aperçu rapide de votre activité.",
   "dashboard_title": "Tableau de bord",
