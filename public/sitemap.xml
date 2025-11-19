@@ -113,4 +113,46 @@
     <loc>https://yourbizflow.com/apps/automated-reminders</loc>
     <priority>0.9</priority>
   </url>
+  
+  <!-- App Description Pages FR -->
+  <url><loc>https://yourbizflow.com/fr/facturation</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/fr/crm</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/fr/projets</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/fr/depenses</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/fr/inventaire</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/fr/devis</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/fr/suivi-temps</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/fr/gestionnaire-taches</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/fr/analytique</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/fr/ressources-humaines</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/fr/automatisation</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/fr/ia-redaction</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/fr/budget</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/fr/gestion-stock</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/fr/paiements-recurrents</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/fr/gestion-location</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  
+  <!-- App Description Pages EN -->
+  <url><loc>https://yourbizflow.com/en/billing</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/en/crm</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/en/projects</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/en/expenses</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/en/inventory</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/en/quotes</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/en/time-tracking</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/en/task-manager</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/en/analytics</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/en/hr</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/en/workflow</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/en/ai-writing</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/en/budget</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/en/stock-management</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/en/recurring-payments</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://yourbizflow.com/en/rental-management</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  
+  <!-- Legal Pages -->
+  <url><loc>https://yourbizflow.com/fr/confidentialite</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://yourbizflow.com/en/privacy</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://yourbizflow.com/fr/conditions</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://yourbizflow.com/en/terms</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
 </urlset>

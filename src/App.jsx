@@ -83,6 +83,22 @@ import PrivacyPolicy from '@/pages/PrivacyPolicy';
 import TermsOfService from '@/pages/TermsOfService';
 import AdminLogin from '@/pages/AdminLogin';
 import AdminPanel from '@/pages/AdminPanel';
+import BillingDescription from '@/pages/descriptions/BillingDescription';
+import CRMDescription from '@/pages/descriptions/CRMDescription';
+import ProjectsDescription from '@/pages/descriptions/ProjectsDescription';
+import ExpensesDescription from '@/pages/descriptions/ExpensesDescription';
+import InventoryDescription from '@/pages/descriptions/InventoryDescription';
+import QuotesDescription from '@/pages/descriptions/QuotesDescription';
+import TimeTrackingDescription from '@/pages/descriptions/TimeTrackingDescription';
+import TaskManagerDescription from '@/pages/descriptions/TaskManagerDescription';
+import AnalyticsDescription from '@/pages/descriptions/AnalyticsDescription';
+import HRDescription from '@/pages/descriptions/HRDescription';
+import WorkflowDescription from '@/pages/descriptions/WorkflowDescription';
+import AIWritingDescription from '@/pages/descriptions/AIWritingDescription';
+import BudgetDescription from '@/pages/descriptions/BudgetDescription';
+import StockManagementDescription from '@/pages/descriptions/StockManagementDescription';
+import RecurringPaymentsDescription from '@/pages/descriptions/RecurringPaymentsDescription';
+import RentalManagementDescription from '@/pages/descriptions/RentalManagementDescription';
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -230,8 +246,48 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/welcome" element={<LandingPage />} />
       <Route path="/about" element={<About />} />
-      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-      <Route path="/terms-of-service" element={<TermsOfService />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-of-service" element={<TermsOfService />} />
+        <Route path="/fr/confidentialite" element={<PrivacyPolicy />} />
+        <Route path="/en/privacy" element={<PrivacyPolicy />} />
+        <Route path="/fr/conditions" element={<TermsOfService />} />
+        <Route path="/en/terms" element={<TermsOfService />} />
+        
+        {/* App Description Pages - FR */}
+        <Route path="/fr/facturation" element={<BillingDescription />} />
+        <Route path="/fr/crm" element={<CRMDescription />} />
+        <Route path="/fr/projets" element={<ProjectsDescription />} />
+        <Route path="/fr/depenses" element={<ExpensesDescription />} />
+        <Route path="/fr/inventaire" element={<InventoryDescription />} />
+        <Route path="/fr/devis" element={<QuotesDescription />} />
+        <Route path="/fr/suivi-temps" element={<TimeTrackingDescription />} />
+        <Route path="/fr/gestionnaire-taches" element={<TaskManagerDescription />} />
+        <Route path="/fr/analytique" element={<AnalyticsDescription />} />
+        <Route path="/fr/ressources-humaines" element={<HRDescription />} />
+        <Route path="/fr/automatisation" element={<WorkflowDescription />} />
+        <Route path="/fr/ia-redaction" element={<AIWritingDescription />} />
+        <Route path="/fr/budget" element={<BudgetDescription />} />
+        <Route path="/fr/gestion-stock" element={<StockManagementDescription />} />
+        <Route path="/fr/paiements-recurrents" element={<RecurringPaymentsDescription />} />
+        <Route path="/fr/gestion-location" element={<RentalManagementDescription />} />
+        
+        {/* App Description Pages - EN */}
+        <Route path="/en/billing" element={<BillingDescription />} />
+        <Route path="/en/crm" element={<CRMDescription />} />
+        <Route path="/en/projects" element={<ProjectsDescription />} />
+        <Route path="/en/expenses" element={<ExpensesDescription />} />
+        <Route path="/en/inventory" element={<InventoryDescription />} />
+        <Route path="/en/quotes" element={<QuotesDescription />} />
+        <Route path="/en/time-tracking" element={<TimeTrackingDescription />} />
+        <Route path="/en/task-manager" element={<TaskManagerDescription />} />
+        <Route path="/en/analytics" element={<AnalyticsDescription />} />
+        <Route path="/en/hr" element={<HRDescription />} />
+        <Route path="/en/workflow" element={<WorkflowDescription />} />
+        <Route path="/en/ai-writing" element={<AIWritingDescription />} />
+        <Route path="/en/budget" element={<BudgetDescription />} />
+        <Route path="/en/stock-management" element={<StockManagementDescription />} />
+        <Route path="/en/recurring-payments" element={<RecurringPaymentsDescription />} />
+        <Route path="/en/rental-management" element={<RentalManagementDescription />} />
       <Route path="/admin-login" element={<AdminLogin />} />
       <Route path="/admin-panel" element={<AdminPanel />} />
       <Route path="/blog" element={<BlogPage />} />

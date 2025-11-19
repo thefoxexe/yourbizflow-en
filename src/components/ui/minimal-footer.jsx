@@ -2,7 +2,8 @@ import React from 'react';
 import { Mail } from 'lucide-react';
 import { FaTiktok, FaInstagram, FaYoutube, FaLinkedin } from 'react-icons/fa';
 import { useToast } from '@/hooks/use-toast';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const SocialLink = ({ href, icon: Icon, label }) => {
   const { toast } = useToast();
@@ -34,6 +35,12 @@ const SocialLink = ({ href, icon: Icon, label }) => {
 
 export function MinimalFooter({ onPrivacyClick, onTermsClick }) {
 	const year = new Date().getFullYear();
+	const location = useLocation();
+	const { t } = useTranslation();
+	const isFr = location.pathname.startsWith('/fr');
+	
+	const privacyLink = isFr ? '/fr/confidentialite' : '/en/privacy';
+	const termsLink = isFr ? '/fr/conditions' : '/en/terms';
 
 	return (
 		<footer className="w-full py-12 mt-12 border-t border-white/10">
@@ -51,12 +58,16 @@ export function MinimalFooter({ onPrivacyClick, onTermsClick }) {
                         <SocialLink href="mailto:contact@yourbizflow.com" icon={Mail} label="Email" />
                     </div>
                     <div className="flex gap-4 mt-4 md:mt-0">
-                        <Link to="/privacy-policy" className="text-sm text-white/60 hover:text-white transition-colors">Confidentialité</Link>
-                        <Link to="/terms-of-service" className="text-sm text-white/60 hover:text-white transition-colors">Termes</Link>
+                        <Link to={privacyLink} className="text-sm text-white/60 hover:text-white transition-colors">
+                          {t('footer_privacy')}
+                        </Link>
+                        <Link to={termsLink} className="text-sm text-white/60 hover:text-white transition-colors">
+                          {t('footer_terms')}
+                        </Link>
                     </div>
                 </div>
 				<p className="text-white/60 text-sm mt-6 md:mt-0 md:order-2">
-					© {year} YourBizFlow. Tous droits réservés.
+					© {year} YourBizFlow. {isFr ? 'Tous droits réservés' : 'All rights reserved'}.
 				</p>
 			</div>
 		</footer>

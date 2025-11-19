@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '@/lib/customSupabaseClient';
-import { Users, PlusCircle, Search, MoreVertical, Edit, Trash2, Mail, Phone, Loader2 } from 'lucide-react';
+import { Users, PlusCircle, Search, MoreVertical, Edit, Trash2, Mail, Phone, Loader2, Upload } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge.jsx';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import CreateClientDialog from '@/components/CreateClientDialog';
+import ImportClientsDialog from '@/components/ImportClientsDialog';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
@@ -22,6 +23,7 @@ const CRM = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
   const [editingClient, setEditingClient] = useState(null);
 
   const fetchClients = useCallback(async () => {
@@ -88,9 +90,14 @@ const CRM = () => {
           <h1 className="text-3xl font-bold text-foreground mb-2">{t('crm.title')}</h1>
           <p className="text-muted-foreground">{t('crm.subtitle')}</p>
         </div>
-        <Button onClick={() => { setEditingClient(null); setIsDialogOpen(true); }}>
-          <PlusCircle className="mr-2 h-4 w-4" /> {t('crm.new_client')}
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-2">
+          <Button variant="outline" onClick={() => setIsImportDialogOpen(true)}>
+            <Upload className="mr-2 h-4 w-4" /> {t('crm.import_button')}
+          </Button>
+          <Button onClick={() => { setEditingClient(null); setIsDialogOpen(true); }}>
+            <PlusCircle className="mr-2 h-4 w-4" /> {t('crm.new_client')}
+          </Button>
+        </div>
       </motion.div>
 
       <div className="relative">
@@ -188,6 +195,11 @@ const CRM = () => {
         onOpenChange={setIsDialogOpen}
         onClientCreated={handleClientAction}
         client={editingClient}
+      />
+      <ImportClientsDialog
+        isOpen={isImportDialogOpen}
+        onOpenChange={setIsImportDialogOpen}
+        onImportComplete={handleClientAction}
       />
     </div>
   );

@@ -713,11 +713,17 @@ const LandingPage = () => {
               <p className="text-white/60 max-w-2xl mx-auto">{t('landing_download_subtitle')}</p>
             </div>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-8">
-              <div className="w-48 h-auto opacity-50 cursor-not-allowed">
-                <img alt={t('landing_download_google_alt')} className="w-full h-auto" src="https://i.ibb.co/bjyL5dzW/1.png" />
+              <div className="relative w-48 h-auto">
+                <img alt={t('landing_download_google_alt')} className="w-full h-auto opacity-50" src="https://i.ibb.co/bjyL5dzW/1.png" />
+                <div className="absolute top-2 right-2 bg-yellow-500/90 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+                  {t('in_development')}
+                </div>
               </div>
-              <div className="w-48 h-auto opacity-50 cursor-not-allowed">
-                <img alt={t('landing_download_apple_alt')} className="w-full h-auto" src="https://i.ibb.co/fzJB0DHr/2.png" />
+              <div className="relative w-48 h-auto">
+                <img alt={t('landing_download_apple_alt')} className="w-full h-auto opacity-50" src="https://i.ibb.co/fzJB0DHr/2.png" />
+                <div className="absolute top-2 right-2 bg-yellow-500/90 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+                  {t('in_development')}
+                </div>
               </div>
             </div>
           </div>
