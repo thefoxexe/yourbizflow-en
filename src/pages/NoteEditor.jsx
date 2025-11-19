@@ -21,6 +21,7 @@ const NoteEditor = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const titleRef = useRef(null);
+  const quillRef = useRef(null);
 
   const fetchNote = useCallback(async () => {
     setLoading(true);
@@ -40,41 +41,23 @@ const NoteEditor = () => {
     fetchNote();
   }, [fetchNote]);
 
-  const useDebounce = (value, delay) => {
-    const [debouncedValue, setDebouncedValue] = useState(value);
-    useEffect(() => {
-      const handler = setTimeout(() => {
-        setDebouncedValue(value);
-      }, delay);
-      return () => clearTimeout(handler);
-    }, [value, delay]);
-    return debouncedValue;
-  };
-
-  const debouncedTitle = useDebounce(title, 1000);
-  const debouncedContent = useDebounce(content, 1000);
-
-  const handleSave = useCallback(async (newTitle, newContent) => {
+  const handleSave = async () => {
     if (!note) return;
+    
     setSaving(true);
     const { error } = await supabase
       .from('storage_items')
-      .update({ name: newTitle, content: newContent, updated_at: new Date() })
+      .update({ name: title, content: content, updated_at: new Date() })
       .eq('id', noteId);
     setSaving(false);
+    
     if (error) {
       toast({ variant: 'destructive', title: t('toast_error_title'), description: t('note_editor.save_error') });
     } else {
       toast({ title: t('toast_success_title'), description: t('note_editor.save_success') });
     }
-  }, [note, noteId, toast, t]);
+  };
 
-  useEffect(() => {
-    if (note) {
-      handleSave(debouncedTitle, debouncedContent);
-    }
-  }, [debouncedTitle, debouncedContent, handleSave, note]);
-  
   useEffect(() => {
     if (title === t('notes.new_note') && titleRef.current) {
         titleRef.current.select();
@@ -102,7 +85,12 @@ const NoteEditor = () => {
           <ArrowLeft className="w-5 h-5" />
           {t('notes.title')}
         </Button>
-        {saving && <div className="flex items-center gap-2 text-muted-foreground"><Loader2 className="w-4 h-4 animate-spin" /><span>{t('billing.saving')}</span></div>}
+        <div className="flex gap-2">
+          <Button onClick={handleSave} disabled={saving} className="flex items-center gap-2">
+            {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+            <span>{saving ? t('billing.saving') : t('note_editor.save_button')}</span>
+          </Button>
+        </div>
       </div>
       <input
         ref={titleRef}

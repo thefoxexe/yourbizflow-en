@@ -31,14 +31,14 @@ const CurrencySelector = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="flex items-center gap-2 text-white/80 hover:text-white hover:bg-white/10">
+        <Button variant="ghost" className="flex items-center gap-2 text-muted-foreground hover:text-foreground">
           <span>{selectedCurrency.toUpperCase()}</span>
           <ChevronDown className="w-4 h-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-[#030303] border-white/10 text-white">
+      <DropdownMenuContent>
         {currencies.map(curr => (
-          <DropdownMenuItem key={curr.code} onSelect={() => changeCurrency(curr.code)} className="hover:!bg-white/10 focus:!bg-white/10">
+          <DropdownMenuItem key={curr.code} onSelect={() => changeCurrency(curr.code)}>
             {curr.symbol} {curr.code.toUpperCase()}
           </DropdownMenuItem>
         ))}

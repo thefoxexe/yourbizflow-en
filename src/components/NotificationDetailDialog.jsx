@@ -7,7 +7,6 @@ import {
 } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
-import defaultLogo from '@/assets/logo-default-notification.jpg';
 
 const NotificationDetailDialog = ({ notification, isOpen, onClose }) => {
   if (!notification) return null;
@@ -55,14 +54,6 @@ const NotificationDetailDialog = ({ notification, isOpen, onClose }) => {
         </DialogHeader>
         
         <div className="space-y-4 mt-4">
-          <div className="rounded-lg overflow-hidden border">
-            <img 
-              src={notification.image_url || defaultLogo} 
-              alt="Notification" 
-              className="w-full h-auto object-cover max-h-[300px] sm:max-h-[400px]"
-            />
-          </div>
-          
           <div 
             className="prose prose-sm max-w-none dark:prose-invert text-foreground"
             dangerouslySetInnerHTML={{ __html: notification.message }}

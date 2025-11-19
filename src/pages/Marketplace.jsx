@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
+import UpgradePlanDialog from '@/components/UpgradePlanDialog';
 
 const allModules = [
   { id: 'dashboard', icon: LayoutDashboard, category: 'general', requiredPlan: 'Free', isCore: true },
@@ -47,6 +48,9 @@ const Marketplace = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const scrollPosRef = useRef(0);
+  const [upgradeDialogOpen, setUpgradeDialogOpen] = useState(false);
+  const [upgradeFeature, setUpgradeFeature] = useState('');
+  const [requiredPlanForUpgrade, setRequiredPlanForUpgrade] = useState('Pro');
   
   const categories = useMemo(() => [
     { id: 'all', name: t('category_all') },
@@ -84,11 +88,10 @@ const Marketplace = () => {
     }
 
     if (!hasPermission(module.requiredPlan)) {
-       toast({
-        title: t('module_upgrade_toast_title'),
-        description: t('module_upgrade_toast_desc', { plan: module.requiredPlan }),
-      });
-      setTimeout(() => navigate('/subscription'), 2000);
+      const moduleName = t(`sidebar_module_${module.id.replace(/-/g, '_')}`);
+      setUpgradeFeature(`le module ${moduleName}`);
+      setRequiredPlanForUpgrade(module.requiredPlan);
+      setUpgradeDialogOpen(true);
       return;
     }
 
@@ -182,6 +185,13 @@ const Marketplace = () => {
           );
         })}
       </motion.div>
+      
+      <UpgradePlanDialog
+        open={upgradeDialogOpen}
+        onOpenChange={setUpgradeDialogOpen}
+        feature={upgradeFeature}
+        requiredPlan={requiredPlanForUpgrade}
+      />
     </div>
   );
 };

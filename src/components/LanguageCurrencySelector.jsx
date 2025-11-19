@@ -43,15 +43,15 @@ const LanguageSelector = ({ inHeader = false }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="flex items-center gap-2 text-white/80 hover:text-white hover:bg-white/10">
+        <Button variant="ghost" className="flex items-center gap-2 text-muted-foreground hover:text-foreground">
           <Globe className="w-4 h-4" />
           <span>{currentLanguageName}</span>
           <ChevronDown className="w-4 h-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-[#030303] border-white/10 text-white">
+      <DropdownMenuContent>
         {languages.map(lang => (
-          <DropdownMenuItem key={lang.code} onSelect={() => changeLanguage(lang.code)} className="hover:!bg-white/10 focus:!bg-white/10">
+          <DropdownMenuItem key={lang.code} onSelect={() => changeLanguage(lang.code)}>
             {lang.name}
           </DropdownMenuItem>
         ))}

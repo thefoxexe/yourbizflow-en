@@ -14,6 +14,7 @@ const CreateClientDialog = ({ isOpen, onOpenChange, onClientCreated, client }) =
   const { toast } = useToast();
   const { t } = useTranslation();
   const [currentClient, setCurrentClient] = useState({
+    first_name: '',
     name: '',
     company: '',
     email: '',
@@ -26,6 +27,7 @@ const CreateClientDialog = ({ isOpen, onOpenChange, onClientCreated, client }) =
   useEffect(() => {
     if (client) {
       setCurrentClient({
+        first_name: client.first_name || '',
         name: client.name || '',
         company: client.company || '',
         email: client.email || '',
@@ -35,6 +37,7 @@ const CreateClientDialog = ({ isOpen, onOpenChange, onClientCreated, client }) =
       });
     } else {
       setCurrentClient({
+        first_name: '',
         name: '',
         company: '',
         email: '',
@@ -46,8 +49,8 @@ const CreateClientDialog = ({ isOpen, onOpenChange, onClientCreated, client }) =
   }, [client, isOpen]);
 
   const handleSave = async () => {
-    if (!currentClient.name || !currentClient.email) {
-      toast({ variant: 'destructive', title: t('toast_required_fields_title'), description: 'Le nom et l\'email sont obligatoires.' });
+    if (!currentClient.first_name || !currentClient.name || !currentClient.email) {
+      toast({ variant: 'destructive', title: t('toast_required_fields_title'), description: 'Le prénom, nom et email sont obligatoires.' });
       return;
     }
     
@@ -82,8 +85,12 @@ const CreateClientDialog = ({ isOpen, onOpenChange, onClientCreated, client }) =
         </DialogHeader>
         <div className="flex-grow overflow-y-auto pr-4 -mr-4 grid gap-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="name">{t('crm.table_name')}</Label>
-            <Input id="name" value={currentClient.name} onChange={(e) => setCurrentClient({...currentClient, name: e.target.value})} />
+            <Label htmlFor="first_name">Prénom *</Label>
+            <Input id="first_name" value={currentClient.first_name} onChange={(e) => setCurrentClient({...currentClient, first_name: e.target.value})} placeholder="Jean" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="name">Nom *</Label>
+            <Input id="name" value={currentClient.name} onChange={(e) => setCurrentClient({...currentClient, name: e.target.value})} placeholder="Dupont" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="company">{t('crm.table_company')}</Label>

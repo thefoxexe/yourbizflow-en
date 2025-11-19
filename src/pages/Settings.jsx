@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { User, Lock, LogOut, CreditCard, AlertTriangle } from 'lucide-react';
+import { User, Lock, LogOut, CreditCard, AlertTriangle, Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { useToast } from '@/hooks/use-toast';
@@ -8,6 +8,7 @@ import { supabase } from '@/lib/customSupabaseClient';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '@/contexts/ThemeContext';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,6 +27,7 @@ const Settings = () => {
   const { user, profile, signOut, refreshProfile } = useAuth();
   const { toast } = useToast();
   const { t, i18n } = useTranslation();
+  const { theme, setTheme } = useTheme();
   const [activeTab, setActiveTab] = useState('profile');
   const [profileData, setProfileData] = useState({ full_name: '', email: '', currency: 'eur' });
   const [isDeleting, setIsDeleting] = useState(false);
@@ -132,6 +134,29 @@ const Settings = () => {
                   <SelectItem value="chf">CHF (CHF)</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="theme">{t('settings.theme')}</Label>
+              <div className="flex items-center gap-4">
+                <Button
+                  type="button"
+                  variant={theme === 'light' ? 'default' : 'outline'}
+                  onClick={() => setTheme('light')}
+                  className="flex items-center gap-2"
+                >
+                  <Sun className="w-4 h-4" />
+                  {t('settings.light_mode')}
+                </Button>
+                <Button
+                  type="button"
+                  variant={theme === 'dark' ? 'default' : 'outline'}
+                  onClick={() => setTheme('dark')}
+                  className="flex items-center gap-2"
+                >
+                  <Moon className="w-4 h-4" />
+                  {t('settings.dark_mode')}
+                </Button>
+              </div>
             </div>
             <Button type="submit">{t('settings.saveChanges')}</Button>
           </form>

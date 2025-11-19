@@ -5,25 +5,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --background: 0 0% 100%;
-  --foreground: 224 71.4% 4.1%;
-  --card: 0 0% 100%;
-  --card-foreground: 224 71.4% 4.1%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 224 71.4% 4.1%;
-  --primary: 274 65% 65%;
-  --primary-foreground: 210 20% 98%;
-  --secondary: 220 14.3% 95.9%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
-  --muted: 220 14.3% 95.9%;
-  --muted-foreground: 220 8.9% 46.1%;
-  --accent: 220 14.3% 95.9%;
-  --accent-foreground: 222.2 47.4% 11.2%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 20% 98%;
-  --border: 220 13% 91%;
-  --input: 220 13% 91%;
-  --ring: 274 65% 65%;
+  --background: 30 25% 96%;
+  --foreground: 240 10% 15%;
+  --card: 30 20% 98%;
+  --card-foreground: 240 10% 15%;
+  --popover: 30 20% 98%;
+  --popover-foreground: 240 10% 15%;
+  --primary: 274 45% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 270 30% 92%;
+  --secondary-foreground: 240 10% 20%;
+  --muted: 30 20% 94%;
+  --muted-foreground: 240 5% 45%;
+  --accent: 280 35% 90%;
+  --accent-foreground: 240 10% 20%;
+  --destructive: 0 70% 65%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 10% 88%;
+  --input: 240 10% 88%;
+  --ring: 274 45% 60%;
   --radius: 0.5rem;
 }
 

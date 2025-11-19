@@ -78,13 +78,13 @@ import React, { useState } from 'react';
 
 
       return (
-        <div className="flex flex-col h-full bg-background border-r border-white/10">
+        <div className="flex flex-col h-full bg-background border-r border-border">
           <div className="p-6 flex-shrink-0">
             <div className="flex items-center justify-between mb-6">
               <Link to="/" className="flex items-center gap-3" onClick={onLinkClick}>
                 <img src="https://horizons-cdn.hostinger.com/58cbc4ed-cb6f-4ebd-abaf-62892e9ae2c6/6b69cc214c03819301dd8cb8579b78dc.png" alt="YourBizFlow Logo" className="w-10 h-10" />
                 <div>
-                  <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">{t('app_name')}</h1>
+                  <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/60">{t('app_name')}</h1>
                 </div>
               </Link>
               <Button variant="ghost" size="icon" onClick={onLinkClick} className="lg:hidden">
@@ -95,7 +95,7 @@ import React, { useState } from 'react';
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input 
                 placeholder={t('sidebar_search_placeholder')}
-                className="pl-9 bg-white/5 border-white/10 text-white placeholder:text-muted-foreground"
+                className="pl-9 bg-muted/50 border-border text-foreground placeholder:text-muted-foreground"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -122,8 +122,8 @@ import React, { useState } from 'react';
                           className={cn(
                             "flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors duration-200 group",
                             isActive 
-                              ? "bg-primary/20 text-white font-semibold" 
-                              : "text-muted-foreground hover:text-white hover:bg-white/5"
+                              ? "bg-primary/20 text-foreground font-semibold" 
+                              : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                           )}
                         >
                           <Icon className="w-5 h-5" />
@@ -137,15 +137,15 @@ import React, { useState } from 'react';
             </nav>
           </div>
 
-          <div className="mt-auto p-6 border-t border-white/10 flex-shrink-0 space-y-2">
+          <div className="mt-auto p-6 border-t border-border flex-shrink-0 space-y-2">
             <Link
               to="/settings"
               onClick={onLinkClick}
               className={cn(
                 "flex items-center gap-3 px-4 py-2.5 rounded-lg transition-colors duration-200 group",
                 location.pathname === '/settings'
-                  ? "bg-primary/20 text-white font-semibold" 
-                  : "text-muted-foreground hover:text-white hover:bg-white/5"
+                  ? "bg-primary/20 text-foreground font-semibold" 
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
               )}
             >
               <Settings className="w-5 h-5" />
@@ -155,7 +155,7 @@ import React, { useState } from 'react';
             {profile?.subscription_plan?.name && (profile.subscription_plan.name.toLowerCase() === 'free' || profile.subscription_plan.name.toLowerCase() === 'pro') && (
               <Button
                 onClick={() => window.open('https://billing.stripe.com/p/login/3cIfZi3ML4OwflKciwawo00', '_blank')}
-                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold"
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-primary-foreground font-semibold"
               >
                 {t('upgrade')}
               </Button>
@@ -182,7 +182,7 @@ import React, { useState } from 'react';
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+                  className="fixed inset-0 bg-black/60 dark:bg-black/80 z-40 lg:hidden"
                   onClick={() => setIsSidebarOpen(false)}
                 />
                 <motion.div

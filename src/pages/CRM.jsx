@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '@/lib/customSupabaseClient';
-import { Users, PlusCircle, Search, MoreVertical, Edit, Trash2, Mail, Phone, Loader2, Upload } from 'lucide-react';
+import { Users, PlusCircle, Search, MoreVertical, Edit, Trash2, Mail, Phone, Loader2, Upload, Download } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge.jsx';
 import { Button } from '@/components/ui/button';
@@ -9,14 +9,16 @@ import { Input } from '@/components/ui/input';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import CreateClientDialog from '@/components/CreateClientDialog';
 import ImportClientsDialog from '@/components/ImportClientsDialog';
+import UpgradePlanDialog from '@/components/UpgradePlanDialog';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
+import * as XLSX from 'xlsx';
 
 const CRM = () => {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const { toast } = useToast();
   const { t } = useTranslation();
   const [clients, setClients] = useState([]);
@@ -24,6 +26,8 @@ const CRM = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
+  const [isUpgradeDialogOpen, setIsUpgradeDialogOpen] = useState(false);
+  const [upgradeFeature, setUpgradeFeature] = useState('');
   const [editingClient, setEditingClient] = useState(null);
 
   const fetchClients = useCallback(async () => {
@@ -57,6 +61,7 @@ const CRM = () => {
   };
 
   const filteredClients = clients.filter(client =>
+    (client.first_name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
     (client.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
     (client.company && client.company.toLowerCase().includes(searchTerm.toLowerCase())) ||
     (client.email || '').toLowerCase().includes(searchTerm.toLowerCase())
@@ -82,6 +87,63 @@ const CRM = () => {
     return t(`crm.status_${status.toLowerCase()}`, status);
   }
 
+  const isPremiumPlan = () => {
+    const planName = profile?.subscription_plan?.name?.toLowerCase();
+    return planName === 'pro' || planName === 'business';
+  };
+
+  const handleImportClick = () => {
+    if (!isPremiumPlan()) {
+      setUpgradeFeature("l'importation de clients");
+      setIsUpgradeDialogOpen(true);
+      return;
+    }
+    setIsImportDialogOpen(true);
+  };
+
+  const handleExportClick = () => {
+    if (!isPremiumPlan()) {
+      setUpgradeFeature("l'exportation de clients");
+      setIsUpgradeDialogOpen(true);
+      return;
+    }
+    exportToExcel();
+  };
+
+  const exportToExcel = () => {
+    if (clients.length === 0) {
+      toast({ 
+        variant: 'destructive',
+        title: t('toast_error_title'), 
+        description: 'Aucun client à exporter' 
+      });
+      return;
+    }
+
+    const exportData = clients.map(client => ({
+      'Prénom': client.first_name || '',
+      'Nom': client.name || '',
+      'Entreprise': client.company || '',
+      'Email': client.email || '',
+      'Téléphone': client.phone || '',
+      'Statut': getTranslatedStatus(client.status),
+      'Adresse': client.address || '',
+      'Notes': client.notes || ''
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(exportData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Clients');
+    
+    const date = new Date().toISOString().split('T')[0];
+    XLSX.writeFile(wb, `clients_${date}.xlsx`);
+
+    toast({ 
+      title: t('toast_success_title'), 
+      description: `${clients.length} clients exportés avec succès` 
+    });
+  };
+
 
   return (
     <div className="space-y-8">
@@ -91,9 +153,62 @@ const CRM = () => {
           <p className="text-muted-foreground">{t('crm.subtitle')}</p>
         </div>
         <div className="flex flex-col sm:flex-row gap-2">
-          <Button variant="outline" onClick={() => setIsImportDialogOpen(true)}>
-            <Upload className="mr-2 h-4 w-4" /> {t('crm.import_button')}
-          </Button>
+          <motion.div
+            whileHover={!isPremiumPlan() ? { scale: 1.05 } : {}}
+            whileTap={!isPremiumPlan() ? { scale: 0.95 } : {}}
+          >
+            <Button 
+              variant="outline" 
+              onClick={handleImportClick}
+              className={cn(
+                "relative",
+                !isPremiumPlan() && "cursor-not-allowed"
+              )}
+            >
+              <Upload className="mr-2 h-4 w-4" /> {t('crm.import_button')}
+              {!isPremiumPlan() && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="absolute -top-1 -right-1 bg-primary rounded-full p-1"
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                </motion.div>
+              )}
+            </Button>
+          </motion.div>
+          
+          <motion.div
+            whileHover={!isPremiumPlan() ? { scale: 1.05 } : {}}
+            whileTap={!isPremiumPlan() ? { scale: 0.95 } : {}}
+          >
+            <Button 
+              variant="outline"
+              onClick={handleExportClick}
+              className={cn(
+                "relative",
+                !isPremiumPlan() && "cursor-not-allowed"
+              )}
+            >
+              <Download className="mr-2 h-4 w-4" /> {t('crm.export_button')}
+              {!isPremiumPlan() && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="absolute -top-1 -right-1 bg-primary rounded-full p-1"
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                </motion.div>
+              )}
+            </Button>
+          </motion.div>
+          
           <Button onClick={() => { setEditingClient(null); setIsDialogOpen(true); }}>
             <PlusCircle className="mr-2 h-4 w-4" /> {t('crm.new_client')}
           </Button>
@@ -110,7 +225,8 @@ const CRM = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>{t('crm.table_name')}</TableHead>
+            <TableHead>Prénom</TableHead>
+            <TableHead>Nom</TableHead>
                 <TableHead>{t('crm.table_company')}</TableHead>
                 <TableHead>{t('crm.table_email')}</TableHead>
                 <TableHead>{t('crm.table_phone')}</TableHead>
@@ -124,6 +240,7 @@ const CRM = () => {
               ) : filteredClients.length > 0 ? (
                 filteredClients.map(client => (
                   <TableRow key={client.id}>
+                    <TableCell className="font-medium">{client.first_name}</TableCell>
                     <TableCell className="font-medium">{client.name}</TableCell>
                     <TableCell>{client.company}</TableCell>
                     <TableCell>{client.email}</TableCell>
@@ -155,7 +272,7 @@ const CRM = () => {
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div>
-                      <CardTitle className="text-lg">{client.name}</CardTitle>
+                      <CardTitle className="text-lg">{client.first_name} {client.name}</CardTitle>
                       {client.company && <CardDescription>{client.company}</CardDescription>}
                     </div>
                     <DropdownMenu>
@@ -200,6 +317,12 @@ const CRM = () => {
         isOpen={isImportDialogOpen}
         onOpenChange={setIsImportDialogOpen}
         onImportComplete={handleClientAction}
+      />
+      <UpgradePlanDialog
+        open={isUpgradeDialogOpen}
+        onOpenChange={setIsUpgradeDialogOpen}
+        feature={upgradeFeature}
+        requiredPlan="Pro"
       />
     </div>
   );

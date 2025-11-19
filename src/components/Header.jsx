@@ -30,7 +30,7 @@ const Header = ({ onMenuClick }) => {
       <motion.header
         initial={{ y: -60, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="sticky top-0 bg-background/80 backdrop-blur-lg border-b border-white/10 z-40"
+        className="sticky top-0 bg-background/80 backdrop-blur-lg border-b border-border z-40"
       >
         <div className="container mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <Button variant="ghost" size="icon" onClick={onMenuClick} className="lg:hidden text-muted-foreground"><Menu className="w-6 h-6" /></Button>
@@ -38,7 +38,7 @@ const Header = ({ onMenuClick }) => {
           <div className="flex-1 flex justify-end items-center gap-2 sm:gap-4">
             {profile && profile.subscription_plan && (
               <div className="hidden sm:flex items-center gap-2">
-                <div className="flex items-center gap-2 px-3 py-1 bg-secondary border border-white/10 rounded-full">
+                <div className="flex items-center gap-2 px-3 py-1 bg-secondary border border-border rounded-full">
                   <Crown className="w-4 h-4 text-yellow-500" />
                   <span className="text-sm font-medium text-foreground capitalize">{profile.subscription_plan.name}</span>
                 </div>
@@ -46,7 +46,7 @@ const Header = ({ onMenuClick }) => {
                   <Button
                     size="sm"
                     onClick={() => window.open('https://billing.stripe.com/p/login/3cIfZi3ML4OwflKciwawo00', '_blank')}
-                    className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-3 py-1 h-8 text-xs font-semibold"
+                    className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-primary-foreground px-3 py-1 h-8 text-xs font-semibold"
                   >
                     {t('upgrade')}
                   </Button>

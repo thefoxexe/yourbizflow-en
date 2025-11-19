@@ -30,7 +30,10 @@ import {
   Send,
   Crown,
   Briefcase,
-  Calendar
+  Calendar,
+  Save,
+  FolderOpen,
+  Trash2
 } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -39,6 +42,7 @@ import { fr } from 'date-fns/locale';
 import logoYourBizFlow from '@/assets/logo-yourbizflow.png';
 import ImageUploadZone from '@/components/ImageUploadZone';
 import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const AdminPanel = () => {
   const [stats, setStats] = useState({ Free: 0, Pro: 0, Business: 0, total: 0 });
@@ -48,13 +52,23 @@ const AdminPanel = () => {
   const [filterPlan, setFilterPlan] = useState('all');
   const [selectedTarget, setSelectedTarget] = useState('all');
   const [selectedPlan, setSelectedPlan] = useState('');
-  const [selectedUser, setSelectedUser] = useState('');
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const [notificationTitle, setNotificationTitle] = useState('');
   const [notificationMessage, setNotificationMessage] = useState('');
   const [bannerImage, setBannerImage] = useState('');
   const [contentImages, setContentImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
+  
+  // Filtres pour la sélection multi-utilisateurs
+  const [userSearchTerm, setUserSearchTerm] = useState('');
+  const [userFilterPlan, setUserFilterPlan] = useState('all');
+  const [usersForSelection, setUsersForSelection] = useState([]);
+  
+  // Templates
+  const [templates, setTemplates] = useState([]);
+  const [templateName, setTemplateName] = useState('');
+  const [showTemplates, setShowTemplates] = useState(false);
   
   // Date filters
   const [dateFilter, setDateFilter] = useState('30days');
@@ -80,6 +94,7 @@ const AdminPanel = () => {
     checkAdminAccess();
     fetchStats();
     fetchUsers();
+    fetchTemplates();
   }, []);
 
   useEffect(() => {
@@ -107,6 +122,27 @@ const AdminPanel = () => {
       generateChartData();
     }
   }, [users, dateFilter, customStartDate, customEndDate]);
+
+  // Filtrer les utilisateurs pour la sélection multi-utilisateurs dans les notifications
+  useEffect(() => {
+    let filtered = users;
+
+    if (userSearchTerm) {
+      filtered = filtered.filter(user => 
+        user.email?.toLowerCase().includes(userSearchTerm.toLowerCase()) ||
+        user.full_name?.toLowerCase().includes(userSearchTerm.toLowerCase())
+      );
+    }
+
+    if (userFilterPlan !== 'all') {
+      filtered = filtered.filter(user => {
+        const planName = user.subscription_plan?.name || 'Free';
+        return planName.toLowerCase() === userFilterPlan.toLowerCase();
+      });
+    }
+
+    setUsersForSelection(filtered);
+  }, [userSearchTerm, userFilterPlan, users]);
 
   const checkAdminAccess = async () => {
     if (!user) {
@@ -321,6 +357,107 @@ const AdminPanel = () => {
     });
   };
 
+  const fetchTemplates = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('notification_templates')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setTemplates(data || []);
+    } catch (error) {
+      console.error('Error fetching templates:', error);
+    }
+  };
+
+  const saveTemplate = async () => {
+    if (!templateName || !notificationTitle || !notificationMessage) {
+      toast({
+        variant: 'destructive',
+        title: 'Erreur',
+        description: 'Veuillez remplir le nom du template et le contenu',
+      });
+      return;
+    }
+
+    try {
+      const { error } = await supabase.from('notification_templates').insert({
+        name: templateName,
+        title: notificationTitle,
+        message: notificationMessage,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: 'Template sauvegardé',
+        description: `Le template "${templateName}" a été sauvegardé`,
+      });
+
+      setTemplateName('');
+      fetchTemplates();
+    } catch (error) {
+      console.error('Error saving template:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Erreur',
+        description: error.message,
+      });
+    }
+  };
+
+  const loadTemplate = (template) => {
+    setNotificationTitle(template.title);
+    setNotificationMessage(template.message);
+    setShowTemplates(false);
+    toast({
+      title: 'Template chargé',
+      description: `Le template "${template.name}" a été chargé`,
+    });
+  };
+
+  const deleteTemplate = async (templateId) => {
+    try {
+      const { error } = await supabase
+        .from('notification_templates')
+        .delete()
+        .eq('id', templateId);
+
+      if (error) throw error;
+
+      toast({
+        title: 'Template supprimé',
+        description: 'Le template a été supprimé avec succès',
+      });
+
+      fetchTemplates();
+    } catch (error) {
+      console.error('Error deleting template:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Erreur',
+        description: error.message,
+      });
+    }
+  };
+
+  const toggleUserSelection = (userId) => {
+    setSelectedUsers(prev => 
+      prev.includes(userId) 
+        ? prev.filter(id => id !== userId)
+        : [...prev, userId]
+    );
+  };
+
+  const toggleAllUsers = () => {
+    if (selectedUsers.length === usersForSelection.length) {
+      setSelectedUsers([]);
+    } else {
+      setSelectedUsers(usersForSelection.map(u => u.id));
+    }
+  };
+
   const sendNotification = async () => {
     if (!notificationTitle || !notificationMessage) {
       toast({
@@ -342,8 +479,8 @@ const AdminPanel = () => {
         userIds = users
           .filter((u) => (u.subscription_plan?.name || 'Free') === selectedPlan)
           .map((u) => u.id);
-      } else if (selectedTarget === 'user') {
-        userIds = [selectedUser];
+      } else if (selectedTarget === 'users') {
+        userIds = selectedUsers;
       }
 
       if (userIds.length === 0) {
@@ -380,7 +517,7 @@ const AdminPanel = () => {
       setContentImages([]);
       setSelectedTarget('all');
       setSelectedPlan('');
-      setSelectedUser('');
+      setSelectedUsers([]);
     } catch (error) {
       console.error('Error sending notification:', error);
       toast({
@@ -675,7 +812,9 @@ const AdminPanel = () => {
                               {user.subscription_plan?.name || 'Free'}
                             </span>
                           </TableCell>
-                          <TableCell>{new Date(user.created_at).toLocaleDateString('fr-FR')}</TableCell>
+                          <TableCell>
+                            {new Date(user.created_at).toLocaleDateString('fr-FR')} à {new Date(user.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+                          </TableCell>
                         </TableRow>
                       ))
                     )}
@@ -706,7 +845,7 @@ const AdminPanel = () => {
                     <SelectContent>
                       <SelectItem value="all">Tous les utilisateurs</SelectItem>
                       <SelectItem value="plan">Par plan d'abonnement</SelectItem>
-                      <SelectItem value="user">Utilisateur spécifique</SelectItem>
+                      <SelectItem value="users">Sélection multiple d'utilisateurs</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -727,21 +866,113 @@ const AdminPanel = () => {
                   </div>
                 )}
 
-                {selectedTarget === 'user' && (
+                {selectedTarget === 'users' && (
                   <div>
-                    <label className="text-sm font-medium mb-2 block">Utilisateur</label>
-                    <Select value={selectedUser} onValueChange={setSelectedUser}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Sélectionner un utilisateur" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {users.map((user) => (
-                          <SelectItem key={user.id} value={user.id}>
-                            {user.email}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <div className="space-y-3 mb-4">
+                      <div className="flex gap-2">
+                        <div className="flex-1">
+                          <Input
+                            placeholder="Rechercher par email ou nom..."
+                            value={userSearchTerm}
+                            onChange={(e) => setUserSearchTerm(e.target.value)}
+                            className="w-full"
+                          />
+                        </div>
+                        <Select value={userFilterPlan} onValueChange={setUserFilterPlan}>
+                          <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Filtrer par plan" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">Tous les plans</SelectItem>
+                            <SelectItem value="Free">Free</SelectItem>
+                            <SelectItem value="Pro">Pro</SelectItem>
+                            <SelectItem value="Business">Business</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between mb-3">
+                      <label className="text-sm font-medium">
+                        Utilisateurs ({selectedUsers.length} sélectionné{selectedUsers.length > 1 ? 's' : ''})
+                      </label>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={toggleAllUsers}
+                      >
+                        {selectedUsers.length === usersForSelection.length ? 'Tout désélectionner' : 'Tout sélectionner'}
+                      </Button>
+                    </div>
+                    <div className="border rounded-lg p-4 max-h-[300px] overflow-y-auto space-y-2">
+                      {usersForSelection.length === 0 ? (
+                        <p className="text-sm text-muted-foreground text-center py-4">
+                          Aucun utilisateur trouvé
+                        </p>
+                      ) : (
+                        usersForSelection.map((user) => (
+                        <div key={user.id} className="flex items-center space-x-3 p-2 hover:bg-accent rounded-md">
+                          <Checkbox
+                            id={`user-${user.id}`}
+                            checked={selectedUsers.includes(user.id)}
+                            onCheckedChange={() => toggleUserSelection(user.id)}
+                          />
+                          <label
+                            htmlFor={`user-${user.id}`}
+                            className="flex-1 text-sm cursor-pointer flex items-center justify-between"
+                          >
+                            <span>{user.email}</span>
+                            <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                              user.subscription_plan?.name === 'Business' ? 'bg-green-500/20 text-green-500' :
+                              user.subscription_plan?.name === 'Pro' ? 'bg-purple-500/20 text-purple-500' :
+                              'bg-blue-500/20 text-blue-500'
+                            }`}>
+                              {user.subscription_plan?.name || 'Free'}
+                            </span>
+                          </label>
+                        </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    className="flex items-center gap-2"
+                    onClick={() => setShowTemplates(!showTemplates)}
+                  >
+                    <FolderOpen className="w-4 h-4" />
+                    {showTemplates ? 'Masquer' : 'Charger'} les templates
+                  </Button>
+                </div>
+
+                {showTemplates && (
+                  <div className="border rounded-lg p-4 space-y-2">
+                    {templates.length === 0 ? (
+                      <p className="text-sm text-muted-foreground text-center py-2">
+                        Aucun template sauvegardé
+                      </p>
+                    ) : (
+                      templates.map((template) => (
+                        <div key={template.id} className="flex items-center justify-between p-2 hover:bg-accent rounded-md">
+                          <button
+                            onClick={() => loadTemplate(template)}
+                            className="flex-1 text-left text-sm font-medium"
+                          >
+                            {template.name}
+                          </button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => deleteTemplate(template.id)}
+                          >
+                            <Trash2 className="w-4 h-4 text-destructive" />
+                          </Button>
+                        </div>
+                      ))
+                    )}
                   </div>
                 )}
 
@@ -783,14 +1014,45 @@ const AdminPanel = () => {
                   onImageRemove={(index) => setContentImages(prev => prev.filter((_, i) => i !== index))}
                 />
 
-                <Button
-                  onClick={sendNotification}
-                  disabled={isSending}
-                  className="w-full flex items-center justify-center gap-2"
-                >
-                  <Send className="w-4 h-4" />
-                  {isSending ? 'Envoi en cours...' : 'Envoyer la notification'}
-                </Button>
+                <div className="flex gap-2">
+                  <div className="flex-1">
+                    <label className="text-sm font-medium mb-2 block">Nom du template (optionnel)</label>
+                    <Input
+                      placeholder="Ex: Bienvenue nouveau client"
+                      value={templateName}
+                      onChange={(e) => setTemplateName(e.target.value)}
+                    />
+                  </div>
+                  <Button
+                    variant="outline"
+                    className="flex items-center gap-2 mt-7"
+                    onClick={saveTemplate}
+                    disabled={!templateName || !notificationTitle || !notificationMessage}
+                  >
+                    <Save className="w-4 h-4" />
+                    Sauvegarder
+                  </Button>
+                </div>
+
+                <div className="flex gap-2">
+                  <Button
+                    onClick={sendNotification}
+                    disabled={isSending}
+                    className="flex-1 flex items-center justify-center gap-2"
+                  >
+                    {isSending ? (
+                      <>
+                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent"></div>
+                        Envoi en cours...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4" />
+                        Envoyer la notification
+                      </>
+                    )}
+                  </Button>
+                </div>
               </div>
             </Card>
           </TabsContent>

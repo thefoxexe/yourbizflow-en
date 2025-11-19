@@ -35,6 +35,7 @@ import Header from "@/components/Header";
 import Login from "@/pages/Login";
 import SignUp from "@/pages/SignUp";
 import Subscription from "@/pages/Subscription";
+import Upgrade from "@/pages/Upgrade";
 import LandingPage from "@/pages/LandingPage";
 import About from "@/pages/About";
 import { useAuth } from "@/contexts/SupabaseAuthContext";
@@ -366,6 +367,14 @@ const AppRoutes = () => {
       <Route
         path="/subscription"
         element={<Subscription />}
+      />
+      <Route
+        path="/upgrade"
+        element={
+          <ProtectedRoute>
+            <Upgrade />
+          </ProtectedRoute>
+        }
       />
       <Route
         path="/dashboard"
@@ -767,7 +776,7 @@ const AppLayout = ({
   openCompanyDialog,
 }) => {
   return (
-    <div className="flex min-h-screen dark bg-background text-white">
+    <div className="flex min-h-screen bg-background text-foreground">
       <Sidebar
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}

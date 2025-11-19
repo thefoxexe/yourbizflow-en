@@ -61,8 +61,6 @@ import React, { useState, useEffect, useRef } from 'react';
         company_phone: '',
         company_logo_url: '',
         business_description: '',
-        currency: 'eur',
-        country: 'France',
         iban: '',
         bic: '',
       });
@@ -84,8 +82,6 @@ import React, { useState, useEffect, useRef } from 'react';
             company_phone: profile.company_phone || '',
             company_logo_url: profile.company_logo_url || '',
             business_description: profile.business_description || '',
-            currency: profile.currency || 'eur',
-            country: profile.country || 'France',
             iban: profile.iban || '',
             bic: profile.bic || '',
           });
@@ -175,8 +171,6 @@ import React, { useState, useEffect, useRef } from 'react';
             company_logo_url: logoUrl,
             business_description: companyData.business_description,
             email: companyData.email,
-            currency: companyData.currency,
-            country: companyData.country,
             iban: companyData.iban,
             bic: companyData.bic,
           })
@@ -205,23 +199,6 @@ import React, { useState, useEffect, useRef } from 'react';
               <div className="flex-grow overflow-y-auto pr-6 -mr-6 grid gap-4 py-4">
                 <div className="space-y-2"><Label htmlFor="company_name">Nom de l'entreprise (requis)</Label><Input id="company_name" value={companyData.company_name} onChange={(e) => setCompanyData({...companyData, company_name: e.target.value})} /></div>
                 <div className="space-y-2"><Label htmlFor="email">Email de contact (requis)</Label><Input id="email" type="email" value={companyData.email} onChange={(e) => setCompanyData({...companyData, email: e.target.value})} /></div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="country">Pays</Label>
-                    <select id="country" value={companyData.country} onChange={(e) => setCompanyData({ ...companyData, country: e.target.value })} className="w-full h-10 border rounded-md px-3 bg-background text-foreground border-input">
-                      <option>France</option>
-                      <option>Suisse</option>
-                    </select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="currency">Devise</Label>
-                    <select id="currency" value={companyData.currency} onChange={(e) => setCompanyData({ ...companyData, currency: e.target.value })} className="w-full h-10 border rounded-md px-3 bg-background text-foreground border-input">
-                      <option value="eur">EUR (€)</option>
-                      <option value="usd">USD ($)</option>
-                      <option value="chf">CHF (CHF)</option>
-                    </select>
-                  </div>
-                </div>
                 <div className="space-y-2"><Label htmlFor="company_address">Adresse</Label><Input id="company_address" value={companyData.company_address} onChange={(e) => setCompanyData({...companyData, company_address: e.target.value})} /></div>
                 <div className="space-y-2"><Label htmlFor="company_phone">Téléphone</Label><Input id="company_phone" value={companyData.company_phone} onChange={(e) => setCompanyData({...companyData, company_phone: e.target.value})} /></div>
                 
