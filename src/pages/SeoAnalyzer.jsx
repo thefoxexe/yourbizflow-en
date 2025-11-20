@@ -1,448 +1,688 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Sparkles, Search, Loader2, CheckCircle, XCircle, Wrench, BrainCircuit, Smartphone, Monitor, TrendingUp, ShieldCheck, Zap, Star, Globe } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Sparkles, Search, Loader2, Globe, History, Trash2, ExternalLink, TrendingUp, Smartphone, Monitor, Download, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/customSupabaseClient';
 import { Progress } from '@/components/ui/progress';
 import { useTranslation } from 'react-i18next';
-
-const ResultCard = ({ icon: Icon, title, children, delay }) => (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }}>
-        <Card className="h-full">
-            <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
-                <Icon className="w-6 h-6 text-primary" />
-                <CardTitle className="text-lg">{title}</CardTitle>
-            </CardHeader>
-            <CardContent>{children}</CardContent>
-        </Card>
-    </motion.div>
-);
-
-const MarkdownRenderer = ({ content }) => {
-    if (!content) return null;
-
-    let cleanedContent = content.trim();
-    if (cleanedContent.startsWith('```markdown')) {
-        cleanedContent = cleanedContent.substring(11);
-    } else if (cleanedContent.startsWith('```')) {
-        cleanedContent = cleanedContent.substring(3);
-    }
-    if (cleanedContent.endsWith('```')) {
-        cleanedContent = cleanedContent.slice(0, -3);
-    }
-
-    const parseLine = (line, key) => {
-        const boldRegex = /\*\*(.*?)\*\*/g;
-        const parts = [];
-        let lastIndex = 0;
-        let match;
-
-        while ((match = boldRegex.exec(line)) !== null) {
-            if (match.index > lastIndex) {
-                parts.push(line.substring(lastIndex, match.index));
-            }
-            parts.push(<strong key={`${key}-${lastIndex}`}>{match[1]}</strong>);
-            lastIndex = boldRegex.lastIndex;
-        }
-
-        if (lastIndex < line.length) {
-            parts.push(line.substring(lastIndex));
-        }
-        
-        return parts;
-    };
-
-    const parseMarkdown = (text) => {
-        const lines = text.split('\n');
-        const elements = [];
-        let listItems = [];
-
-        const flushList = () => {
-            if (listItems.length > 0) {
-                elements.push(<ul key={`ul-${elements.length}`} className="list-disc space-y-2 pl-5">{listItems}</ul>);
-                listItems = [];
-            }
-        };
-
-        lines.forEach((line, index) => {
-            if (line.trim() === '') return;
-            if (line.startsWith('### ')) {
-                flushList();
-                elements.push(<h3 key={index} className="text-lg font-semibold mt-4 mb-2">{parseLine(line.substring(4), index)}</h3>);
-            } else if (line.startsWith('## ')) {
-                flushList();
-                elements.push(<h2 key={index} className="text-xl font-bold mt-6 mb-3">{parseLine(line.substring(3), index)}</h2>);
-            } else if (line.startsWith('* ') || line.startsWith('- ')) {
-                listItems.push(
-                    <li key={`${index}-${listItems.length}`}>{parseLine(line.substring(2), index)}</li>
-                );
-            } else {
-                flushList();
-                elements.push(<p key={index} className="mb-2">{parseLine(line, index)}</p>);
-            }
-        });
-
-        flushList();
-        return elements;
-    };
-
-    return (
-        <div className="prose prose-sm dark:prose-invert max-w-none text-muted-foreground">
-            {parseMarkdown(cleanedContent)}
-        </div>
-    );
-};
-
-const ScoreComparisonCard = ({ mobile, desktop, t }) => {
-    const scores = [
-        { label: t('seo.result_score_performance'), key: 'performance', icon: Zap },
-        { label: t('seo.result_score_accessibility'), key: 'accessibility', icon: ShieldCheck },
-        { label: t('seo.result_score_seo'), key: 'seo', icon: TrendingUp },
-        { label: t('seo.result_score_best_practices'), key: 'bestPractices', icon: Star },
-    ];
-
-    const getScoreColor = (s) => {
-        if (s >= 90) return 'bg-green-500';
-        if (s >= 50) return 'bg-yellow-500';
-        return 'bg-red-500';
-    };
-
-    return (
-        <Card className="h-full">
-            <CardHeader>
-                <CardTitle>{t('seo.result_detailed_scores')}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-                {scores.map(({ label, key, icon: Icon }) => (
-                    <div key={key}>
-                        <div className="flex items-center gap-2 mb-2">
-                            <Icon className="w-5 h-5 text-muted-foreground" />
-                            <h4 className="font-semibold">{label}</h4>
-                        </div>
-                        <div className="space-y-2">
-                            <div className="flex items-center gap-3">
-                                <Smartphone className="w-5 h-5 text-primary" />
-                                <div className="w-full bg-secondary rounded-full h-2.5">
-                                    <motion.div
-                                        className={`h-2.5 rounded-full ${getScoreColor(mobile[key])}`}
-                                        initial={{ width: 0 }}
-                                        animate={{ width: `${mobile[key]}%` }}
-                                        transition={{ duration: 0.5, delay: 0.5 }}
-                                    />
-                                </div>
-                                <span className="font-bold w-10 text-right">{mobile[key]}</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <Monitor className="w-5 h-5 text-primary" />
-                                <div className="w-full bg-secondary rounded-full h-2.5">
-                                    <motion.div
-                                        className={`h-2.5 rounded-full ${getScoreColor(desktop[key])}`}
-                                        initial={{ width: 0 }}
-                                        animate={{ width: `${desktop[key]}%` }}
-                                        transition={{ duration: 0.5, delay: 0.6 }}
-                                    />
-                                </div>
-                                <span className="font-bold w-10 text-right">{desktop[key]}</span>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </CardContent>
-        </Card>
-    );
-};
-
-const ScoreCircle = ({ score }) => {
-    const radius = 52;
-    const circumference = 2 * Math.PI * radius;
-    const offset = circumference - (score / 100 * circumference);
-
-    const getScoreColor = (s) => {
-        if (s >= 90) return 'text-green-500';
-        if (s >= 50) return 'text-yellow-500';
-        return 'text-red-500';
-    };
-
-    return (
-        <div className="relative w-48 h-48">
-            <svg className="w-full h-full" viewBox="0 0 120 120">
-                <circle
-                    className="text-secondary"
-                    strokeWidth="8"
-                    stroke="currentColor"
-                    fill="transparent"
-                    r={radius}
-                    cx="60"
-                    cy="60"
-                />
-                <motion.circle
-                    className={getScoreColor(score)}
-                    strokeWidth="8"
-                    strokeDasharray={circumference}
-                    strokeLinecap="round"
-                    stroke="currentColor"
-                    fill="transparent"
-                    r={radius}
-                    cx="60"
-                    cy="60"
-                    transform="rotate(-90 60 60)"
-                    initial={{ strokeDashoffset: circumference }}
-                    animate={{ strokeDashoffset: offset }}
-                    transition={{ duration: 1, delay: 0.3, ease: "circOut" }}
-                />
-                <text x="50%" y="50%" textAnchor="middle" dy=".3em" className="text-4xl font-bold fill-current text-foreground">
-                    {score}
-                </text>
-            </svg>
-        </div>
-    );
-};
+import { useAuth } from '@/contexts/SupabaseAuthContext';
+import { format } from 'date-fns';
+import jsPDF from 'jspdf';
 
 const SeoAnalyzer = () => {
-    const [url, setUrl] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [analysisResult, setAnalysisResult] = useState(null);
-    const [progress, setProgress] = useState(0);
-    const { toast } = useToast();
-    const { t, i18n } = useTranslation();
-    const [reportLang, setReportLang] = useState(i18n.language.split('-')[0] || 'fr');
+  const { t } = useTranslation();
+  const { toast } = useToast();
+  const { user } = useAuth();
 
-    const handleAnalyze = async () => {
-        if (!url) {
-            toast({
-                variant: 'destructive',
-                title: t('seo.error_missing_url_title'),
-                description: t('seo.error_missing_url_desc'),
-            });
-            return;
+  const [url, setUrl] = useState('');
+  const [language, setLanguage] = useState('en');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [currentReport, setCurrentReport] = useState(null);
+  const [history, setHistory] = useState([]);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
+  const [activeTab, setActiveTab] = useState('analyze');
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+
+  useEffect(() => {
+    if (user) loadHistory();
+  }, [user]);
+
+  const loadHistory = async () => {
+    if (!user) return;
+    setIsLoadingHistory(true);
+    try {
+      const { data, error } = await supabase
+        .from('seo_reports')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('analyzed_at', { ascending: false })
+        .limit(20);
+
+      if (error) throw error;
+      setHistory(data || []);
+    } catch (error) {
+      console.error('Error loading history:', error);
+    } finally {
+      setIsLoadingHistory(false);
+    }
+  };
+
+  const analyzeUrl = async () => {
+    if (!url) {
+      toast({
+        title: t('seo.error_title'),
+        description: t('seo.error_url_required'),
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!user) {
+      toast({
+        title: t('seo.error_title'),
+        description: t('seo.error_login_required'),
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsAnalyzing(true);
+    setProgress(0);
+    setCurrentReport(null);
+
+    const progressInterval = setInterval(() => {
+      setProgress(prev => prev >= 90 ? 90 : prev + 10);
+    }, 300);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('analyze-seo', {
+        body: { url, lang: language }
+      });
+
+      clearInterval(progressInterval);
+      setProgress(100);
+
+      if (error) throw new Error(error.message || t('seo.error_edge_function'));
+      if (!data || data.error) throw new Error(data?.error || t('seo.error_edge_function'));
+
+      const reportToSave = {
+        user_id: user.id,
+        url,
+        scores: data.scores,
+        results: {
+          analysis: data.analysis,
+          aiAnalysis: data.aiAnalysis,
+        },
+        report_lang: language,
+        analyzed_at: new Date().toISOString(),
+      };
+
+      const { data: savedReport, error: saveError } = await supabase
+        .from('seo_reports')
+        .insert([reportToSave])
+        .select()
+        .single();
+
+      if (!saveError) loadHistory();
+
+      setCurrentReport({
+        ...data,
+        id: savedReport?.id,
+        reportLang: language,
+      });
+
+      toast({
+        title: t('seo.report_success', { score: data.scores.global }),
+      });
+
+    } catch (error) {
+      clearInterval(progressInterval);
+      console.error('Error:', error);
+      let errorMessage = t('seo.error_edge_function');
+      if (error.message?.includes('Failed to fetch') || error.message?.includes('NetworkError')) {
+        errorMessage = t('seo.error_network');
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      toast({
+        title: t('seo.error_title'),
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsAnalyzing(false);
+      setTimeout(() => setProgress(0), 1000);
+    }
+  };
+
+  const loadReport = (report) => {
+    const scores = typeof report.scores?.global === 'number' 
+      ? report.scores 
+      : {
+          global: report.scores?.overall || 0,
+          mobile: report.scores?.mobile?.seo || 0,
+          desktop: report.scores?.desktop?.seo || 0,
+        };
+
+    const aiAnalysis = report.results?.aiAnalysis || report.results?.ai_analysis || report.results?.aiReport || 
+      t('seo.history_empty_subtitle');
+
+    setCurrentReport({
+      url: report.url,
+      scores,
+      analysis: report.results?.analysis,
+      aiAnalysis,
+      analyzedAt: report.analyzed_at,
+      id: report.id,
+      reportLang: report.report_lang,
+    });
+    
+    setActiveTab('analyze');
+    
+    toast({
+      title: t('seo.report_loaded'),
+      description: t('seo.report_loaded_desc', { date: format(new Date(report.analyzed_at), 'dd/MM/yyyy HH:mm') }),
+    });
+  };
+
+  const deleteReport = async (reportId) => {
+    try {
+      const { error } = await supabase
+        .from('seo_reports')
+        .delete()
+        .eq('id', reportId);
+
+      if (error) throw error;
+
+      toast({
+        title: t('seo.report_deleted'),
+        description: t('seo.report_deleted_desc'),
+      });
+
+      loadHistory();
+      if (currentReport?.id === reportId) setCurrentReport(null);
+    } catch (error) {
+      toast({
+        title: t('seo.delete_error'),
+        description: t('seo.delete_error_desc'),
+        variant: "destructive",
+      });
+    }
+  };
+
+  const generatePDF = () => {
+    if (!currentReport) return;
+    
+    setIsGeneratingPdf(true);
+    
+    try {
+      const doc = new jsPDF();
+      const pageWidth = doc.internal.pageSize.getWidth();
+      let yPos = 20;
+
+      // Header
+      doc.setFontSize(22);
+      doc.setTextColor(139, 92, 246);
+      doc.text(currentReport.reportLang === 'fr' ? 'Rapport SEO' : 'SEO Report', pageWidth / 2, yPos, { align: 'center' });
+      
+      yPos += 10;
+      doc.setFontSize(12);
+      doc.setTextColor(100);
+      doc.text(currentReport.url, pageWidth / 2, yPos, { align: 'center' });
+      
+      yPos += 5;
+      doc.setFontSize(10);
+      doc.text(format(new Date(currentReport.analyzedAt || new Date()), 'dd/MM/yyyy HH:mm'), pageWidth / 2, yPos, { align: 'center' });
+      
+      yPos += 15;
+
+      // Scores
+      doc.setFontSize(16);
+      doc.setTextColor(0);
+      doc.text(currentReport.reportLang === 'fr' ? 'Scores' : 'Scores', 20, yPos);
+      yPos += 10;
+
+      doc.setFontSize(12);
+      doc.text(`${currentReport.reportLang === 'fr' ? 'Global' : 'Global'}: ${currentReport.scores.global}/100`, 20, yPos);
+      yPos += 7;
+      doc.text(`Mobile: ${currentReport.scores.mobile}/100`, 20, yPos);
+      yPos += 7;
+      doc.text(`Desktop: ${currentReport.scores.desktop}/100`, 20, yPos);
+      yPos += 15;
+
+      // AI Analysis
+      doc.setFontSize(16);
+      doc.text(currentReport.reportLang === 'fr' ? 'Analyse Détaillée' : 'Detailed Analysis', 20, yPos);
+      yPos += 10;
+
+      // Parse markdown content
+      const lines = currentReport.aiAnalysis.split('\n');
+      doc.setFontSize(10);
+      
+      lines.forEach(line => {
+        if (yPos > 270) {
+          doc.addPage();
+          yPos = 20;
         }
-        try {
-            new URL(url);
-        } catch (_) {
-            toast({
-                variant: 'destructive',
-                title: t('seo.error_invalid_url_title'),
-                description: t('seo.error_invalid_url_desc'),
-            });
-            return;
+
+        const trimmed = line.trim();
+        if (!trimmed) {
+          yPos += 3;
+          return;
         }
 
-        setIsLoading(true);
-        setAnalysisResult(null);
-        setProgress(0);
-
-        const progressInterval = setInterval(() => {
-            setProgress(prev => (prev < 90 ? prev + 10 : 90));
-        }, 800);
-
-        try {
-            const { data, error } = await supabase.functions.invoke('seo-analyzer', {
-                body: JSON.stringify({ url, lang: reportLang }),
-            });
-            clearInterval(progressInterval);
-            setProgress(100);
-
-            if (error) throw new Error(error.message || t('seo.toast_error'));
-            if (data.error) throw new Error(data.error);
-
-            setAnalysisResult(data);
-            toast({
-                title: t('seo.toast_success'),
-                description: t('seo.toast_success_desc'),
-            });
-        } catch (error) {
-            clearInterval(progressInterval);
-            toast({
-                variant: 'destructive',
-                title: t('seo.toast_error'),
-                description: error.message,
-            });
-        } finally {
-            setIsLoading(false);
+        // Headers
+        if (trimmed.startsWith('# ')) {
+          doc.setFontSize(14);
+          doc.setTextColor(139, 92, 246);
+          doc.text(trimmed.substring(2), 20, yPos);
+          doc.setFontSize(10);
+          doc.setTextColor(0);
+          yPos += 8;
+        } else if (trimmed.startsWith('## ')) {
+          doc.setFontSize(12);
+          doc.setTextColor(100);
+          doc.text(trimmed.substring(3), 20, yPos);
+          doc.setFontSize(10);
+          doc.setTextColor(0);
+          yPos += 7;
+        } else {
+          // Regular text with word wrap
+          const textLines = doc.splitTextToSize(trimmed, pageWidth - 40);
+          textLines.forEach(textLine => {
+            if (yPos > 270) {
+              doc.addPage();
+              yPos = 20;
+            }
+            doc.text(textLine, 20, yPos);
+            yPos += 5;
+          });
         }
-    };
+      });
 
-    const renderAnalysisResult = () => {
-        if (!analysisResult) return null;
-        const { scores, results } = analysisResult;
-        return (
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="space-y-8 mt-8"
-            >
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }}>
-                        <Card className="flex flex-col items-center justify-center text-center p-6 h-full">
-                            <CardHeader className="pb-4">
-                                <CardTitle>{t('seo.result_global_score')}</CardTitle>
-                            </CardHeader>
-                            <CardContent className="flex items-center justify-center">
-                                <ScoreCircle score={scores.overall} />
-                            </CardContent>
-                        </Card>
-                    </motion.div>
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="lg:col-span-2">
-                        <ScoreComparisonCard mobile={scores.mobile} desktop={scores.desktop} t={t} />
-                    </motion.div>
+      // Save PDF
+      const fileName = `seo-report-${currentReport.url.replace(/https?:\/\//, '').replace(/[^a-z0-9]/gi, '-')}.pdf`;
+      doc.save(fileName);
+      
+      toast({
+        title: t('seo.pdf_generated'),
+        description: t('seo.pdf_generated_desc'),
+      });
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      toast({
+        title: t('seo.delete_error'),
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
+      <Helmet>
+        <title>{t('seo.title')} - YourBizFlow</title>
+        <meta name="description" content={t('seo.subtitle')} />
+      </Helmet>
+
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
+        >
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <Sparkles className="w-10 h-10 text-primary" />
+            <h1 className="text-4xl md:text-5xl font-bold">{t('seo.title')}</h1>
+          </div>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">{t('seo.subtitle')}</p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-3xl mx-auto mb-8"
+        >
+          <Card className="border-yellow-500/50 bg-yellow-500/10">
+            <CardContent className="py-4">
+              <div className="flex items-start gap-3">
+                <AlertTriangle className="w-5 h-5 text-yellow-600 dark:text-yellow-500 mt-0.5 flex-shrink-0" />
+                <div className="flex-1">
+                  <h3 className="font-semibold text-yellow-700 dark:text-yellow-400 mb-1">
+                    {language === 'fr' ? 'Module en cours de mise à jour' : 'Module Under Maintenance'}
+                  </h3>
+                  <p className="text-sm text-yellow-600 dark:text-yellow-500">
+                    {language === 'fr' 
+                      ? 'Ce module est actuellement en cours de maintenance et pourrait rencontrer des problèmes temporaires. Nous travaillons à sa stabilisation. Merci de votre patience.' 
+                      : 'This module is currently under maintenance and may experience temporary issues. We are working on stabilizing it. Thank you for your patience.'}
+                  </p>
                 </div>
-                <ResultCard icon={BrainCircuit} title={t('seo.result_ai_analysis')} delay={0.3}>
-                    <MarkdownRenderer content={results.aiReport} />
-                </ResultCard>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <ResultCard icon={Wrench} title={t('seo.result_structure_content')} delay={0.4}>
-                        <ul className="space-y-3 text-sm">
-                            <li className="flex items-center gap-2">
-                                {results.h1.count === 1 ? <CheckCircle className="text-green-500 flex-shrink-0" /> : <XCircle className="text-red-500 flex-shrink-0" />}
-                                <span>{t('seo.result_h1_found', { count: results.h1.count })}</span>
-                            </li>
-                            <li className="flex items-center gap-2">
-                                {results.h2.count > 0 ? <CheckCircle className="text-green-500 flex-shrink-0" /> : <XCircle className="text-yellow-500 flex-shrink-0" />}
-                                <span>{t('seo.result_h2_found', { count: results.h2.count })}</span>
-                            </li>
-                            <li className="flex items-center gap-2">
-                                {results.images.withoutAlt === 0 ? <CheckCircle className="text-green-500 flex-shrink-0" /> : <XCircle className="text-red-500 flex-shrink-0" />}
-                                <span>{t('seo.result_images_alt', { count: results.images.withoutAlt, total: results.images.total })}</span>
-                            </li>
-                            <li className="flex items-center gap-2">
-                                {results.wordCount.value > 300 ? <CheckCircle className="text-green-500 flex-shrink-0" /> : <XCircle className="text-yellow-500 flex-shrink-0" />}
-                                <span>{t('seo.result_word_count', { count: results.wordCount.value })}</span>
-                            </li>
-                        </ul>
-                    </ResultCard>
-                    <ResultCard icon={Wrench} title={t('seo.result_technical')} delay={0.5}>
-                        <ul className="space-y-3 text-sm">
-                            <li className="flex items-center gap-2">
-                                {results.robotsTxt.found ? <CheckCircle className="text-green-500 flex-shrink-0" /> : <XCircle className="text-red-500 flex-shrink-0" />}
-                                <span>{results.robotsTxt.found ? t('seo.result_robots_found') : t('seo.result_robots_missing')}</span>
-                            </li>
-                            <li className="flex items-center gap-2">
-                                {results.sitemapXml.found ? <CheckCircle className="text-green-500 flex-shrink-0" /> : <XCircle className="text-red-500 flex-shrink-0" />}
-                                <span>{results.sitemapXml.found ? t('seo.result_sitemap_found') : t('seo.result_sitemap_missing')}</span>
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <CheckCircle className="text-green-500 flex-shrink-0" />
-                                <span>{t('seo.result_content_score')}: {scores.content}/100</span>
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <CheckCircle className="text-green-500 flex-shrink-0" />
-                                <span>{t('seo.result_technical_score')}: {scores.technical}/100</span>
-                            </li>
-                        </ul>
-                    </ResultCard>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
+          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
+            <TabsTrigger value="analyze" className="flex items-center gap-2">
+              <Search className="w-4 h-4" />
+              {t('seo.tab_analyze')}
+            </TabsTrigger>
+            <TabsTrigger value="history" className="flex items-center gap-2">
+              <History className="w-4 h-4" />
+              {t('seo.tab_history')}
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="analyze" className="space-y-8">
+            <Card className="max-w-3xl mx-auto">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Globe className="w-5 h-5" />
+                  {t('seo.new_analysis')}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">{t('seo.url_label')}</label>
+                  <Input
+                    type="url"
+                    placeholder={t('seo.url_placeholder')}
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                    disabled={isAnalyzing}
+                  />
                 </div>
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>{t('seo.methodology_title')}</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-sm text-muted-foreground space-y-2">
-                            <p>{t('seo.methodology_desc')}</p>
-                            <ul className="list-disc pl-5 space-y-1">
-                                <li>{t('seo.methodology_item1')}</li>
-                                <li>{t('seo.methodology_item2')}</li>
-                                <li>{t('seo.methodology_item3')}</li>
-                                <li>{t('seo.methodology_item4')}</li>
-                                <li>{t('seo.methodology_item5')}</li>
-                                <li>{t('seo.methodology_item6')}</li>
-                            </ul>
-                        </CardContent>
-                    </Card>
-                </motion.div>
-            </motion.div>
-        );
-    };
 
-    return (
-        <div className="space-y-8">
-            <Helmet>
-                <title>{t('seo.title')} - {t('app_name')}</title>
-                <meta name="description" content={t('seo.subtitle')} />
-            </Helmet>
-
-            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                <div className="flex items-center gap-4 mb-2">
-                    <div className="bg-primary/10 text-primary p-3 rounded-lg"><Sparkles className="w-6 h-6" /></div>
-                    <h1 className="text-3xl font-bold text-foreground">{t('seo.title')}</h1>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">{t('seo.language_label')}</label>
+                  <Select value={language} onValueChange={setLanguage} disabled={isAnalyzing}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="en">{t('seo.language_english')}</SelectItem>
+                      <SelectItem value="fr">{t('seo.language_french')}</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-                <p className="text-muted-foreground">{t('seo.subtitle')}</p>
-            </motion.div>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle>{t('seo.new_analysis')}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="flex flex-col sm:flex-row gap-4 items-end">
-                        <div className="relative flex-grow">
-                            <label htmlFor="url-input" className="text-sm font-medium mb-2 block">{t('seo.url_placeholder')}</label>
-                            <div className="relative">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                <Input
-                                    id="url-input"
-                                    type="url"
-                                    placeholder="https://example.com"
-                                    className="pl-10 pr-4 py-3 text-base"
-                                    value={url}
-                                    onChange={(e) => setUrl(e.target.value)}
-                                    disabled={isLoading}
-                                />
-                            </div>
-                        </div>
-                        <div className="w-full sm:w-auto">
-                            <label htmlFor="lang-select" className="text-sm font-medium mb-2 block">{t('seo.report_language')}</label>
-                            <Select value={reportLang} onValueChange={setReportLang}>
-                                <SelectTrigger className="w-full sm:w-[180px] py-3 text-base" id="lang-select">
-                                    <Globe className="w-4 h-4 mr-2" />
-                                    <SelectValue placeholder={t('seo.report_language')} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="fr">Français</SelectItem>
-                                    <SelectItem value="en">English</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <Button size="lg" onClick={handleAnalyze} disabled={isLoading} className="flex-shrink-0 w-full sm:w-auto py-3 text-base">
-                            {isLoading ? <><Loader2 className="mr-2 h-5 w-5 animate-spin" /> {t('seo.analyzing_button')}</> : t('seo.analyze_button')}
-                        </Button>
-                    </div>
-                </CardContent>
+                {isAnalyzing && (
+                  <div className="space-y-2">
+                    <Progress value={progress} className="h-2" />
+                    <p className="text-sm text-muted-foreground text-center">
+                      {t('seo.analyzing_progress', { progress })}
+                    </p>
+                  </div>
+                )}
+
+                <Button
+                  onClick={analyzeUrl}
+                  disabled={isAnalyzing || !url}
+                  className="w-full"
+                  size="lg"
+                >
+                  {isAnalyzing ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      {t('seo.analyzing')}
+                    </>
+                  ) : (
+                    <>
+                      <Search className="w-4 h-4 mr-2" />
+                      {t('seo.analyze_button')}
+                    </>
+                  )}
+                </Button>
+              </CardContent>
             </Card>
 
-            <AnimatePresence>
-                {isLoading && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="space-y-4 text-center"
-                    >
-                        <Progress value={progress} className="w-full" />
-                        <p className="text-muted-foreground animate-pulse">{t('seo.loading_text')}</p>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {currentReport && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-6"
+              >
+                <Card className="bg-green-500/10 border-green-500/20">
+                  <CardContent className="py-4 flex items-center justify-between">
+                    <p className="text-green-600 dark:text-green-400 font-semibold">
+                      {t('seo.report_success', { score: currentReport.scores.global })}
+                    </p>
+                    <Button onClick={generatePDF} disabled={isGeneratingPdf} variant="outline" size="sm">
+                      {isGeneratingPdf ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          {t('seo.generating_pdf')}
+                        </>
+                      ) : (
+                        <>
+                          <Download className="w-4 h-4 mr-2" />
+                          {t('seo.download_pdf')}
+                        </>
+                      )}
+                    </Button>
+                  </CardContent>
+                </Card>
 
-            {analysisResult ? (
-                renderAnalysisResult()
-            ) : !isLoading && (
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="text-center py-16 border-2 border-dashed rounded-lg"
-                >
-                    <Sparkles className="mx-auto h-12 w-12 text-muted-foreground" />
-                    <h3 className="mt-4 text-lg font-medium text-foreground">{t('seo.empty_state_title')}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">{t('seo.empty_state_desc')}</p>
-                </motion.div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <Card>
+                    <CardContent className="pt-6 flex flex-col items-center">
+                      <TrendingUp className="w-8 h-8 text-primary mb-4" />
+                      <h3 className="text-lg font-semibold mb-2">{t('seo.score_global')}</h3>
+                      <ScoreCircle score={currentReport.scores?.global || 0} />
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardContent className="pt-6 flex flex-col items-center">
+                      <Smartphone className="w-8 h-8 text-primary mb-4" />
+                      <h3 className="text-lg font-semibold mb-2">{t('seo.score_mobile')}</h3>
+                      <ScoreCircle score={currentReport.scores?.mobile || 0} size="medium" />
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardContent className="pt-6 flex flex-col items-center">
+                      <Monitor className="w-8 h-8 text-primary mb-4" />
+                      <h3 className="text-lg font-semibold mb-2">{t('seo.score_desktop')}</h3>
+                      <ScoreCircle score={currentReport.scores?.desktop || 0} size="medium" />
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Sparkles className="w-5 h-5" />
+                      {t('seo.detailed_analysis')}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <MarkdownContent content={currentReport.aiAnalysis} />
+                  </CardContent>
+                </Card>
+              </motion.div>
             )}
+          </TabsContent>
+
+          <TabsContent value="history">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <History className="w-5 h-5" />
+                  {t('seo.history_title')}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {isLoadingHistory ? (
+                  <div className="text-center py-8">
+                    <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-primary" />
+                    <p className="text-muted-foreground">{t('seo.history_loading')}</p>
+                  </div>
+                ) : history.length === 0 ? (
+                  <div className="text-center py-12">
+                    <History className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+                    <p className="text-muted-foreground">{t('seo.history_empty')}</p>
+                    <p className="text-sm text-muted-foreground mt-2">{t('seo.history_empty_subtitle')}</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {history.map((report) => {
+                      const globalScore = typeof report.scores?.global === 'number' 
+                        ? report.scores.global 
+                        : report.scores?.overall || 0;
+                      const mobileScore = typeof report.scores?.mobile === 'number' 
+                        ? report.scores.mobile 
+                        : report.scores?.mobile?.seo || 0;
+                      const desktopScore = typeof report.scores?.desktop === 'number' 
+                        ? report.scores.desktop 
+                        : report.scores?.desktop?.seo || 0;
+
+                      return (
+                        <motion.div
+                          key={report.id}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="border rounded-lg p-4 hover:border-primary/50 transition-colors"
+                        >
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Globe className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                                <a
+                                  href={report.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-sm font-medium hover:text-primary truncate flex items-center gap-1"
+                                >
+                                  {report.url}
+                                  <ExternalLink className="w-3 h-3" />
+                                </a>
+                              </div>
+                              <p className="text-xs text-muted-foreground mb-2">
+                                {t('seo.history_analyzed_on')} {format(new Date(report.analyzed_at), 'dd/MM/yyyy HH:mm')}
+                              </p>
+                              <div className="flex items-center gap-4 text-sm flex-wrap">
+                                <span className="font-semibold">
+                                  {t('seo.history_score')}: {globalScore}/100
+                                </span>
+                                <span className="text-muted-foreground">
+                                  {t('seo.history_mobile')}: {mobileScore}/100
+                                </span>
+                                <span className="text-muted-foreground">
+                                  {t('seo.history_desktop')}: {desktopScore}/100
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2 flex-shrink-0">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => loadReport(report)}
+                              >
+                                {t('seo.history_view')}
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => deleteReport(report.id)}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+  );
+};
+
+const ScoreCircle = ({ score, size = 'large' }) => {
+  const radius = size === 'large' ? 70 : 50;
+  const strokeWidth = size === 'large' ? 12 : 8;
+  const normalizedRadius = radius - strokeWidth * 2;
+  const circumference = normalizedRadius * 2 * Math.PI;
+  const strokeDashoffset = circumference - (score / 100) * circumference;
+  
+  const getColor = (score) => {
+    if (score >= 90) return '#22c55e';
+    if (score >= 50) return '#eab308';
+    return '#ef4444';
+  };
+
+  return (
+    <div className="relative inline-flex items-center justify-center">
+      <svg height={radius * 2} width={radius * 2}>
+        <circle
+          stroke="#e5e7eb"
+          fill="transparent"
+          strokeWidth={strokeWidth}
+          r={normalizedRadius}
+          cx={radius}
+          cy={radius}
+        />
+        <circle
+          stroke={getColor(score)}
+          fill="transparent"
+          strokeWidth={strokeWidth}
+          strokeDasharray={circumference + ' ' + circumference}
+          style={{ strokeDashoffset, transition: 'stroke-dashoffset 0.5s ease' }}
+          strokeLinecap="round"
+          r={normalizedRadius}
+          cx={radius}
+          cy={radius}
+          transform={`rotate(-90 ${radius} ${radius})`}
+        />
+      </svg>
+      <div className="absolute text-center">
+        <div className={`font-bold ${size === 'large' ? 'text-3xl' : 'text-xl'}`}>
+          {score}
         </div>
-    );
+        <div className={`text-muted-foreground ${size === 'large' ? 'text-sm' : 'text-xs'}`}>
+          /100
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const MarkdownContent = ({ content }) => {
+  if (!content) return <p className="text-muted-foreground">No content</p>;
+  if (typeof content === 'object') return <p className="text-muted-foreground">Invalid format</p>;
+
+  const lines = String(content).split('\n');
+  
+  return (
+    <div className="prose prose-sm dark:prose-invert max-w-none space-y-4">
+      {lines.map((line, i) => {
+        const trimmed = line.trim();
+        if (!trimmed) return null;
+
+        if (trimmed.startsWith('# ')) {
+          return <h1 key={i} className="text-2xl font-bold mt-6 mb-3">{trimmed.substring(2)}</h1>;
+        }
+        if (trimmed.startsWith('## ')) {
+          return <h2 key={i} className="text-xl font-bold mt-5 mb-2">{trimmed.substring(3)}</h2>;
+        }
+        if (trimmed.startsWith('### ')) {
+          return <h3 key={i} className="text-lg font-semibold mt-4 mb-2">{trimmed.substring(4)}</h3>;
+        }
+
+        const formatBold = (text) => {
+          const parts = text.split(/(\*\*.*?\*\*)/g);
+          return parts.map((part, idx) => {
+            if (part.startsWith('**') && part.endsWith('**')) {
+              return <strong key={idx}>{part.slice(2, -2)}</strong>;
+            }
+            return part;
+          });
+        };
+
+        if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+          return <li key={i} className="ml-4">{formatBold(trimmed.substring(2))}</li>;
+        }
+
+        return <p key={i} className="leading-relaxed">{formatBold(trimmed)}</p>;
+      })}
+    </div>
+  );
 };
 
 export default SeoAnalyzer;

@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/customSupabaseClient';
-import { useToast } from '@/hooks/use-toast';
 
 const AuthContext = createContext(null);
 
@@ -8,7 +7,6 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
-    const { toast } = useToast();
 
     const signOut = async () => {
         const { error } = await supabase.auth.signOut();
@@ -95,11 +93,7 @@ export const AuthProvider = ({ children }) => {
             },
         });
         if (error) {
-            toast({
-                variant: "destructive",
-                title: "Erreur d'authentification",
-                description: error.message,
-            });
+            console.error("Erreur d'authentification:", error.message);
         }
     };
 
@@ -160,7 +154,7 @@ export const AuthProvider = ({ children }) => {
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
-    if (context === undefined) {
+    if (!context) {
         throw new Error('useAuth must be used within an AuthProvider');
     }
     return context;

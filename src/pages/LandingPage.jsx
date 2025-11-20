@@ -223,14 +223,22 @@ const TestimonialsCarousel = () => {
     { nameKey: "testimonial1_name", companyKey: "testimonial1_company", textKey: "testimonial1_text", avatarKey: "testimonial1_avatar_alt" },
     { nameKey: "testimonial2_name", companyKey: "testimonial2_company", textKey: "testimonial2_text", avatarKey: "testimonial2_avatar_alt" },
     { nameKey: "testimonial3_name", companyKey: "testimonial3_company", textKey: "testimonial3_text", avatarKey: "testimonial3_avatar_alt" },
-    { nameKey: "testimonial4_name", companyKey: "testimonial4_company", textKey: "testimonial4_text", avatarKey: "testimonial4_avatar_alt" }
+    { nameKey: "testimonial4_name", companyKey: "testimonial4_company", textKey: "testimonial4_text", avatarKey: "testimonial4_avatar_alt" },
+    { nameKey: "testimonial5_name", companyKey: "testimonial5_company", textKey: "testimonial5_text", avatarKey: "testimonial5_avatar_alt" },
+    { nameKey: "testimonial6_name", companyKey: "testimonial6_company", textKey: "testimonial6_text", avatarKey: "testimonial6_avatar_alt" },
+    { nameKey: "testimonial7_name", companyKey: "testimonial7_company", textKey: "testimonial7_text", avatarKey: "testimonial7_avatar_alt" },
+    { nameKey: "testimonial8_name", companyKey: "testimonial8_company", textKey: "testimonial8_text", avatarKey: "testimonial8_avatar_alt" }
   ];
 
   const images = [
-    <img alt={t("testimonial1_avatar_alt")} src="https://images.unsplash.com/photo-1699905631258-f9657e33cc7d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80" />,
-    <img alt={t("testimonial2_avatar_alt")} src="https://images.unsplash.com/photo-1602135058093-0eddb40d0e1e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80" />,
-    <img alt={t("testimonial3_avatar_alt")} src="https://images.unsplash.com/photo-1580894912989-0bc892f4efd0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80" />,
-    <img alt={t("testimonial4_avatar_alt")} src="https://images.unsplash.com/photo-1585092284034-48c72302862c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80" />
+    <img alt={t("testimonial1_avatar_alt")} src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop" />,
+    <img alt={t("testimonial2_avatar_alt")} src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop" />,
+    <img alt={t("testimonial3_avatar_alt")} src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop" />,
+    <img alt={t("testimonial4_avatar_alt")} src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop" />,
+    <img alt={t("testimonial5_avatar_alt")} src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop" />,
+    <img alt={t("testimonial6_avatar_alt")} src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop" />,
+    <img alt={t("testimonial7_avatar_alt")} src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=400&h=400&fit=crop" />,
+    <img alt={t("testimonial8_avatar_alt")} src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop" />
   ];
 
   useEffect(() => {
@@ -779,6 +787,9 @@ const LandingPage = () => {
                     <PriceDisplay prices={plan.prices[billingCycle] || plan.prices['monthly']} />
                     <span className="text-lg font-medium text-white/60">/{billingCycle === 'monthly' ? t('monthly').toLowerCase() : t('yearly').toLowerCase()}</span>
                   </p>
+                  {plan.name === 'Free' && (
+                    <p className="text-sm text-green-400 font-medium mb-4">{t('no_credit_card')}</p>
+                  )}
                   <ul className="space-y-3 mb-4 flex-grow">
                     {Array.isArray(plan.features) && plan.features.map((featureKey, i) => (
                       <li key={i} className="flex items-center gap-3">

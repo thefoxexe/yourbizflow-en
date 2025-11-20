@@ -1,0 +1,4 @@
+project_id = "lvqxvcedoawzicutzygv"
+
+[functions.analyze-seo]
+verify_jwt = true

@@ -241,6 +241,9 @@ const Subscription = () => {
                 {price}{currencySymbol}
                 {plan.name !== 'Free' && <span className="text-lg font-medium text-white/60">/{billingCycle === 'monthly' ? t('monthly_short') : t('yearly_short')}</span>}
               </div>
+              {plan.name === 'Free' && (
+                <p className="text-sm text-green-400 font-medium mb-4">{t('no_credit_card')}</p>
+              )}
               <ul className="space-y-3 mb-4 flex-grow">
                 {featureKeys.map((featureKey, i) => (
                   <li key={i} className="flex items-center gap-3">
