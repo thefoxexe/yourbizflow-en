@@ -55,7 +55,7 @@ export function MinimalFooter({ onPrivacyClick, onTermsClick }) {
                         <SocialLink href="https://www.instagram.com/yourbizflow" icon={FaInstagram} label="Instagram" />
                         <SocialLink href="https://www.youtube.com/@YourBizFlow" icon={FaYoutube} label="YouTube" />
                         <SocialLink href="https://www.linkedin.com/company/108963525" icon={FaLinkedin} label="LinkedIn" />
-                        <SocialLink href="mailto:contact@yourbizflow.com" icon={Mail} label="Email" />
+                        <SocialLink href="mailto:info@yourbizflow.com" icon={Mail} label="Email" />
                     </div>
                     <div className="flex gap-4 mt-4 md:mt-0">
                         <Link to={privacyLink} className="text-sm text-white/60 hover:text-white transition-colors">
