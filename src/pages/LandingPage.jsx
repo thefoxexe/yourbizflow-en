@@ -850,10 +850,10 @@ const LandingPage = () => {
                     <tbody className="divide-y divide-white/10">
                       <tr className="hover:bg-white/[0.02] transition-colors bg-white/[0.03]">
                         <td className="py-4 px-6 text-sm font-semibold text-white/90">{t('comparison_price')}</td>
-                        <td className="py-4 px-6 text-center text-sm font-bold text-green-400">0€</td>
+                        <td className="py-4 px-6 text-center text-sm font-bold text-green-400">0$</td>
                         <td className="py-4 px-6 text-center text-sm text-white/70">~20€/mois</td>
-                        <td className="py-4 px-6 text-center text-sm text-white/70">~30€/mois</td>
-                        <td className="py-4 px-6 text-center text-sm text-white/70">~90€/mois</td>
+                        <td className="py-4 px-6 text-center text-sm text-white/70">~14€/mois</td>
+                        <td className="py-4 px-6 text-center text-sm text-white/70">~35$/mois</td>
                       </tr>
                       <tr className="hover:bg-white/[0.02] transition-colors">
                         <td className="py-4 px-6 text-sm text-white/80">{t('comparison_hr')}</td>
